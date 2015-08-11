@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:PetriNetEditor">
+    <DataTemplate x:Key="transTemplate">
+        <Grid local:ScrollExtension.NodeBeyondEdge="{Binding Value.IsBeyondEdge, Mode=TwoWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="node"
+                       Grid.Row="0"
+                       Style="{StaticResource NodeElementStyle}"/>
+            <Rectangle Grid.Row="0" 
+                       Height="{Binding ElementName=node, Path=Height, Converter={StaticResource PercentageConverter}, ConverterParameter=90}"
+                       IsHitTestVisible="False"
+                       Visibility="{Binding Value.Enabled, Converter={StaticResource BoolToVisibilityConverter}}" Stroke="LimeGreen"
+                       Width="{Binding ElementName=node, Path=Width, Converter={StaticResource PercentageConverter}, ConverterParameter=90}"/>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

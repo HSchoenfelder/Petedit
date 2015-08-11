@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:PetriNetEditor">
+    <Style x:Key="NameFieldStyle" 
+           TargetType="TextBox">
+        <Style.Setters>
+            <Setter Property="local:FocusExtension.IsActive" 
+                    Value="{Binding Value.TextFieldActive}"/>
+            <Setter Property="local:PushBindingManager.StylePushBindings">
+                <Setter.Value>
+                    <local:PushBindingCollection>
+                        <local:PushBinding Path="Value.Height"
+                                           TargetProperty="ActualHeight"/>
+                        <local:PushBinding Path="Value.Width"
+                                           TargetProperty="ActualWidth"/>
+                    </local:PushBindingCollection>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" 
+                    Value="Transparent"/>
+            <Setter Property="BorderThickness" 
+                    Value="0"/>
+            <Setter Property="Foreground">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource StateToColorConverter}">
+                        <Binding Path="Value.ParentNode.IsHighlighted"/>
+                        <Binding Path="Value.ParentNode.IsDrawTarget"/>
+                        <Binding Path="Value.ParentNode.Selected"/>
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="HorizontalAlignment"
+                    Value="Stretch"/>
+            <Setter Property="MaxLength" 
+                    Value="40"/>
+            <Setter Property="Text" 
+                    Value="{Binding Value.Name}"/>
+            <Setter Property="TextAlignment" 
+                    Value="Center"/>
+        </Style.Setters>
+    </Style>
+</ResourceDictionary>

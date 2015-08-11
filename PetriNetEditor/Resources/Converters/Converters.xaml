@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:PetriNetEditor">
+    <local:CanvasMouseButtonEventConverter x:Key="CanvasMouseButtonEventConverter"/>
+    <local:CanvasModifierMouseButtonEventConverter x:Key="CanvasModifierMouseButtonEventConverter"/>
+    <local:NodeMouseButtonEventConverter x:Key="NodeMouseButtonEventConverter"/>
+    <local:ArcMouseButtonEventConverter x:Key="ArcMouseButtonEventConverter"/>
+    <local:MouseMoveEventConverter x:Key="MouseMoveEventConverter"/>
+    <local:LoadedEventConverter x:Key="LoadedEventConverter"/>
+    <local:TextEventConverter x:Key="TextEventConverter"/>
+    <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <local:EllipseVisibilityConverter x:Key="EllipseVisibilityConverter"/>
+    <local:TextBlockVisibilityConverter x:Key="TextBlockVisibilityConverter"/>
+    <local:PercentageConverter x:Key="PercentageConverter"/>
+    <local:EqualityCheckConverter x:Key="EqualityCheckConverter"/>
+    <local:FontSizeConverter x:Key="FontSizeConverter"/>
+    <local:AddConverter x:Key="AddConverter"/>
+    <local:MultiplyConverter x:Key="MultiplyConverter"/>
+    <local:MultiToArrayConverter x:Key="MultiToArrayConverter"/>
+    <local:MultiEqualityCheckConverter x:Key="MultiEqualityCheckConverter"/>
+    <local:StateToColorConverter x:Key="StateToColorConverter"/>
+    <local:BindingTest x:Key="BindingTest"/>
+</ResourceDictionary>

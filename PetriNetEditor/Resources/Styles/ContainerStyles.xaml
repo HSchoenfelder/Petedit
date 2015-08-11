@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="arcContainerStyle" 
+           TargetType="{x:Type ContentPresenter}">
+        <Setter Property="Canvas.Left" 
+                Value="{Binding Value.XPos}"/>
+        <Setter Property="Canvas.Top" 
+                Value="{Binding Value.YPos}"/>
+        <Setter Property="ClipToBounds" 
+                Value="True"/>
+        <Setter Property="Height" 
+                Value="{Binding Value.Height}"/>
+        <Setter Property="RenderTransform" 
+                Value="{Binding Value.Rotation}"/>
+        <Setter Property="Visibility" 
+                Value="{Binding Value.Visible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Setter Property="Width" 
+                Value="{Binding Value.Width}"/>
+    </Style>
+    <Style x:Key="nameFieldContainerStyle" 
+           TargetType="{x:Type ContentPresenter}">
+        <Setter Property="Canvas.Left" 
+                Value="{Binding Value.XPos}"/>
+        <Setter Property="Canvas.Top" 
+                Value="{Binding Value.YPos}"/>
+    </Style>
+    <Style x:Key="nodeContainerStyle" 
+           TargetType="{x:Type ContentPresenter}">
+        <Setter Property="Canvas.Left" 
+                Value="{Binding Value.XLeftEnd}"/>
+        <Setter Property="Canvas.Top" 
+                Value="{Binding Value.YTopEnd}"/>
+    </Style>
+</ResourceDictionary>

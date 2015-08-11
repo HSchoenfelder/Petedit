@@ -1,0 +1,18 @@
+﻿<Window x:Class="PetriNetEditor.QueryDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Save Changes?" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Name="QueryWindow">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label Content="Save Changes to the Petrinet?"/>
+        <WrapPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,10,0, 0">
+            <Button IsDefault="True" Name="btnYes" Click="btnYes_Click" MinWidth="60" Margin="0,0,10,0">_Yes</Button>
+            <Button Name="btnNo" Click="btnNo_Click" MinWidth="60" Margin="0,0,10,0">_No</Button>
+            <Button Name="btnCancel" Click="btnCancel_Click" MinWidth="60" Margin="0,0,0,0">_Cancel</Button>
+        </WrapPanel>
+    </Grid>
+</Window>

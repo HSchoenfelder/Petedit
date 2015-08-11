@@ -1,0 +1,20 @@
+﻿PetriNetEditor
+
+
+winexe
+C#
+.cs
+D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetEditor\obj\Debug\
+PetriNetEditor
+none
+false
+DEBUG;TRACE
+D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetEditor\App.xaml
+18995270921
+
+811437045331
+15-546070448
+InfoDialog.xaml;MainWindow.xaml;QueryDialog.xaml;Resources\Converters\Converters.xaml;Resources\Images\Images.xaml;Resources\Selectors\Selectors.xaml;Resources\Styles\ArcElementStyle.xaml;Resources\Styles\ContainerStyles.xaml;Resources\Styles\ContextMenuTitleStyle.xaml;Resources\Styles\DrawArcStyle.xaml;Resources\Styles\NameFieldStyle.xaml;Resources\Styles\NodeElementStyle.xaml;Resources\Templates\NameFieldTemplate.xaml;Resources\Templates\OneWayArcTemplate.xaml;Resources\Templates\PlaceTemplate.xaml;Resources\Templates\TransitionTemplate.xaml;Resources\Templates\TwoWayArcTemplate.xaml;TokenDialog.xaml;
+
+False
+

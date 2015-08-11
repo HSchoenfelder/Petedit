@@ -1,0 +1,59 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:local="clr-namespace:PetriNetEditor">
+    <DataTemplate x:Key="nameFieldTemplate">
+        <Grid local:ScrollExtension.NodeBeyondEdge="{Binding Value.IsBeyondEdge, Mode=TwoWay}"
+              Visibility="{Binding Value.NameFieldVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBox Background="Transparent"
+                     BorderThickness="0"
+                     Focusable="False"
+                     FontSize="{Binding DataContext.SizeFactor, Converter={StaticResource FontSizeConverter}, ElementName=root}"
+                     Foreground="White" 
+                     Grid.Row="0" 
+                     HorizontalAlignment="Stretch" 
+                     MaxLength="40"
+                     Text="{Binding Value.Name}"
+                     TextAlignment="Center" >
+                <TextBox.Effect>
+                    <BlurEffect Radius="2.0" KernelType="Box"/>
+                </TextBox.Effect>
+            </TextBox>
+            <TextBox local:FocusExtension.IsActive="{Binding Value.TextFieldActive}"
+                     FontSize="{Binding DataContext.SizeFactor, Converter={StaticResource FontSizeConverter}, ElementName=root}"
+                     Grid.Row="0" 
+                     Style="{StaticResource NameFieldStyle}" 
+                     TextAlignment="Center">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding Value.ElementManager.NameFieldClickedCommand}" 
+                                               CommandParameter="{Binding Key}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="LostFocus">
+                        <local:EventCommandExecuter Command="{Binding Value.ElementManager.NameChangedCommand}"
+                                                    EventArgsConverter="{StaticResource TextEventConverter}"
+                                                    EventArgsConverterParameter="{Binding Key}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding Value.ElementManager.NameConfirmedCommand}" 
+                                CommandParameter="{Binding Path=Key}"
+                                Key="Enter"/>
+                </TextBox.InputBindings>
+
+            </TextBox>
+            <StackPanel x:Name="tokenBox" 
+                        Background="Transparent"
+                        Grid.Row="1" 
+                        Height="{Binding Value.DrawSize}"
+                        HorizontalAlignment="Center" 
+                        IsHitTestVisible="False"
+                        VerticalAlignment="Center" 
+                        Width="{Binding Value.DrawSize}"/>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

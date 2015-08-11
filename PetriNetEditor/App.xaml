@@ -1,0 +1,27 @@
+﻿<Application x:Class="PetriNetEditor.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PetriNetEditor"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <local:MainViewModel x:Key="MainViewModel"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Converters/Converters.xaml"/>
+                <ResourceDictionary Source="/Resources/Images/Images.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/ContainerStyles.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/ContextMenuTitleStyle.xaml"/>
+                <ResourceDictionary Source="/Resources/Selectors/Selectors.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/ArcElementStyle.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/DrawArcStyle.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/NameFieldStyle.xaml"/>
+                <ResourceDictionary Source="/Resources/Styles/NodeElementStyle.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/NameFieldTemplate.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/OneWayArcTemplate.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/PlaceTemplate.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/TransitionTemplate.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/TwoWayArcTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

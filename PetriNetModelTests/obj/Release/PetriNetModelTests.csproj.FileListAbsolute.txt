@@ -1,0 +1,7 @@
+D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModelTests\bin\Release\PetriNetModelTests.dll
+D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModelTests\bin\Release\PetriNetModelTests.pdb
+D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModelTests\bin\Release\PetriNetModel.dll
+D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModelTests\bin\Release\PetriNetModel.pdb
+D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModelTests\obj\Release\PetriNetModelTests.csprojResolveAssemblyReference.cache
+D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModelTests\obj\Release\PetriNetModelTests.dll
+D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModelTests\obj\Release\PetriNetModelTests.pdb

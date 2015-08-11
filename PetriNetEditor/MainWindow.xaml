@@ -1,0 +1,396 @@
+﻿<Window x:Class="PetriNetEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:PetriNetEditor"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        x:Name="root"
+        DataContext="{StaticResource MainViewModel}"
+        Height="600" 
+        Width="800"
+        Title="{Binding ElementName=root, Path=TitleString}">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:PetriCommands.NewClicked}" 
+                        Executed="HandleNewClicked"/>
+        <CommandBinding Command="{x:Static local:PetriCommands.OpenClicked}" 
+                        Executed="HandleOpenClicked"/>
+        <CommandBinding Command="{x:Static local:PetriCommands.SaveClicked}" 
+                        Executed="HandleSaveClicked"/>
+        <CommandBinding Command="{x:Static local:PetriCommands.SaveAsClicked}" 
+                        Executed="HandleSaveAsClicked"/>
+        <CommandBinding Command="{x:Static local:PetriCommands.ExitClicked}" 
+                        Executed="HandleExitClicked"/>
+        <CommandBinding Command="{x:Static local:PetriCommands.SetTokenCountClicked}"
+                        CanExecute="HandleSetTokenCountCanExecute"
+                        Executed="HandleSetTokenCountClicked"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="{x:Static local:PetriCommands.NewClicked}"
+                    Key="N"
+                    Modifiers="Control"/>
+        <KeyBinding Command="{x:Static local:PetriCommands.OpenClicked}" 
+                    Key="O"
+                    Modifiers="Control"/>
+        <KeyBinding Command="{x:Static local:PetriCommands.SaveClicked}" 
+                    Key="S"
+                    Modifiers="Control"/>
+        <KeyBinding Command="{Binding Path=UndoManager.UndoCommand}" 
+                    Key="Z"
+                    Modifiers="Control"/>
+        <KeyBinding Command="{Binding Path=UndoManager.RedoCommand}" 
+                    Key="Y"
+                    Modifiers="Control"/>
+        <KeyBinding Command="{Binding Path=DeleteNodesCommand}" 
+                    Key="Delete"/>
+        <KeyBinding Command="{Binding Path=DeleteNodesCommand}" 
+                    Key="D" 
+                    Modifiers="Control" />
+        <KeyBinding Command="{Binding Path=SelectAllCommand}" 
+                    Key="A" 
+                    Modifiers="Control" />
+    </Window.InputBindings>
+    <DockPanel LastChildFill="True" 
+               VerticalAlignment="Stretch" >
+        <Menu DockPanel.Dock="Top">
+            <Menu.Resources>
+                <Style x:Key="BlockStateChangeStyle" 
+                       TargetType="MenuItem">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding BlockStateChange}" 
+                                     Value="true">
+                            <Setter Property="Focusable" 
+                                    Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Menu.Resources>
+            <MenuItem Header="_File" 
+                      Style="{StaticResource BlockStateChangeStyle}">
+                <MenuItem Command="{x:Static local:PetriCommands.NewClicked}"
+                          Header="_New" 
+                          InputGestureText="Ctrl+N"/>
+                <MenuItem Command="{x:Static local:PetriCommands.OpenClicked}"
+                          Header="_Open File..." 
+                          InputGestureText="Ctrl+O"/>
+                <Separator Margin="0, -4, 0, -3"/>
+                <MenuItem Command="{x:Static local:PetriCommands.SaveClicked}"
+                          Header="_Save" 
+                          InputGestureText="Ctrl+S"
+                          Margin="0"  />
+                <MenuItem Command="{x:Static local:PetriCommands.SaveAsClicked}" 
+                          Header="Save _As..." />
+                <Separator Margin="0, -4, 0, -3"/>
+                <MenuItem Command="{x:Static local:PetriCommands.ExitClicked}" 
+                          Header="_Exit"/>
+            </MenuItem>
+            <MenuItem Header="_Edit" 
+                      Style="{StaticResource BlockStateChangeStyle}">
+                <MenuItem Command="{Binding Path=UndoManager.UndoCommand}" 
+                          Header="_Undo" 
+                          InputGestureText="Ctrl+Z"/>
+                <MenuItem Command="{Binding Path=UndoManager.RedoCommand}"
+                          Header="_Redo" 
+                          InputGestureText="Ctrl+Y"/>
+                <MenuItem Command="{Binding Path=SelectAllCommand}"
+                          Header="_Select All" 
+                          InputGestureText="Ctrl+A"/>
+                <MenuItem Command="{Binding Path=DeleteNodesCommand}" 
+                          Header="_Delete" 
+                          InputGestureText="Ctrl+D"/>
+            </MenuItem>
+            <MenuItem Header="_Workspace" 
+                      Style="{StaticResource BlockStateChangeStyle}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="local:MenuGroupExtension.GroupName" 
+                                Value="workspace"/>
+                        <Setter Property="CommandParameter" 
+                                Value="{Binding Path=(local:DrawModeExtension.AssociatedDrawMode), 
+                                                RelativeSource={RelativeSource Self}}"/>
+                        <Setter Property="Command" 
+                                Value="{Binding Path=WorkspaceManager.DrawModeChangeCommand}"/>
+                        <Setter Property="IsCheckable" 
+                                Value="True"/>
+                        <Setter Property="IsChecked">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource MultiEqualityCheckConverter}" 
+                                              Mode="OneWay" >
+                                    <Binding Path="WorkspaceManager.DrawMode"/>
+                                    <Binding Path="(local:DrawModeExtension.AssociatedDrawMode)" 
+                                             RelativeSource="{RelativeSource Self}"/>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+                <MenuItem local:DrawModeExtension.AssociatedDrawMode="Drawplace"
+                          Header="Create _Places"/>
+                <MenuItem local:DrawModeExtension.AssociatedDrawMode="Drawtrans"
+                          Header="Create _Transitions"/>
+                <MenuItem local:DrawModeExtension.AssociatedDrawMode="Select"
+                          Header="_Select"/>
+            </MenuItem>
+            <MenuItem Header="_Nodes" 
+                      Style="{StaticResource BlockStateChangeStyle}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="local:MenuGroupExtension.GroupName" 
+                                Value="nodes"/>
+                        <Setter Property="CommandParameter" 
+                                Value="{Binding Path=(local:NodeModeExtension.AssociatedNodeMode), 
+                                                RelativeSource={RelativeSource Self}}"/>
+                        <Setter Property="Command" 
+                                Value="{Binding Path=ElementManager.NodeModeChangeCommand}"/>
+                        
+                        <Setter Property="IsCheckable" 
+                                Value="True"/>
+                        <Setter Property="IsChecked">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource MultiEqualityCheckConverter}" 
+                                              Mode="OneWay" >
+                                    <Binding Path="ElementManager.NodeMode"/>
+                                    <Binding Path="(local:NodeModeExtension.AssociatedNodeMode)" 
+                                             RelativeSource="{RelativeSource Self}"/>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+                <MenuItem local:NodeModeExtension.AssociatedNodeMode="Movenode" 
+                          Header="_Select &amp; Move"/>
+                <MenuItem local:NodeModeExtension.AssociatedNodeMode="Drawarc"
+                          Header="Create _Arcs"/>
+                <MenuItem local:NodeModeExtension.AssociatedNodeMode="Manipulate"
+                          Header="_Manipulate Nodes"/>
+            </MenuItem>
+            <MenuItem Header="_Size" ItemsSource="{Binding Sizes}" 
+                      Style="{StaticResource BlockStateChangeStyle}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="local:MenuGroupExtension.GroupName" 
+                                Value="sizes"/>
+                        <Setter Property="CommandParameter" 
+                                Value="{Binding Path=Header, RelativeSource={RelativeSource Self}}"/>
+                        <Setter Property="Command" 
+                                Value="{Binding Path=DataContext.SizeChangeCommand, 
+                                                RelativeSource={RelativeSource FindAncestor, AncestorType=MenuItem}}"/>
+                        <Setter Property="HeaderStringFormat" 
+                                Value="p0"/>
+                        <Setter Property="IsCheckable" 
+                                Value="True"/>
+                        <Setter Property="IsChecked">
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource MultiEqualityCheckConverter}"
+                                              Mode="OneWay">
+                                    <Binding Path="Header" 
+                                             RelativeSource="{RelativeSource Self}"/>
+                                    <Binding Path="DataContext.SizeFactor" 
+                                             RelativeSource="{RelativeSource FindAncestor, AncestorType=MenuItem}"/>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+            </MenuItem>
+        </Menu>
+        <Rectangle DockPanel.Dock="Top" 
+                   Fill="Gray" 
+                   Height="1"/>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <ToolBar.Resources>
+                    <Style x:Key="ButtonStyle" 
+                           TargetType="Control">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding BlockStateChange}" 
+                                         Value="true">
+                                <Setter Property="Focusable" 
+                                        Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style x:Key="{x:Static ToolBar.ButtonStyleKey}" 
+                           BasedOn="{StaticResource ButtonStyle}" 
+                           TargetType="Button"/>
+                    <Style x:Key="{x:Static ToolBar.RadioButtonStyleKey}" 
+                           BasedOn="{StaticResource ButtonStyle}"
+                           TargetType="RadioButton"/>
+                    <Style x:Key="{x:Static ToolBar.ComboBoxStyleKey}" 
+                           BasedOn="{StaticResource ButtonStyle}" 
+                           TargetType="ComboBox"/>
+                </ToolBar.Resources>
+                <Button Command="{x:Static local:PetriCommands.NewClicked}" 
+                        Content="{StaticResource newIcon}" 
+                        ToolTip="Create new net"/>
+                <Button Command="{x:Static local:PetriCommands.OpenClicked}" 
+                        Content="{StaticResource openIcon}" 
+                        ToolTip="Open pnml-file"/>
+                <Button Command="{x:Static local:PetriCommands.SaveClicked}" 
+                        Content="{StaticResource saveIcon}" 
+                        ToolTip="Save net"/>
+                <Button Command="{x:Static local:PetriCommands.SaveAsClicked}" 
+                        Content="{StaticResource saveAsIcon}" 
+                        ToolTip="Save net as..."/>
+                <Separator/>
+                <Button Command="{Binding Path=UndoManager.UndoCommand}" 
+                        Content="{StaticResource UndoIcon}" 
+                        ToolTip="Undo last operation"/>
+                <Button Command="{Binding Path=UndoManager.RedoCommand}" 
+                        Content="{StaticResource RedoIcon}" 
+                        ToolTip="Redo last operation"/>
+                <Button Command="{Binding Path=SelectAllCommand}" 
+                        Content="{StaticResource markAllIcon}" 
+                        ToolTip="Select all nodes and arcs"/>
+                <Button Command="{Binding Path=DeleteNodesCommand}" 
+                        Content="{StaticResource deleteIcon}" 
+                        ToolTip="Delete selected nodes and arcs"/>
+                <Separator/>
+                <RadioButton Content="{StaticResource placeIcon}" 
+                             GroupName="workspace_tool" ToolTip="Draw places" 
+                             IsChecked="{Binding WorkspaceManager.DrawMode, Converter={StaticResource EqualityCheckConverter},
+                                                 ConverterParameter={x:Static local:DrawMode.Drawplace}}"/>
+                <RadioButton Content="{StaticResource transIcon}" 
+                             GroupName="workspace_tool" ToolTip="Draw transitions" 
+                             IsChecked="{Binding WorkspaceManager.DrawMode, Converter={StaticResource EqualityCheckConverter},
+                                                 ConverterParameter={x:Static local:DrawMode.Drawtrans}}"/>
+                <RadioButton Content="{StaticResource markIcon}"
+                             GroupName="workspace_tool" ToolTip="Select elements" 
+                             IsChecked="{Binding WorkspaceManager.DrawMode, Converter={StaticResource EqualityCheckConverter},
+                                                 ConverterParameter={x:Static local:DrawMode.Select}}"/>
+                <Separator/>
+                <RadioButton Content="{StaticResource selectIcon}"
+                             GroupName="nodes_tool" ToolTip="Select and move elements" 
+                             IsChecked="{Binding ElementManager.NodeMode, Converter={StaticResource EqualityCheckConverter},
+                                                 ConverterParameter={x:Static local:NodeMode.Movenode}}"/>
+                <RadioButton Content="{StaticResource arcIcon}"
+                             GroupName="nodes_tool" ToolTip="Draw arcs" 
+                             IsChecked="{Binding ElementManager.NodeMode, Converter={StaticResource EqualityCheckConverter},
+                                                 ConverterParameter={x:Static local:NodeMode.Drawarc}}"/>
+                <RadioButton Content="{StaticResource manipIcon}"
+                             GroupName="nodes_tool" ToolTip="Set tokens and perform transitions" 
+                             IsChecked="{Binding ElementManager.NodeMode, Converter={StaticResource EqualityCheckConverter},
+                                                 ConverterParameter={x:Static local:NodeMode.Manipulate}}"/>
+                <Separator/>
+                <ComboBox x:Name="sizeBox"
+                          local:SelectionChangedExtension.Command="{Binding SizeChangeCommand}"
+                          ItemsSource="{Binding Sizes}" 
+                          ItemStringFormat="p0" 
+                          SelectedItem="{Binding Path=SizeFactor, Mode=OneWay}"/>
+            </ToolBar>
+        </ToolBarTray>
+        <Rectangle DockPanel.Dock="Top" 
+                   Fill="Gray" 
+                   Height="1" 
+                   Stroke="LightGray"/>
+        <ScrollViewer FocusVisualStyle="{x:Null}" 
+                      HorizontalScrollBarVisibility="Visible" 
+                      VerticalScrollBarVisibility="Visible" >
+            <Grid>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Loaded">
+                        <local:EventCommandExecuter Command="{Binding LoadedCommand}" 
+                                                    EventArgsConverter="{StaticResource LoadedEventConverter}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Canvas Background="Transparent"
+                        ClipToBounds="True"
+                        Height="{Binding ViewHeight}"
+                        Width="{Binding ViewWidth}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <local:EventCommandExecuter Command="{Binding WorkspaceManager.MouseLeftButtonDownCommand}" 
+                                                        EventArgsConverter="{StaticResource CanvasModifierMouseButtonEventConverter}"
+                                                        EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                                                              AncestorType={x:Type Canvas}}}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <local:EventCommandExecuter Command="{Binding WorkspaceManager.MouseLeftButtonUpCommand}"
+                                                        EventArgsConverter="{StaticResource CanvasMouseButtonEventConverter}"
+                                                        EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                                                              AncestorType={x:Type Canvas}}}"/>
+                            <local:EventCommandExecuter Command="{Binding ElementManager.MouseLeftButtonUpCommand}"
+                                                        EventArgsConverter="{StaticResource CanvasMouseButtonEventConverter}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
+                <ItemsControl Focusable="False"
+                              ItemContainerStyle="{StaticResource nodeContainerStyle}" 
+                              ItemsSource="{Binding ElementProvider.VisualNodes}" 
+                              ItemTemplateSelector="{StaticResource NodeItemSelector}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <ItemsControl FocusVisualStyle="{x:Null}"
+                              ItemContainerStyle="{StaticResource arcContainerStyle}" 
+                              ItemsSource="{Binding ElementProvider.VisualArcs}"
+                              ItemTemplateSelector="{StaticResource ArcItemSelector}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <Canvas>
+                    <Canvas local:ScrollExtension.ArcBeyondEdge="{Binding ElementManager.DrawingArc.IsBeyondEdge}"
+                            Canvas.Left="{Binding ElementManager.DrawingArc.XPos}" 
+                            Canvas.Top="{Binding ElementManager.DrawingArc.YPos}"
+                            ClipToBounds="True"
+                            Height="{Binding ElementManager.DrawingArc.Height}"
+                            RenderTransform="{Binding ElementManager.DrawingArc.Rotation}"
+                            Visibility="{Binding ElementManager.DrawingArc.Visible, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Width="{Binding ElementManager.DrawingArc.Width}">
+                        <Canvas.Resources>
+                            <Style BasedOn="{StaticResource DrawArcStyle}" 
+                                   TargetType="Line" />
+                            <Style BasedOn="{StaticResource DrawArcStyle}"
+                                   TargetType="Polygon" />
+                        </Canvas.Resources>
+                        <Line IsHitTestVisible="False"
+                              X1="0" 
+                              X2="{Binding Width, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Canvas}}}"
+                              Y1="{Binding ElementManager.DrawingArc.ArrowheadSize}" 
+                              Y2="{Binding ElementManager.DrawingArc.ArrowheadSize}"/>
+                        <Polygon IsHitTestVisible="False" 
+                                 Points="{Binding ElementManager.DrawingArc.HeadPoints}"/>
+                    </Canvas>
+                    <ItemsControl Focusable="False"
+                                  ItemContainerStyle="{StaticResource nameFieldContainerStyle}" 
+                                  ItemsSource="{Binding ElementProvider.NameFields}"
+                                  ItemTemplate="{StaticResource nameFieldTemplate}" >
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                    <Rectangle Canvas.Left="{Binding WorkspaceManager.SelectRectX}" 
+                               Canvas.Top="{Binding WorkspaceManager.SelectRectY}" 
+                               Height="{Binding WorkspaceManager.SelectRectHeight}" 
+                               Stroke="Black" 
+                               StrokeDashArray="3" 
+                               Visibility="{Binding Selecting, Converter={StaticResource BoolToVisibilityConverter}}"
+                               Width="{Binding WorkspaceManager.SelectRectWidth}"
+                               local:CaptureExtension.IsCapturing="{Binding Selecting}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseMove">
+                                <local:EventCommandExecuter Command="{Binding WorkspaceManager.SelectRectMouseMoveCommand}" 
+                                                            EventArgsConverter="{StaticResource MouseMoveEventConverter}"
+                                                            EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                                                                  AncestorType={x:Type Canvas}}}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                <local:EventCommandExecuter Command="{Binding WorkspaceManager.MouseLeftButtonUpCommand}" 
+                                                            EventArgsConverter="{StaticResource CanvasMouseButtonEventConverter}"
+                                                            EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                                                                  AncestorType={x:Type Canvas}}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Rectangle>
+                </Canvas>
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

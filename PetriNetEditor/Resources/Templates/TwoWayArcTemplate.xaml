@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:local="clr-namespace:PetriNetEditor">
+    <DataTemplate x:Key="twoWayArcTemplate">
+        <local:PartialCanvas Background="Transparent">
+            <Canvas.Resources>
+                <Style BasedOn="{StaticResource ArcElementStyle}" 
+                       TargetType="Line" />
+                <Style BasedOn="{StaticResource ArcElementStyle}"
+                       TargetType="Polygon" />
+            </Canvas.Resources>
+            <Line  IsHitTestVisible="False"
+                   X1="{Binding Value.ArrowheadSize, Converter={StaticResource MultiplyConverter}, ConverterParameter=2}" 
+                   X2="{Binding Value.Width}"
+                   Y1="{Binding Value.ArrowheadSize, Converter={StaticResource AddConverter}, ConverterParameter=1}" 
+                   Y2="{Binding Value.ArrowheadSize, Converter={StaticResource AddConverter}, ConverterParameter=1}"/>
+            <Polygon IsHitTestVisible="False" 
+                     Points="{Binding Value.HeadPoints}"/>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <local:EventCommandExecuter Command="{Binding Value.ElementManager.ArcMouseLeftButtonDownCommand}"
+                                                EventArgsConverter="{StaticResource ArcMouseButtonEventConverter}"
+                                                EventArgsConverterParameter="{Binding Key}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </local:PartialCanvas>
+    </DataTemplate>
+</ResourceDictionary>

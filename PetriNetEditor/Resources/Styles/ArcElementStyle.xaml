@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="ArcElementStyle" TargetType="Shape" >
+        <Style.Setters>
+            <Setter Property="Fill" 
+                    Value="Black"/>
+            <Setter Property="Stroke" 
+                    Value="Black"/>
+        </Style.Setters>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type FrameworkElement}}}" 
+                         Value="True">
+                <Setter Property="Fill" 
+                        Value="Red"/>
+                <Setter Property="Stroke" 
+                        Value="Red"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Value.AutoSelected}" 
+                         Value="True">
+                <Setter Property="Fill" 
+                        Value="Cyan"/>
+                <Setter Property="Stroke" 
+                        Value="Cyan"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Value.Selected}" 
+                         Value="True">
+                <Setter Property="Fill" 
+                        Value="DeepSkyBlue"/>
+                <Setter Property="Stroke" 
+                        Value="DeepSkyBlue"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:PetriNetEditor">
+    <local:ToolBarIcon Source="/Resources/Images/About16.gif" x:Key="aboutIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Arc16.gif" x:Key="arcIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Delete16.gif" x:Key="deleteIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Manip16.gif" x:Key="manipIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Mark16.gif" x:Key="markIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/MarkAll16.gif" x:Key="markAllIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/New16.gif" x:Key="newIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Open16.gif" x:Key="openIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Place16.gif" x:Key="placeIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Save16.gif" x:Key="saveIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/SaveAs16.gif" x:Key="saveAsIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Select16.gif" x:Key="selectIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Trans16.gif" x:Key="transIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Undo16.gif" x:Key="UndoIcon"/>
+    <local:ToolBarIcon Source="/Resources/Images/Redo16.gif" x:Key="RedoIcon"/>
+</ResourceDictionary>

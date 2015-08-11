@@ -1,0 +1,111 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:local="clr-namespace:PetriNetEditor">
+    <Style x:Key="NodeElementStyle" 
+           TargetType="Shape" >
+        <Style.Setters>
+            <Setter Property="local:PushBindingManager.StylePushBindings">
+                <Setter.Value>
+                    <local:PushBindingCollection>
+                        <local:PushBinding Path="Value.IsHighlighted" 
+                                           TargetProperty="IsMouseOver"/>
+                    </local:PushBindingCollection>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="local:CaptureExtension.IsCapturing" 
+                    Value="{Binding Value.IsDragSource}"/>
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu DataContext="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Self}}"
+                                 ItemContainerStyleSelector="{StaticResource styleSelector}" >
+                        <ContextMenu.Resources>
+                            <Style x:Key="nodeMenuStyle" 
+                                   TargetType="MenuItem">
+                                <Setter Property="local:MenuGroupExtension.GroupName" 
+                                        Value="context_nodes"/>
+                                <Setter Property="CommandParameter" 
+                                        Value="{Binding Path=(local:NodeModeExtension.AssociatedNodeMode), 
+                                                        RelativeSource={RelativeSource Self}}"/>
+                                <Setter Property="Command" 
+                                        Value="{Binding Path=Tag.ElementManager.NodeModeChangeCommand}"/>
+                                <Setter Property="IsCheckable" 
+                                        Value="True"/>
+                                <Setter Property="IsChecked">
+                                    <Setter.Value>
+                                        <MultiBinding Converter="{StaticResource MultiEqualityCheckConverter}" 
+                                                      Mode="OneWay">
+                                            <Binding Path="Tag.ElementManager.NodeMode"/>
+                                            <Binding Path="(local:NodeModeExtension.AssociatedNodeMode)" 
+                                                     RelativeSource="{RelativeSource Self}"/>
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ContextMenu.Resources>
+                        <local:TitleItem Title="This Node"/>
+                        <MenuItem CommandParameter="{Binding Path=DataContext.Key}"
+                                  Command="{Binding Path=DataContext.Value.ElementManager.NameChangeClickCommand}"
+                                  Header="_Change Name"/>
+                        <MenuItem CommandParameter="{Binding Path=PlacementTarget, 
+                                                             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                  Command="{x:Static local:PetriCommands.SetTokenCountClicked}"
+                                  Header="_Set Token Count..."/>
+                        <MenuItem CommandParameter="{Binding Path=DataContext.Key}"
+                                  Command="{Binding Path=DataContext.Value.ElementManager.PerformTransitionCommand}"
+                                  Header="_Perform Transition"/>
+                        <local:TitleItem Title="Nodes"/>
+                        <MenuItem local:NodeModeExtension.AssociatedNodeMode="Movenode"
+                                  Header="_Select &amp; Move"
+                                  Style="{StaticResource nodeMenuStyle}"/>
+                        <MenuItem local:NodeModeExtension.AssociatedNodeMode="Drawarc"
+                                  Header="Create _Arcs"
+                                  Style="{StaticResource nodeMenuStyle}"/>
+                        <MenuItem local:NodeModeExtension.AssociatedNodeMode="Manipulate"
+                                  Header="_Manipulate Nodes" 
+                                  Style="{StaticResource nodeMenuStyle}"/>
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Fill" Value="Transparent"/>
+            <Setter Property="Height" Value="{Binding Value.DrawSize}"/>
+            <Setter Property="Stroke">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource StateToColorConverter}">
+                        <Binding Path="Value.IsHighlighted"/>
+                        <Binding Path="Value.IsDrawTarget"/>
+                        <Binding Path="Value.Selected"/>
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Tag" Value="{Binding Path=DataContext, ElementName=root}"/>
+            <Setter Property="Width" Value="{Binding Value.DrawSize}"/>
+            <Setter Property="local:InteractivityItems.Template">
+                <Setter.Value>
+                    <local:InteractivityTemplate>
+                        <local:InteractivityItems>
+                            <local:InteractivityItems.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <local:EventCommandExecuter Command="{Binding Value.ElementManager.NodeMouseLeftButtonDownCommand}" 
+                                                                EventArgsConverterParameter="{Binding Key}"
+                                                                EventArgsConverter="{StaticResource NodeMouseButtonEventConverter}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeftButtonUp">
+                                    <local:EventCommandExecuter Command="{Binding Value.ElementManager.NodeMouseLeftButtonUpCommand}"
+                                                                EventArgsConverterParameter="{Binding Key}"
+                                                                EventArgsConverter="{StaticResource NodeMouseButtonEventConverter}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseMove">
+                                    <local:EventCommandExecuter Command="{Binding Value.ElementManager.NodeMouseMoveCommand}"
+                                                                EventArgsConverter="{StaticResource MouseMoveEventConverter}"
+                                                                EventArgsConverterParameter="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                                                                                        AncestorType={x:Type Canvas}}}"/>
+                                </i:EventTrigger>
+                            </local:InteractivityItems.Triggers>
+                        </local:InteractivityItems>
+                    </local:InteractivityTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+    </Style>
+</ResourceDictionary>

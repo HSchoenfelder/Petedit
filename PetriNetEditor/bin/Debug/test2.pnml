@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pnml>
+   <net>
+      <place id="67c1920a-4e4f-431f-a1e5-ed7c5c78ac59">
+         <name>
+            <value />
+         </name>
+         <initialMarking>
+            <token>
+               <value>0</value>
+            </token>
+         </initialMarking>
+         <graphics>
+            <position x="280" y="266" />
+         </graphics>
+      </place>
+      <place id="a7decaae-88d3-4830-8e65-ce94fee38efc">
+         <name>
+            <value />
+         </name>
+         <initialMarking>
+            <token>
+               <value>0</value>
+            </token>
+         </initialMarking>
+         <graphics>
+            <position x="410" y="181" />
+         </graphics>
+      </place>
+      <place id="3409f892-5ea8-48e1-9cfb-cc41b58b43d4">
+         <name>
+            <value />
+         </name>
+         <initialMarking>
+            <token>
+               <value>0</value>
+            </token>
+         </initialMarking>
+         <graphics>
+            <position x="464" y="251" />
+         </graphics>
+      </place>
+      <place id="ce3f3115-bf11-4639-a2ba-e0fa0becfcc2">
+         <name>
+            <value />
+         </name>
+         <initialMarking>
+            <token>
+               <value>0</value>
+            </token>
+         </initialMarking>
+         <graphics>
+            <position x="413" y="345" />
+         </graphics>
+      </place>
+      <place id="5e5ca81c-f483-40e7-9a91-091f1b326b23">
+         <name>
+            <value />
+         </name>
+         <initialMarking>
+            <token>
+               <value>0</value>
+            </token>
+         </initialMarking>
+         <graphics>
+            <position x="235" y="366" />
+         </graphics>
+      </place>
+      <place id="5e5ca81c-f483-40e7-9a91-091f1b326b23">
+         <name>
+            <value />
+         </name>
+         <initialMarking>
+            <token>
+               <value>0</value>
+            </token>
+         </initialMarking>
+         <graphics>
+            <position x="114" y="305" />
+         </graphics>
+      </place>
+      <place id="79890c7e-7124-4d6d-8177-61390daccf65">
+         <name>
+            <value />
+         </name>
+         <initialMarking>
+            <token>
+               <value>0</value>
+            </token>
+         </initialMarking>
+         <graphics>
+            <position x="131" y="189" />
+         </graphics>
+      </place>
+   </net>
+</pnml>

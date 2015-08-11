@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:local="clr-namespace:PetriNetEditor">
+    <DataTemplate x:Key="placeTemplate">
+        <Grid local:ScrollExtension.NodeBeyondEdge="{Binding Value.IsBeyondEdge, Mode=TwoWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="tokenBox"
+                     BorderThickness="0"
+                     Grid.Row="0" 
+                     HorizontalAlignment="Center" 
+                     IsHitTestVisible="False"
+                     IsReadOnly="True"
+                     FontSize="{Binding DataContext.SizeFactor, Converter={StaticResource FontSizeConverter}, ElementName=root}"
+                     Foreground="{Binding ElementName=node, Path=Stroke}" Text="{Binding Value.TokenCount, Mode=OneWay}"
+                     VerticalAlignment="Center"
+                     Visibility="{Binding Value.TokenCount, Converter={StaticResource TextBlockVisibilityConverter}}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <local:EventCommandExecuter Command="{Binding Value.ElementManager.TokensChangedCommand}"
+                                                    EventArgsConverter="{StaticResource TextEventConverter}"
+                                                    EventArgsConverterParameter="{Binding Key}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+            <Ellipse x:Name="node" 
+                     Grid.Row="0"  
+                     Style="{StaticResource NodeElementStyle}"/>
+            <Ellipse Fill="{Binding ElementName=node, Path=Stroke}" 
+                     Grid.Row="0" HorizontalAlignment="Center"
+                     IsHitTestVisible="False"
+                     Stroke="{Binding ElementName=node, Path=Stroke}"
+                     VerticalAlignment="Center"  
+                     Visibility="{Binding Value.TokenCount, Converter={StaticResource EllipseVisibilityConverter}}"
+                     Width="{Binding Value.TokenSize}" Height="{Binding Value.TokenSize}"/>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

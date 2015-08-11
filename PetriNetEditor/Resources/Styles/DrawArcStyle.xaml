@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="DrawArcStyle" 
+           TargetType="Shape" >
+        <Style.Setters>
+            <Setter Property="Fill" Value="Red"/>
+            <Setter Property="Stroke" Value="Red"/>
+        </Style.Setters>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=DataContext.ElementManager.MouseOverTarget, ElementName=root}" 
+                         Value="True">
+                <Setter Property="Fill" 
+                        Value="LightGreen"/>
+                <Setter Property="Stroke" 
+                        Value="LightGreen"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

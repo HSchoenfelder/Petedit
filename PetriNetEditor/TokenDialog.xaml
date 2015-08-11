@@ -1,0 +1,23 @@
+﻿<Window x:Class="PetriNetEditor.TokenDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Set Tokens" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        ContentRendered="Window_ContentRendered">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label>Enter amount of tokens (0-999):</Label>
+        <TextBox Name="tokenBox" Grid.Row="1" Width="30" TextAlignment="Center" SelectedText="0" 
+                 KeyDown="tokenBox_KeyDown" MaxLength="3" PreviewTextInput="tokenBox_PreviewTextInput"
+                 DataObject.Pasting="tokenBox_Pasting">
+            0
+        </TextBox>
+        <WrapPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,10,0, 0">
+            <Button IsDefault="True" Name="btnOk" Click="btnOk_Click" MinWidth="60" Margin="0,0,10,0">_Ok</Button>
+            <Button IsCancel="True" MinWidth="60">_Cancel</Button>
+        </WrapPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ABD8D05C-7779-4286-B9AF-0FFA629C04E0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PetriNetEditor</RootNamespace>
+    <AssemblyName>PetriNetEditor</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>PetriNetEditor.App</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="InfoDialog.xaml.cs">
+      <DependentUpon>InfoDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IDrawingArc.cs" />
+    <Compile Include="Interfaces\INameField.cs" />
+    <Compile Include="Interfaces\IVisualArc.cs" />
+    <Compile Include="Interfaces\IVisualNode.cs" />
+    <Compile Include="QueryDialog.xaml.cs">
+      <DependentUpon>QueryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Commands\PetriCommands.cs" />
+    <Compile Include="Resources\Converters\BindingTest.cs" />
+    <Compile Include="Resources\Converters\EventArgConverters\ArcMouseButtonEventConverter.cs" />
+    <Compile Include="Resources\Converters\EventArgConverters\CanvasModifierMouseButtonEventConverter.cs" />
+    <Compile Include="Resources\Converters\EventArgConverters\CanvasMouseButtonEventConverter.cs" />
+    <Compile Include="Resources\Converters\EventArgConverters\LoadedEventConverter.cs" />
+    <Compile Include="Resources\Converters\EventArgConverters\MouseMoveEventConverter.cs" />
+    <Compile Include="Resources\Converters\EventArgConverters\NodeMouseButtonEventConverter.cs" />
+    <Compile Include="Resources\Converters\EventArgConverters\TextEventConverter.cs" />
+    <Compile Include="Resources\Converters\MultiValueConverters\MultiEqualityCheckConverter.cs" />
+    <Compile Include="Resources\Converters\MultiValueConverters\MultiToArrayConverter.cs" />
+    <Compile Include="Resources\Converters\MultiValueConverters\StateToColorConverter.cs" />
+    <Compile Include="Resources\Converters\SingleValueConverters\AddConverter.cs" />
+    <Compile Include="Resources\Converters\SingleValueConverters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Resources\Converters\SingleValueConverters\EllipseVisibilityConverter.cs" />
+    <Compile Include="Resources\Converters\SingleValueConverters\EqualityCheckConverter.cs" />
+    <Compile Include="Resources\Converters\SingleValueConverters\FontSizeConverter.cs" />
+    <Compile Include="Resources\Converters\SingleValueConverters\MultiplyConverter.cs" />
+    <Compile Include="Resources\Converters\SingleValueConverters\PercentageConverter.cs" />
+    <Compile Include="Resources\Converters\SingleValueConverters\TextBlockVisibilityConverter.cs" />
+    <Compile Include="Resources\Extensions\SelectionChangedExtension.cs" />
+    <Compile Include="Resources\Selectors\ArcItemDataTemplateSelector.cs" />
+    <Compile Include="TokenDialog.xaml.cs">
+      <DependentUpon>TokenDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Util\ArcInfo.cs" />
+    <Compile Include="Util\Calculations.cs" />
+    <Compile Include="Resources\Extensions\FreezableBinding.cs" />
+    <Compile Include="Util\Exceptions\DuplicateIdException.cs" />
+    <Compile Include="Util\Exceptions\InvalidPNMLException.cs" />
+    <Compile Include="Util\NodeInfo.cs" />
+    <Compile Include="Resources\Extensions\PushBinding.cs" />
+    <Compile Include="Resources\Extensions\PushBindingCollection.cs" />
+    <Compile Include="Resources\Extensions\PushBindingManager.cs" />
+    <Compile Include="Util\EventArgs\NotificationEventArgs.cs" />
+    <Compile Include="Resources\Extensions\PartialCanvas.cs" />
+    <Compile Include="Util\PNMLParser.cs" />
+    <Compile Include="Util\PNMLWriter.cs" />
+    <Compile Include="Util\EventArgs\SizeFactorChangedEventArgs.cs" />
+    <Compile Include="Util\EventArgs\StateChangedEventArgs.cs" />
+    <Compile Include="Resources\Extensions\ToolBarIcon.cs" />
+    <Compile Include="Resources\Selectors\CMItemContainerStyleSelector.cs" />
+    <Compile Include="Resources\Extensions\DrawModeExtension.cs" />
+    <Compile Include="Resources\Extensions\EventCommandExecuter.cs" />
+    <Compile Include="Resources\Extensions\FocusExtension.cs" />
+    <Compile Include="Resources\Extensions\InteractivityTemplate.cs" />
+    <Compile Include="Resources\Extensions\MenuGroupExtension.cs" />
+    <Compile Include="Util\EventArgs\ViewSizeChangedEventArgs.cs" />
+    <Compile Include="ViewModel\ElementCreator.cs" />
+    <Compile Include="ViewModel\ElementProvider.cs" />
+    <Compile Include="ViewModel\Enums.cs" />
+    <Compile Include="Resources\Selectors\NodeItemDataTemplateSelector.cs" />
+    <Compile Include="Resources\Extensions\NodeModeExtension.cs" />
+    <Compile Include="Util\NPoint.cs" />
+    <Compile Include="Util\ObservableDictionaryOfTKeyTValue.cs" />
+    <Compile Include="Resources\Extensions\CaptureExtension.cs" />
+    <Compile Include="Resources\Extensions\ScrollExtension.cs" />
+    <Compile Include="Resources\Extensions\TitleItem.cs" />
+    <Compile Include="ViewModel\ElementManager.cs" />
+    <Compile Include="ViewModel\NameField.cs" />
+    <Compile Include="ViewModel\WorkspaceManager.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SelectionManager.cs" />
+    <Compile Include="ViewModel\UndoExecuter.cs" />
+    <Compile Include="ViewModel\UndoManager.cs" />
+    <Compile Include="ViewModel\VisualArc.cs" />
+    <Compile Include="ViewModel\VisualNode.cs" />
+    <Page Include="InfoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\DelegateCommand.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="QueryDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Converters\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Images\Images.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Selectors\Selectors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\ArcElementStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\ContainerStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\ContextMenuTitleStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\DrawArcStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\NameFieldStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\NodeElementStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Templates\NameFieldTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Templates\OneWayArcTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Templates\PlaceTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Templates\TransitionTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Templates\TwoWayArcTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TokenDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\About16.gif" />
+    <Resource Include="Resources\Images\Arc16.gif" />
+    <Resource Include="Resources\Images\Delete16.gif" />
+    <Resource Include="Resources\Images\Manip16.gif" />
+    <Resource Include="Resources\Images\Mark16.gif" />
+    <Resource Include="Resources\Images\MarkAll16.gif" />
+    <Resource Include="Resources\Images\New16.gif" />
+    <Resource Include="Resources\Images\Open16.gif" />
+    <Resource Include="Resources\Images\Place16.gif" />
+    <Resource Include="Resources\Images\Save16.gif" />
+    <Resource Include="Resources\Images\SaveAs16.gif" />
+    <Resource Include="Resources\Images\Select16.gif" />
+    <Resource Include="Resources\Images\Trans16.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PetriNetModel\PetriNetModel.csproj">
+      <Project>{30ebde96-99a1-43e1-9de5-548b39b92ec1}</Project>
+      <Name>PetriNetModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Undo16.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Redo16.gif" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
