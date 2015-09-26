@@ -1,9 +1,0 @@
-D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModel\bin\Debug\PetriNetModel.dll
-D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModel\bin\Debug\PetriNetModel.pdb
-D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModel\obj\Debug\PetriNetModel.dll
-D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModel\obj\Debug\PetriNetModel.pdb
-D:\Documents\Programming\Projects\Visual C#\PetriNetEditor\PetriNetModel\obj\Debug\PetriNetModel.csprojResolveAssemblyReference.cache
-C:\Users\Neo Konfuzius\Dropbox\PetriNetEditor\PetriNetModel\bin\Debug\PetriNetModel.dll
-C:\Users\Neo Konfuzius\Dropbox\PetriNetEditor\PetriNetModel\bin\Debug\PetriNetModel.pdb
-C:\Users\Neo Konfuzius\Dropbox\PetriNetEditor\PetriNetModel\obj\Debug\PetriNetModel.dll
-C:\Users\Neo Konfuzius\Dropbox\PetriNetEditor\PetriNetModel\obj\Debug\PetriNetModel.pdb
