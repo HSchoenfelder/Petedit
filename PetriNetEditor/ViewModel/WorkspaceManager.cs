@@ -34,6 +34,9 @@ namespace PetriNetEditor
         /// <summary> Store for the ElementCreator property. </summary>
         private ElementCreator _elementCreator;
 
+        /// <summary> Store for the CommandFactory property. </summary>
+        private CommandFactory _commandFactory; 
+
         /// <summary> Store for the DrawMode property. </summary>
         private DrawMode _drawMode = DrawMode.Drawplace;
         
@@ -71,16 +74,16 @@ namespace PetriNetEditor
         private readonly IList<String> _rectSelectedNodes;
 
         /// <summary> Store for the DrawModeChangeCommand property. </summary>
-        private readonly DelegateCommand<DrawMode> _drawModeChangeCommand;
+        private readonly IDelegateCommand _drawModeChangeCommand;
 
         /// <summary> Store for the MouseLeftButtonDownCommand property. </summary>
-        private readonly DelegateCommand<Point, bool> _mouseLeftButtonDownCommand;
+        private readonly IDelegateCommand _mouseLeftButtonDownCommand;
 
         /// <summary> Store for the SelectRectMouseMoveCommand property. </summary>
-        private readonly DelegateCommand<Point> _selectRectMouseMoveCommand;
+        private readonly IDelegateCommand _selectRectMouseMoveCommand;
 
         /// <summary> Store for the MouseLeftButtonUpCommand property. </summary>
-        private readonly DelegateCommand<Point> _mouseLeftButtonUpCommand;
+        private readonly IDelegateCommand _mouseLeftButtonUpCommand;
         #endregion
 
         #region delegates
@@ -145,7 +148,13 @@ namespace PetriNetEditor
         {
             get { return _elementCreator; }
         }
-        
+
+        /// <summary> Gets the command factory for creating delegate commands. </summary>
+        public CommandFactory CommandFactory
+        {
+            get { return _commandFactory; }
+        }
+
         /// <summary>
         /// Gets the list that manages the VisualNodes that are selected during a rectangle
         /// select operation via their ids.
@@ -302,7 +311,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the command that is executed when the draw mode changes. </summary>
-        public DelegateCommand<DrawMode> DrawModeChangeCommand
+        public IDelegateCommand DrawModeChangeCommand
         {
             get { return _drawModeChangeCommand; }
         }
@@ -311,7 +320,7 @@ namespace PetriNetEditor
         /// Gets the command that is executed when the MouseLeftButtonDown event occurs on the 
         /// presentation area.
         /// </summary>
-        public DelegateCommand<Point, bool> MouseLeftButtonDownCommand
+        public IDelegateCommand MouseLeftButtonDownCommand
         {
             get { return _mouseLeftButtonDownCommand; }
         }
@@ -320,7 +329,7 @@ namespace PetriNetEditor
         /// Gets the command that is executed when the MouseMove event occurs on the presentation 
         /// area.
         /// </summary>
-        public DelegateCommand<Point> SelectRectMouseMoveCommand
+        public IDelegateCommand SelectRectMouseMoveCommand
         {
             get { return _selectRectMouseMoveCommand; }
         }
@@ -329,7 +338,7 @@ namespace PetriNetEditor
         /// Gets the command that is executed when the MouseLeftButtonUp event occurs on the 
         /// presentation area.
         /// </summary>
-        public DelegateCommand<Point> MouseLeftButtonUpCommand
+        public IDelegateCommand MouseLeftButtonUpCommand
         {
             get { return _mouseLeftButtonUpCommand; }
         }
@@ -357,10 +366,12 @@ namespace PetriNetEditor
             _elementManager = elementManager;
             _model = model;
             _rectSelectedNodes = new List<String>();
-            _drawModeChangeCommand = new DelegateCommand<DrawMode>(HandleDrawModeChange);
-            _mouseLeftButtonDownCommand = new DelegateCommand<Point, bool>(HandleMouseLeftButtonDown);
-            _selectRectMouseMoveCommand = new DelegateCommand<Point>(HandleSelectRectMouseMove);
-            _mouseLeftButtonUpCommand = new DelegateCommand<Point>(HandleMouseLeftButtonUp);
+
+            _commandFactory = new CommandFactory();
+            _drawModeChangeCommand = CommandFactory.Create<DrawMode>(HandleDrawModeChange);
+            _mouseLeftButtonDownCommand = CommandFactory.Create<Point, bool>(HandleMouseLeftButtonDown);
+            _selectRectMouseMoveCommand = CommandFactory.Create<Point>(HandleSelectRectMouseMove);
+            _mouseLeftButtonUpCommand = CommandFactory.Create<Point>(HandleMouseLeftButtonUp);
         }
         #endregion
 

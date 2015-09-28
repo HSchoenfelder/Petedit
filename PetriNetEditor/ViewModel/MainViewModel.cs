@@ -68,6 +68,9 @@ namespace PetriNetEditor
         /// <summary> Store for the UndoExecuter property. </summary>
         private UndoExecuter _undoExecuter;
 
+        /// <summary> Store for the CommandFactory property. </summary>
+        private CommandFactory _commandFactory; 
+
         /// <summary> Store for the BlockStatChange property. </summary>
         private bool _blockStateChange;
 
@@ -84,25 +87,25 @@ namespace PetriNetEditor
         private bool _drawing;
 
         /// <summary> Store for the SizeChangeCommand property. </summary>
-        private readonly DelegateCommand<int> _sizeChangeCommand;
+        private readonly IDelegateCommand _sizeChangeCommand;
 
         /// <summary> Store for the DeleteNodesCommand property. </summary>
-        private readonly DelegateCommand<String> _deleteNodesCommand;
+        private readonly IDelegateCommand _deleteNodesCommand;
 
         /// <summary> Store for the SelectAllCommand property. </summary>
-        private readonly DelegateCommand<String> _selectAllCommand;
+        private readonly IDelegateCommand _selectAllCommand;
 
         /// <summary> Store for the LoadedCommand property. </summary>
-        private readonly DelegateCommand<Point> _loadedCommand;
+        private readonly IDelegateCommand _loadedCommand;
 
         /// <summary> Store for the NewFileCommand property. </summary>
-        private readonly DelegateCommand<String> _newFileCommand;
+        private readonly IDelegateCommand _newFileCommand;
 
         /// <summary> Store for the LoadFileCommand property. </summary>
-        private readonly DelegateCommand<String> _loadFileCommand;
+        private readonly IDelegateCommand _loadFileCommand;
 
         /// <summary> Store for the SaveFileCommand property. </summary>
-        private readonly DelegateCommand<String> _saveFileCommand;
+        private readonly IDelegateCommand _saveFileCommand;
         #endregion
 
         #region events
@@ -269,6 +272,12 @@ namespace PetriNetEditor
             get { return _workspaceManager; }
         }
 
+        /// <summary> Gets the command factory for creating delegate commands. </summary>
+        public CommandFactory CommandFactory
+        {
+            get { return _commandFactory; }
+        }
+
         /// <summary>
         /// Gets or sets a value which indicates whether mode changes are currently allowed.
         /// </summary>
@@ -349,7 +358,7 @@ namespace PetriNetEditor
         /// <summary> 
         /// Gets the command that is executed when the size of the presentation area changes.
         /// </summary>
-        public DelegateCommand<int> SizeChangeCommand
+        public IDelegateCommand SizeChangeCommand
         {
             get { return _sizeChangeCommand; }
         }
@@ -358,7 +367,7 @@ namespace PetriNetEditor
         /// Gets the command that is executed when the visual nodes are to be deleted from the
         /// presentation.
         /// </summary>
-        public DelegateCommand<String> DeleteNodesCommand
+        public IDelegateCommand DeleteNodesCommand
         {
             get { return _deleteNodesCommand; }
         }
@@ -366,7 +375,7 @@ namespace PetriNetEditor
         /// <summary>
         /// Gets the command that is executed when all visual nodes are to be selected.
         /// </summary>
-        public DelegateCommand<String> SelectAllCommand
+        public IDelegateCommand SelectAllCommand
         {
             get { return _selectAllCommand; }
         }
@@ -374,7 +383,7 @@ namespace PetriNetEditor
         /// <summary>
         /// Gets the command that is executed when LoadedEvent occurs on the presentation area.
         /// </summary>
-        public DelegateCommand<Point> LoadedCommand
+        public IDelegateCommand LoadedCommand
         {
             get { return _loadedCommand; }
         }
@@ -382,7 +391,7 @@ namespace PetriNetEditor
         /// <summary>
         /// Gets the command that is executed when the drawing area is cleared.
         /// </summary>
-        public DelegateCommand<String> NewFileCommand
+        public IDelegateCommand NewFileCommand
         {
             get { return _newFileCommand; }
         }
@@ -390,7 +399,7 @@ namespace PetriNetEditor
         /// <summary>
         /// Gets the command that is executed when a file is opened.
         /// </summary>
-        public DelegateCommand<String> LoadFileCommand
+        public IDelegateCommand LoadFileCommand
         {
             get { return _loadFileCommand; }
         }
@@ -398,7 +407,7 @@ namespace PetriNetEditor
         /// <summary>
         /// Gets the command that is executed when saving to file.
         /// </summary>
-        public DelegateCommand<String> SaveFileCommand
+        public IDelegateCommand SaveFileCommand
         {
             get { return _saveFileCommand; }
         }
@@ -445,13 +454,14 @@ namespace PetriNetEditor
             Model.TransitionStateChangedEvent += ElementManager.HandleModelTransitionStateChanged;
 
             // connect command handlers
-            _sizeChangeCommand = new DelegateCommand<int>(HandleSizeChange);
-            _deleteNodesCommand = new DelegateCommand<String>(HandleDeleteNodes, CanDeleteNodes);
-            _selectAllCommand = new DelegateCommand<String>(HandleSelectAll, CanSelectAll);
-            _loadedCommand = new DelegateCommand<Point>(HandleLoaded);
-            _newFileCommand = new DelegateCommand<String>(HandleFileNew);
-            _loadFileCommand = new DelegateCommand<String>(HandleFileLoad);
-            _saveFileCommand = new DelegateCommand<String>(HandleFileSave);
+            _commandFactory = new CommandFactory();
+            _sizeChangeCommand = CommandFactory.Create<int>(HandleSizeChange);
+            _deleteNodesCommand = CommandFactory.Create<String>(HandleDeleteNodes, CanDeleteNodes);
+            _selectAllCommand = CommandFactory.Create<String>(HandleSelectAll, CanSelectAll);
+            _loadedCommand = CommandFactory.Create<Point>(HandleLoaded);
+            _newFileCommand = CommandFactory.Create<String>(HandleFileNew);
+            _loadFileCommand = CommandFactory.Create<String>(HandleFileLoad);
+            _saveFileCommand = CommandFactory.Create<String>(HandleFileSave);
         }
         #endregion
 

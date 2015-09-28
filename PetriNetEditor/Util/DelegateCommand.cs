@@ -12,7 +12,7 @@ namespace PetriNetEditor
     /// This class represents an ICommand that is used for ViewModel delegation.
     /// </summary>
     /// <typeparam name="T">The type of the command parameter.</typeparam>
-    public class DelegateCommand<T> : ICommand
+    public class DelegateCommand<T> : ICommand, IDelegateCommand
     {
         /// <summary> The Predicate to be checked in the CanExecute-method. </summary>
         private readonly Predicate<T> _canExecute;
@@ -46,7 +46,7 @@ namespace PetriNetEditor
         }
 
         /// <summary>
-        /// Defines the method that determines whether the command can execute in its current state.
+        /// Executes the method that determines whether the command can execute in its current state.
         /// </summary>
         /// <param name="parameter">The command parameter.</param>
         /// <returns>true if this command can be executed; otherwise false.</returns>
@@ -58,7 +58,7 @@ namespace PetriNetEditor
         }
 
         /// <summary>
-        /// Defines the method to be called when the command is invoked.
+        /// Executes the method to be called when the command is invoked.
         /// </summary>
         /// <param name="parameter">The command parameter.</param>
         public void Execute(object parameter)
@@ -83,7 +83,7 @@ namespace PetriNetEditor
     /// </summary>
     /// <typeparam name="T">The type of the first item supplied by the command parameter.</typeparam>
     /// <typeparam name="U">The type of the second item supplied by the command parameter.</typeparam>
-    public class DelegateCommand<T, U> : ICommand
+    public class DelegateCommand<T, U> : ICommand, IDelegateCommand
     {
         /// <summary> The Predicate to be checked in the CanExecute-method. </summary>
         private readonly Predicate<object> _canExecute;
@@ -117,7 +117,7 @@ namespace PetriNetEditor
         }
 
         /// <summary>
-        /// Defines the method that determines whether the command can execute in its current state.
+        /// Executes the method that determines whether the command can execute in its current state.
         /// </summary>
         /// <param name="parameter">The command parameter.</param>
         /// <returns>true if this command can be executed; otherwise false.</returns>
@@ -130,7 +130,7 @@ namespace PetriNetEditor
         }
 
         /// <summary>
-        /// Defines the method to be called when the command is invoked.
+        /// Executes the method to be called when the command is invoked.
         /// </summary>
         /// <param name="parameter">The command parameter.</param>
         public void Execute(object parameter)
@@ -157,7 +157,7 @@ namespace PetriNetEditor
     /// <typeparam name="T">The type of the first item supplied by the command parameter.</typeparam>
     /// <typeparam name="U">The type of the second item supplied by the command parameter.</typeparam>
     /// <typeparam name="V">The type of the third item supplied by the command parameter.</typeparam>
-    public class DelegateCommand<T, U, V> : ICommand
+    public class DelegateCommand<T, U, V> : ICommand, IDelegateCommand
     {
         /// <summary> The Predicate to be checked in the CanExecute-method. </summary>
         private readonly Predicate<object> _canExecute;
@@ -191,7 +191,7 @@ namespace PetriNetEditor
         }
 
         /// <summary>
-        /// Defines the method that determines whether the command can execute in its current state.
+        /// Executes the method that determines whether the command can execute in its current state.
         /// </summary>
         /// <param name="parameter">The command parameter.</param>
         /// <returns>true if this command can be executed; otherwise false.</returns>
@@ -204,7 +204,7 @@ namespace PetriNetEditor
         }
 
         /// <summary>
-        /// Defines the method to be called when the command is invoked.
+        /// Executes the method to be called when the command is invoked.
         /// </summary>
         /// <param name="parameter">The command parameter.</param>
         public void Execute(object parameter)

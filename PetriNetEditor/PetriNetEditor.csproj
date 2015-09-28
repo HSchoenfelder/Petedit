@@ -63,6 +63,7 @@
     <Compile Include="InfoDialog.xaml.cs">
       <DependentUpon>InfoDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IDelegateCommand.cs" />
     <Compile Include="Interfaces\IDrawingArc.cs" />
     <Compile Include="Interfaces\INameField.cs" />
     <Compile Include="Interfaces\IVisualArc.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Util\ArcInfo.cs" />
     <Compile Include="Util\Calculations.cs" />
     <Compile Include="Resources\Extensions\FreezableBinding.cs" />
+    <Compile Include="Util\CommandFactory.cs" />
     <Compile Include="Util\Exceptions\DuplicateIdException.cs" />
     <Compile Include="Util\Exceptions\InvalidPNMLException.cs" />
     <Compile Include="Util\NodeInfo.cs" />

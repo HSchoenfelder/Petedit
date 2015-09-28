@@ -28,6 +28,9 @@ namespace PetriNetEditor
         /// <summary> Store for the UndoManager property. </summary>
         private UndoManager _undoManager;
 
+        /// <summary> Store for the CommandFactory property. </summary>
+        private CommandFactory _commandFactory; 
+
         /// <summary> Store for the DrawSize property. </summary>
         private int _drawSize;
 
@@ -65,40 +68,40 @@ namespace PetriNetEditor
         private bool _keepSelected;
 
         /// <summary> Store for the NodeModeChangeCommand property. </summary>
-        private readonly DelegateCommand<NodeMode> _nodeModeChangeCommand;
+        private readonly IDelegateCommand _nodeModeChangeCommand;
 
         /// <summary> Store for the NameChangeClickCommand property. </summary>
-        private readonly DelegateCommand<String> _nameChangeClickCommand;
+        private readonly IDelegateCommand _nameChangeClickCommand;
 
         /// <summary> Store for the NameFieldClickedCommand property. </summary>
-        private readonly DelegateCommand<String> _nameFieldClickedCommand;
+        private readonly IDelegateCommand _nameFieldClickedCommand;
 
         /// <summary> Store for the NameConfirmedCommand property. </summary>
-        private readonly DelegateCommand<String> _nameConfirmedCommand;
+        private readonly IDelegateCommand _nameConfirmedCommand;
 
         /// <summary> Store for the NameChangedCommand property. </summary>
-        private readonly DelegateCommand<String, String> _nameChangedCommand;
+        private readonly IDelegateCommand _nameChangedCommand;
 
         /// <summary> Store for the NodeMouseLeftButtonDownCommand property. </summary>
-        private readonly DelegateCommand<String, Point, bool> _nodeMouseLeftButtonDownCommand;
+        private readonly IDelegateCommand _nodeMouseLeftButtonDownCommand;
 
         /// <summary> Store for the ArcMouseLeftButtonDownCommand property. </summary>
-        private DelegateCommand<String, bool> _arcMouseLeftButtonDownCommand;
+        private IDelegateCommand _arcMouseLeftButtonDownCommand;
 
         /// <summary> Store for the NodeMouseMoveCommand property. </summary>
-        private readonly DelegateCommand<Point> _nodeMouseMoveCommand;
+        private readonly IDelegateCommand _nodeMouseMoveCommand;
 
         /// <summary> Store for the NodeMouseLeftButtonUpCommand property. </summary>
-        private readonly DelegateCommand<String, Point, bool> _nodeMouseLeftButtonUpCommand;
+        private readonly IDelegateCommand _nodeMouseLeftButtonUpCommand;
 
         /// <summary> Store for the MouseLeftButtonUpCommand property. </summary>
-        private readonly DelegateCommand<Point> _mouseLeftButtonUpCommand;
+        private readonly IDelegateCommand _mouseLeftButtonUpCommand;
 
         /// <summary> Store for the TokensChangedCommand property. </summary>
-        private readonly DelegateCommand<String, String> _tokensChangedCommand;
+        private readonly IDelegateCommand _tokensChangedCommand;
 
         /// <summary> Store for the PerformTransitionCommand property. </summary>
-        private readonly DelegateCommand<String> _performTransitionCommand;
+        private readonly IDelegateCommand _performTransitionCommand;
         #endregion
 
         #region delegates
@@ -156,6 +159,12 @@ namespace PetriNetEditor
         private UndoManager UndoManager
         {
             get { return _undoManager; }
+        }
+
+        /// <summary> Gets the command factory for creating delegate commands. </summary>
+        public CommandFactory CommandFactory
+        {
+            get { return _commandFactory; }
         }
 
         /// <summary>
@@ -311,7 +320,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the command that is executed when the node mode changes. </summary>
-        public DelegateCommand<NodeMode> NodeModeChangeCommand
+        public IDelegateCommand NodeModeChangeCommand
         {
             get { return _nodeModeChangeCommand; }
         }
@@ -319,7 +328,7 @@ namespace PetriNetEditor
         /// <summary>
         /// Gets the command that is executed when a click on the name change button occurs.
         /// </summary>
-        public DelegateCommand<String> NameChangeClickCommand
+        public IDelegateCommand NameChangeClickCommand
         {
             get { return _nameChangeClickCommand; }
         }
@@ -327,7 +336,7 @@ namespace PetriNetEditor
         /// <summary>
         /// Gets the command that is executed when a click on the name field occurs.
         /// </summary>
-        public DelegateCommand<String> NameFieldClickedCommand
+        public IDelegateCommand NameFieldClickedCommand
         {
             get { return _nameFieldClickedCommand; }
         }
@@ -335,13 +344,13 @@ namespace PetriNetEditor
         /// <summary>
         /// Gets the command that is executed upon manual confirmation of an entered name.
         /// </summary>
-        public DelegateCommand<String> NameConfirmedCommand
+        public IDelegateCommand NameConfirmedCommand
         {
             get { return _nameConfirmedCommand; }
         }
 
         /// <summary> Gets the command that is executed to finalize a name change. </summary>
-        public DelegateCommand<String, String> NameChangedCommand
+        public IDelegateCommand NameChangedCommand
         {
             get { return _nameChangedCommand; }
         }
@@ -350,7 +359,7 @@ namespace PetriNetEditor
         /// Gets the command that is executed when the MouseLeftButtonDown event occurs on the 
         /// visual presentation of the VisualNode.
         /// </summary>
-        public DelegateCommand<String, Point, bool> NodeMouseLeftButtonDownCommand
+        public IDelegateCommand NodeMouseLeftButtonDownCommand
         {
             get { return _nodeMouseLeftButtonDownCommand; }
         }
@@ -359,7 +368,7 @@ namespace PetriNetEditor
         /// Gets the command that is executed when the MouseLeftButtonDown event occurs on the visual 
         /// presentation of the VisualArc.
         /// </summary>
-        public DelegateCommand<String, bool> ArcMouseLeftButtonDownCommand
+        public IDelegateCommand ArcMouseLeftButtonDownCommand
         {
             get { return _arcMouseLeftButtonDownCommand; }
         }
@@ -368,7 +377,7 @@ namespace PetriNetEditor
         /// Gets the command that is executed when the MouseMove event occurs on the visual 
         /// presentation of the VisualNode.
         /// </summary>
-        public DelegateCommand<Point> NodeMouseMoveCommand
+        public IDelegateCommand NodeMouseMoveCommand
         {
             get { return _nodeMouseMoveCommand; }
         }
@@ -377,7 +386,7 @@ namespace PetriNetEditor
         /// Gets the command that is executed when the MouseLeftButtonUp event occurs on the 
         /// visual presentation of the VisualNode.
         /// </summary>
-        public DelegateCommand<String, Point, bool> NodeMouseLeftButtonUpCommand
+        public IDelegateCommand NodeMouseLeftButtonUpCommand
         {
             get { return _nodeMouseLeftButtonUpCommand; }
         }
@@ -386,7 +395,7 @@ namespace PetriNetEditor
         /// Gets the command that is executed when the MouseLeftButtonUp event occurs on the 
         /// presentation area.
         /// </summary>
-        public DelegateCommand<Point> MouseLeftButtonUpCommand
+        public IDelegateCommand MouseLeftButtonUpCommand
         {
             get { return _mouseLeftButtonUpCommand; }
         }
@@ -395,7 +404,7 @@ namespace PetriNetEditor
         /// Gets the command that is executed when the amount of tokens on the VisualNode is
         /// changed.
         /// </summary>
-        public DelegateCommand<String, String> TokensChangedCommand
+        public IDelegateCommand TokensChangedCommand
         {
             get { return _tokensChangedCommand; }
         }
@@ -403,7 +412,7 @@ namespace PetriNetEditor
         /// <summary>
         /// Gets the command that is executed when a transition is performed on the VisualNode.
         /// </summary>
-        public DelegateCommand<String> PerformTransitionCommand
+        public IDelegateCommand PerformTransitionCommand
         {
             get { return _performTransitionCommand; }
         }
@@ -433,18 +442,19 @@ namespace PetriNetEditor
             _arrowheadSize = arrowheadSize;
             _drawingArc = new VisualArc(DrawSize, ArrowheadSize, this, Model);
 
-            _nodeModeChangeCommand = new DelegateCommand<NodeMode>(HandleNodeModeChange);
-            _nameChangeClickCommand = new DelegateCommand<String>(HandleNameChangeClick);
-            _nameFieldClickedCommand = new DelegateCommand<String>(HandleNameFieldClicked);
-            _nameConfirmedCommand = new DelegateCommand<String>(HandleNameConfirmed);
-            _nameChangedCommand = new DelegateCommand<String, String>(HandleNameChanged);
-            _nodeMouseLeftButtonDownCommand = new DelegateCommand<String, Point, bool>(HandleNodeMouseLeftButtonDown);
-            _arcMouseLeftButtonDownCommand = new DelegateCommand<String, bool>(HandleArcMouseLeftButtonDown);
-            _nodeMouseMoveCommand = new DelegateCommand<Point>(HandleNodeMouseMove);
-            _nodeMouseLeftButtonUpCommand = new DelegateCommand<String, Point, bool>(HandleNodeMouseLeftButtonUp);
-            _mouseLeftButtonUpCommand = new DelegateCommand<Point>(HandleMouseLeftButtonUp);
-            _tokensChangedCommand = new DelegateCommand<String, String>(HandleTokensChanged);
-            _performTransitionCommand = new DelegateCommand<String>(HandlePerformTransition, CanPerformTransition);
+            _commandFactory = new CommandFactory();
+            _nodeModeChangeCommand = CommandFactory.Create<NodeMode>(HandleNodeModeChange);
+            _nameChangeClickCommand = CommandFactory.Create<String>(HandleNameChangeClick);
+            _nameFieldClickedCommand = CommandFactory.Create<String>(HandleNameFieldClicked);
+            _nameConfirmedCommand = CommandFactory.Create<String>(HandleNameConfirmed);
+            _nameChangedCommand = CommandFactory.Create<String, String>(HandleNameChanged);
+            _nodeMouseLeftButtonDownCommand = CommandFactory.Create<String, Point, bool>(HandleNodeMouseLeftButtonDown);
+            _arcMouseLeftButtonDownCommand = CommandFactory.Create<String, bool>(HandleArcMouseLeftButtonDown);
+            _nodeMouseMoveCommand = CommandFactory.Create<Point>(HandleNodeMouseMove);
+            _nodeMouseLeftButtonUpCommand = CommandFactory.Create<String, Point, bool>(HandleNodeMouseLeftButtonUp);
+            _mouseLeftButtonUpCommand = CommandFactory.Create<Point>(HandleMouseLeftButtonUp);
+            _tokensChangedCommand = CommandFactory.Create<String, String>(HandleTokensChanged);
+            _performTransitionCommand = CommandFactory.Create<String>(HandlePerformTransition, CanPerformTransition);
         }
         #endregion
 
