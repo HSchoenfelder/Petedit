@@ -11,7 +11,7 @@ namespace PetriNetEditor
     /// <summary>
     /// This class implements a PNML Writer.
     /// </summary>
-    public class PNMLWriter
+    public class PNMLWriter : IPNMLWriter
     {
         /// <summary> Sets the length of a single indent. </summary>
         private const String Indent = "   ";

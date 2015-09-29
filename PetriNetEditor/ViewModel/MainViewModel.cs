@@ -68,9 +68,6 @@ namespace PetriNetEditor
         /// <summary> Store for the UndoExecuter property. </summary>
         private UndoExecuter _undoExecuter;
 
-        /// <summary> Store for the CommandFactory property. </summary>
-        private CommandFactory _commandFactory; 
-
         /// <summary> Store for the BlockStatChange property. </summary>
         private bool _blockStateChange;
 
@@ -271,13 +268,7 @@ namespace PetriNetEditor
         {
             get { return _workspaceManager; }
         }
-
-        /// <summary> Gets the command factory for creating delegate commands. </summary>
-        public CommandFactory CommandFactory
-        {
-            get { return _commandFactory; }
-        }
-
+        
         /// <summary>
         /// Gets or sets a value which indicates whether mode changes are currently allowed.
         /// </summary>
@@ -454,14 +445,14 @@ namespace PetriNetEditor
             Model.TransitionStateChangedEvent += ElementManager.HandleModelTransitionStateChanged;
 
             // connect command handlers
-            _commandFactory = new CommandFactory();
-            _sizeChangeCommand = CommandFactory.Create<int>(HandleSizeChange);
-            _deleteNodesCommand = CommandFactory.Create<String>(HandleDeleteNodes, CanDeleteNodes);
-            _selectAllCommand = CommandFactory.Create<String>(HandleSelectAll, CanSelectAll);
-            _loadedCommand = CommandFactory.Create<Point>(HandleLoaded);
-            _newFileCommand = CommandFactory.Create<String>(HandleFileNew);
-            _loadFileCommand = CommandFactory.Create<String>(HandleFileLoad);
-            _saveFileCommand = CommandFactory.Create<String>(HandleFileSave);
+            CommandFactory commandFactory = new CommandFactory();
+            _sizeChangeCommand = commandFactory.Create<int>(HandleSizeChange);
+            _deleteNodesCommand = commandFactory.Create<String>(HandleDeleteNodes, CanDeleteNodes);
+            _selectAllCommand = commandFactory.Create<String>(HandleSelectAll, CanSelectAll);
+            _loadedCommand = commandFactory.Create<Point>(HandleLoaded);
+            _newFileCommand = commandFactory.Create<String>(HandleFileNew);
+            _loadFileCommand = commandFactory.Create<String>(HandleFileLoad);
+            _saveFileCommand = commandFactory.Create<String>(HandleFileSave);
         }
         #endregion
 
@@ -740,7 +731,8 @@ namespace PetriNetEditor
             Model.Reinitialize();
             Reinitialize();
             SaveFile = filename;
-            PNMLParser parser = new PNMLParser(filename, ElementCreator);
+            PNMLAccessorFactory accessorFactory = new PNMLAccessorFactory();
+            IPNMLParser parser = accessorFactory.CreateParser(filename, ElementCreator);
             try
             {
                 parser.Parse();
@@ -769,7 +761,8 @@ namespace PetriNetEditor
                 SaveFile = filename;
             using (XmlWriter xmlWriter = XmlWriter.Create(SaveFile))
             {
-                PNMLWriter pnmlWriter = new PNMLWriter(xmlWriter);
+                PNMLAccessorFactory accessorFactory = new PNMLAccessorFactory();
+                IPNMLWriter pnmlWriter = accessorFactory.CreateWriter(xmlWriter);
                 pnmlWriter.StartXMLDocument();
                 for (int i = 0; i < ElementProvider.NodesCount; i++)
                 {

@@ -12,10 +12,10 @@ namespace PetriNetEditor
     /// <summary>
     /// This class implements a PNML Parser.
     /// </summary>
-    public class PNMLParser
+    public class PNMLParser : IPNMLParser
     {
         /// <summary> Store for the ElementCreator property. </summary>
-        private ElementCreator _elementCreator;
+        private IElementCreator _elementCreator;
 
         /// <summary> Store for the Filename property. </summary>
         private String _filename;
@@ -51,7 +51,7 @@ namespace PetriNetEditor
         private bool _isPlace;
 
         /// <summary> Gets the ElementCreator that creates the elements read from the PNML file. </summary>
-        private ElementCreator ElementCreator
+        private IElementCreator ElementCreator
         {
             get { return _elementCreator; }
         }
@@ -153,7 +153,7 @@ namespace PetriNetEditor
         /// Sets up a new parser for the provided file. 
         /// </summary>
         /// <param name="filename"> The filename of the file to parse. </param>
-        public PNMLParser(String filename, ElementCreator elementCreator)
+        public PNMLParser(String filename, IElementCreator elementCreator)
         {
             _elementCreator = elementCreator;
             _filename = filename;

@@ -65,7 +65,10 @@
     </Compile>
     <Compile Include="Interfaces\IDelegateCommand.cs" />
     <Compile Include="Interfaces\IDrawingArc.cs" />
+    <Compile Include="Interfaces\IElementCreator.cs" />
     <Compile Include="Interfaces\INameField.cs" />
+    <Compile Include="Interfaces\IPNMLParser.cs" />
+    <Compile Include="Interfaces\IPNMLWriter.cs" />
     <Compile Include="Interfaces\IVisualArc.cs" />
     <Compile Include="Interfaces\IVisualNode.cs" />
     <Compile Include="QueryDialog.xaml.cs">
@@ -108,6 +111,7 @@
     <Compile Include="Resources\Extensions\PushBindingManager.cs" />
     <Compile Include="Util\EventArgs\NotificationEventArgs.cs" />
     <Compile Include="Resources\Extensions\PartialCanvas.cs" />
+    <Compile Include="Util\PNMLAccessorFactory.cs" />
     <Compile Include="Util\PNMLParser.cs" />
     <Compile Include="Util\PNMLWriter.cs" />
     <Compile Include="Util\EventArgs\SizeFactorChangedEventArgs.cs" />

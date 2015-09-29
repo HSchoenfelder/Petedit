@@ -34,9 +34,6 @@ namespace PetriNetEditor
         /// <summary> Store for the ElementCreator property. </summary>
         private ElementCreator _elementCreator;
 
-        /// <summary> Store for the CommandFactory property. </summary>
-        private CommandFactory _commandFactory; 
-
         /// <summary> Store for the DrawMode property. </summary>
         private DrawMode _drawMode = DrawMode.Drawplace;
         
@@ -147,12 +144,6 @@ namespace PetriNetEditor
         private ElementCreator ElementCreator
         {
             get { return _elementCreator; }
-        }
-
-        /// <summary> Gets the command factory for creating delegate commands. </summary>
-        public CommandFactory CommandFactory
-        {
-            get { return _commandFactory; }
         }
 
         /// <summary>
@@ -367,11 +358,11 @@ namespace PetriNetEditor
             _model = model;
             _rectSelectedNodes = new List<String>();
 
-            _commandFactory = new CommandFactory();
-            _drawModeChangeCommand = CommandFactory.Create<DrawMode>(HandleDrawModeChange);
-            _mouseLeftButtonDownCommand = CommandFactory.Create<Point, bool>(HandleMouseLeftButtonDown);
-            _selectRectMouseMoveCommand = CommandFactory.Create<Point>(HandleSelectRectMouseMove);
-            _mouseLeftButtonUpCommand = CommandFactory.Create<Point>(HandleMouseLeftButtonUp);
+            CommandFactory commandFactory = new CommandFactory();
+            _drawModeChangeCommand = commandFactory.Create<DrawMode>(HandleDrawModeChange);
+            _mouseLeftButtonDownCommand = commandFactory.Create<Point, bool>(HandleMouseLeftButtonDown);
+            _selectRectMouseMoveCommand = commandFactory.Create<Point>(HandleSelectRectMouseMove);
+            _mouseLeftButtonUpCommand = commandFactory.Create<Point>(HandleMouseLeftButtonUp);
         }
         #endregion
 

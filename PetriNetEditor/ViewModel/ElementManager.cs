@@ -28,9 +28,6 @@ namespace PetriNetEditor
         /// <summary> Store for the UndoManager property. </summary>
         private UndoManager _undoManager;
 
-        /// <summary> Store for the CommandFactory property. </summary>
-        private CommandFactory _commandFactory; 
-
         /// <summary> Store for the DrawSize property. </summary>
         private int _drawSize;
 
@@ -159,12 +156,6 @@ namespace PetriNetEditor
         private UndoManager UndoManager
         {
             get { return _undoManager; }
-        }
-
-        /// <summary> Gets the command factory for creating delegate commands. </summary>
-        public CommandFactory CommandFactory
-        {
-            get { return _commandFactory; }
         }
 
         /// <summary>
@@ -442,19 +433,19 @@ namespace PetriNetEditor
             _arrowheadSize = arrowheadSize;
             _drawingArc = new VisualArc(DrawSize, ArrowheadSize, this, Model);
 
-            _commandFactory = new CommandFactory();
-            _nodeModeChangeCommand = CommandFactory.Create<NodeMode>(HandleNodeModeChange);
-            _nameChangeClickCommand = CommandFactory.Create<String>(HandleNameChangeClick);
-            _nameFieldClickedCommand = CommandFactory.Create<String>(HandleNameFieldClicked);
-            _nameConfirmedCommand = CommandFactory.Create<String>(HandleNameConfirmed);
-            _nameChangedCommand = CommandFactory.Create<String, String>(HandleNameChanged);
-            _nodeMouseLeftButtonDownCommand = CommandFactory.Create<String, Point, bool>(HandleNodeMouseLeftButtonDown);
-            _arcMouseLeftButtonDownCommand = CommandFactory.Create<String, bool>(HandleArcMouseLeftButtonDown);
-            _nodeMouseMoveCommand = CommandFactory.Create<Point>(HandleNodeMouseMove);
-            _nodeMouseLeftButtonUpCommand = CommandFactory.Create<String, Point, bool>(HandleNodeMouseLeftButtonUp);
-            _mouseLeftButtonUpCommand = CommandFactory.Create<Point>(HandleMouseLeftButtonUp);
-            _tokensChangedCommand = CommandFactory.Create<String, String>(HandleTokensChanged);
-            _performTransitionCommand = CommandFactory.Create<String>(HandlePerformTransition, CanPerformTransition);
+            CommandFactory commandFactory = new CommandFactory();
+            _nodeModeChangeCommand = commandFactory.Create<NodeMode>(HandleNodeModeChange);
+            _nameChangeClickCommand = commandFactory.Create<String>(HandleNameChangeClick);
+            _nameFieldClickedCommand = commandFactory.Create<String>(HandleNameFieldClicked);
+            _nameConfirmedCommand = commandFactory.Create<String>(HandleNameConfirmed);
+            _nameChangedCommand = commandFactory.Create<String, String>(HandleNameChanged);
+            _nodeMouseLeftButtonDownCommand = commandFactory.Create<String, Point, bool>(HandleNodeMouseLeftButtonDown);
+            _arcMouseLeftButtonDownCommand = commandFactory.Create<String, bool>(HandleArcMouseLeftButtonDown);
+            _nodeMouseMoveCommand = commandFactory.Create<Point>(HandleNodeMouseMove);
+            _nodeMouseLeftButtonUpCommand = commandFactory.Create<String, Point, bool>(HandleNodeMouseLeftButtonUp);
+            _mouseLeftButtonUpCommand = commandFactory.Create<Point>(HandleMouseLeftButtonUp);
+            _tokensChangedCommand = commandFactory.Create<String, String>(HandleTokensChanged);
+            _performTransitionCommand = commandFactory.Create<String>(HandlePerformTransition, CanPerformTransition);
         }
         #endregion
 

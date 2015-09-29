@@ -11,7 +11,7 @@ namespace PetriNetEditor
     /// <summary>
     /// This class provides logic for the creation of visual elements in the petrinet.
     /// </summary>
-    public class ElementCreator
+    public class ElementCreator : IElementCreator
     {
         #region fields
         /// <summary> Store for the ElementProvider property. </summary>
