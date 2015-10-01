@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PetriNetEditor
 {
+    /// <summary>
+    /// Provides access to the individual visual elements of the petrinet.
+    /// </summary>
     public interface IElementProvider
     {
         /// <summary> 

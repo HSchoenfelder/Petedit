@@ -70,6 +70,7 @@
     <Compile Include="Interfaces\INameField.cs" />
     <Compile Include="Interfaces\IPNMLParser.cs" />
     <Compile Include="Interfaces\IPNMLWriter.cs" />
+    <Compile Include="Interfaces\ISelectionManager.cs" />
     <Compile Include="Interfaces\IVisualArc.cs" />
     <Compile Include="Interfaces\IVisualNode.cs" />
     <Compile Include="QueryDialog.xaml.cs">

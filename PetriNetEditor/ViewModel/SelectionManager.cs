@@ -10,7 +10,7 @@ namespace PetriNetEditor
     /// <summary>
     /// This class manages the selections made in the editor.
     /// </summary>
-    public class SelectionManager
+    public class SelectionManager : ISelectionManager
     {
         #region fields
         /// <summary> Store for the Model property. </summary>

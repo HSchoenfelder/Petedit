@@ -21,7 +21,7 @@ namespace PetriNetEditor
         private ElementManager _elementManager;
 
         /// <summary> Store for the SelectionManager property. </summary>
-        private SelectionManager _selectionManager;
+        private ISelectionManager _selectionManager;
 
         /// <summary> Store for the Model property. </summary>
         private IModel _model;
@@ -83,7 +83,7 @@ namespace PetriNetEditor
         /// <summary> 
         /// Gets the selection manager that provides access to select functions. 
         /// </summary>
-        private SelectionManager SelectionManager
+        private ISelectionManager SelectionManager
         {
             get { return _selectionManager; }
         }
@@ -338,7 +338,7 @@ namespace PetriNetEditor
         /// <param name="selectionManager">A reference to the SelectionManager.</param>
         /// <param name="elementManager">A reference to the ElementManager.</param>
         /// <param name="model">A reference to the Model.</param>
-        public VisualNode(double xPos, double yPos, String id, int drawSize, NodeType type, SelectionManager selectionManager, 
+        public VisualNode(double xPos, double yPos, String id, int drawSize, NodeType type, ISelectionManager selectionManager, 
                           ElementManager elementManager, IModel model)
         {
             // initialize fields

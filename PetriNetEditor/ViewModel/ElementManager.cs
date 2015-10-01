@@ -23,7 +23,7 @@ namespace PetriNetEditor
         private IElementProvider _elementProvider;
 
         /// <summary> Store for the SelectionManager property. </summary>
-        private SelectionManager _selectionManager;
+        private ISelectionManager _selectionManager;
 
         /// <summary> Store for the UndoManager property. </summary>
         private UndoManager _undoManager;
@@ -147,7 +147,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the selection manager that provides access to select functions. </summary>
-        private SelectionManager SelectionManager
+        private ISelectionManager SelectionManager
         {
             get { return _selectionManager; }
         }
@@ -422,7 +422,7 @@ namespace PetriNetEditor
         /// <param name="model">Reference to the model of the petrinet.</param>
         /// <param name="drawSize">The initial drawsize.</param>
         /// <param name="arrowheadSize">The initial arrowhead size.</param>
-        public ElementManager(IElementProvider elementProvider, SelectionManager selectionManager, UndoManager undoManager, 
+        public ElementManager(IElementProvider elementProvider, ISelectionManager selectionManager, UndoManager undoManager, 
                               IModel model, int drawSize, int arrowheadSize)
         {
             _elementProvider = elementProvider;

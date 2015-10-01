@@ -51,7 +51,7 @@ namespace PetriNetEditor
         private IElementProvider _elementProvider;
 
         /// <summary> Store for the SelectionManager property. </summary>
-        private SelectionManager _selectionManager;
+        private ISelectionManager _selectionManager;
 
         /// <summary> Store for the UndoManager property. </summary>
         private UndoManager _undoManager;
@@ -167,7 +167,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the selection manager that provides access to select functions. </summary>
-        private SelectionManager SelectionManager
+        private ISelectionManager SelectionManager
         {
             get { return _selectionManager; }
         }
@@ -418,7 +418,7 @@ namespace PetriNetEditor
             // module initializations
             DependencyFactory df = new DependencyFactory();
             _elementProvider = df.CreateProvider();
-            _selectionManager = new SelectionManager(ElementProvider, Model);
+            _selectionManager = df.CreateSelectionManager(ElementProvider, Model);
             _undoManager = new UndoManager();
             _elementManager = new ElementManager(ElementProvider, SelectionManager, UndoManager, Model, DrawSize, ArrowheadSize);
             _elementCreator = new ElementCreator(ElementProvider, SelectionManager, UndoManager, ElementManager, 

@@ -7,6 +7,10 @@ using System.Xml;
 
 namespace PetriNetEditor
 {
+    /// <summary>
+    /// This factory class creates classes for reading and writing pnml files or sets 
+    /// a custom reader or writer.
+    /// </summary>
     public class PNMLAccessorFactory
     {
         /// <summary> Store for the CustomParser property. </summary>

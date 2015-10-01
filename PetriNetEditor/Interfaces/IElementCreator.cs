@@ -7,6 +7,9 @@ using System.Windows;
 
 namespace PetriNetEditor
 {
+    /// <summary>
+    /// Provides logic for the creation of visual elements in the petrinet.
+    /// </summary>
     public interface IElementCreator
     {
         /// <summary>
