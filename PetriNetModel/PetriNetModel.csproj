@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Elements\Arc.cs" />
     <Compile Include="Util\CallbackDelegates.cs" />
+    <Compile Include="Util\Delegates.cs" />
     <Compile Include="Util\ElementFactory.cs" />
     <Compile Include="Interfaces\IModel.cs" />
     <Compile Include="Interfaces\IArc.cs" />

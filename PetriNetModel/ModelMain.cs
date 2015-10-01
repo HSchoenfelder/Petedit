@@ -20,14 +20,6 @@ namespace PetriNetModel
         #endregion
 
         #region events
-        /// <summary>Handles the TransitionStateChangedEvent.</summary>
-        /// <param name="e">The data for the TransitionStateChangedEvent.</param>
-        public delegate void TransitionStateChangedEventHandler(TransitionStateChangedEventArgs e);
-        
-        /// <summary>Handles the TokensChangedEvent.</summary>
-        /// <param name="e">The data for the TokensChangedEvent.</param>
-        public delegate void TokensChangedEventHandler(TokensChangedEventArgs e);
-        
         /// <summary>Occurs when any Transition of the petrinet changes state. </summary>
         public event TransitionStateChangedEventHandler TransitionStateChangedEvent;
         
@@ -252,32 +244,32 @@ namespace PetriNetModel
             return false;
         }
 
-        /// <summary>
-        /// Determines whether the element specified by the provided id is present in the 
-        /// petrinet.
-        /// </summary>
-        /// <param name="id">The id of the element to check for.</param>
-        /// <returns>true if the specified element is present in the petrinet;
-        /// otherwise false.</returns>
-        public bool Contains(String id)
-        {
-            if (id == null)
-                throw new ArgumentNullException("id");
-            bool found = false;
-            foreach (String nodeId in Nodes.Keys)
+            /// <summary>
+            /// Determines whether the element specified by the provided id is present in the 
+            /// petrinet.
+            /// </summary>
+            /// <param name="id">The id of the element to check for.</param>
+            /// <returns>true if the specified element is present in the petrinet;
+            /// otherwise false.</returns>
+            public bool Contains(String id)
             {
-                found = id.Equals(nodeId);
-                if (found)
-                    return true;
+                if (id == null)
+                    throw new ArgumentNullException("id");
+                bool found = false;
+                foreach (String nodeId in Nodes.Keys)
+                {
+                    found = id.Equals(nodeId);
+                    if (found)
+                        return true;
+                }
+                foreach (String arcId in Arcs.Keys)
+                {
+                    found = id.Equals(arcId);
+                    if (found)
+                        return true;
+                }
+                return false;
             }
-            foreach (String arcId in Arcs.Keys)
-            {
-                found = id.Equals(arcId);
-                if (found)
-                    return true;
-            }
-            return false;
-        }
 
         /// <summary>
         /// Removes the Node specified by the provided id from the petrinet.

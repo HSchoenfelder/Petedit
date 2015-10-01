@@ -45,7 +45,7 @@ namespace PetriNetEditor
         private double _viewHeight;
 
         /// <summary> Store for the Model property. </summary>
-        private ModelMain _model;
+        private IModel _model;
         
         /// <summary> Store for the ElementProvider property. </summary>
         private ElementProvider _elementProvider;
@@ -161,7 +161,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the Model that allows for manipulation of the petrinet. </summary>
-        private ModelMain Model
+        private IModel Model
         {
             get { return _model; }
         }

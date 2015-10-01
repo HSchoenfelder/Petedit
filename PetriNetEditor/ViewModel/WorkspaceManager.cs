@@ -17,7 +17,7 @@ namespace PetriNetEditor
     {
         #region fields
         /// <summary> Store for the Model property. </summary>
-        private ModelMain _model;
+        private IModel _model;
 
         /// <summary> Store for the ElementProvider property. </summary>
         private ElementProvider _elementProvider;
@@ -105,7 +105,7 @@ namespace PetriNetEditor
 
         #region private
         /// <summary> Gets the Model that allows for manipulation of the petrinet. </summary>
-        private ModelMain Model
+        private IModel Model
         {
             get { return _model; }
         }
@@ -348,7 +348,7 @@ namespace PetriNetEditor
         /// <param name="elementManager">Reference to the element manager.</param>
         /// <param name="model">Reference to the model of the petrinet.</param>
         public WorkspaceManager(ElementProvider elementProvider, UndoManager undoManager, SelectionManager selectionManager,
-                                ElementCreator elementCreator, ElementManager elementManager, ModelMain model)
+                                ElementCreator elementCreator, ElementManager elementManager, IModel model)
         {
             _elementProvider = elementProvider;
             _undoManager = undoManager;

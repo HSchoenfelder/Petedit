@@ -18,7 +18,7 @@ namespace PetriNetEditor
     {
         #region fields
         /// <summary> Store for the Model property. </summary>
-        private ModelMain _model;
+        private IModel _model;
 
         /// <summary> Store for the ElementManager property. </summary>
         private ElementManager _elementManager;
@@ -93,7 +93,7 @@ namespace PetriNetEditor
 
         #region private
         /// <summary> Gets the Model that allows for manipulation of the petrinet. </summary>
-        private ModelMain Model
+        private IModel Model
         {
             get { return _model; }
         }
@@ -420,7 +420,7 @@ namespace PetriNetEditor
         /// <param name="arrowheadSize">The size at which the arrowhead of the VisualArc is drawn.</param>
         /// <param name="elementManager">A reference to the ElementManager.</param>
         /// <param name="model">A reference to the model of the petrinet.</param>
-        public VisualArc(int drawsize, int arrowheadSize, ElementManager elementManager, ModelMain model)
+        public VisualArc(int drawsize, int arrowheadSize, ElementManager elementManager, IModel model)
         {
             _model = model;
             _drawSize = drawsize;

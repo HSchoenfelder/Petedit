@@ -17,7 +17,7 @@ namespace PetriNetEditor
     {
         #region fields
         /// <summary> Store for the Model property. </summary>
-        private ModelMain _model;
+        private IModel _model;
 
         /// <summary> Store for the ElementProvider property. </summary>
         private ElementProvider _elementProvider;
@@ -133,7 +133,7 @@ namespace PetriNetEditor
 
         #region private
         /// <summary> Gets the Model that allows for manipulation of the petrinet. </summary>
-        private ModelMain Model
+        private IModel Model
         {
             get { return _model; }
         }
@@ -423,7 +423,7 @@ namespace PetriNetEditor
         /// <param name="drawSize">The initial drawsize.</param>
         /// <param name="arrowheadSize">The initial arrowhead size.</param>
         public ElementManager(ElementProvider elementProvider, SelectionManager selectionManager, UndoManager undoManager, 
-                              ModelMain model, int drawSize, int arrowheadSize)
+                              IModel model, int drawSize, int arrowheadSize)
         {
             _elementProvider = elementProvider;
             _selectionManager = selectionManager;
