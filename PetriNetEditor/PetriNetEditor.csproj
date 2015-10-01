@@ -66,6 +66,7 @@
     <Compile Include="Interfaces\IDelegateCommand.cs" />
     <Compile Include="Interfaces\IDrawingArc.cs" />
     <Compile Include="Interfaces\IElementCreator.cs" />
+    <Compile Include="Interfaces\IElementProvider.cs" />
     <Compile Include="Interfaces\INameField.cs" />
     <Compile Include="Interfaces\IPNMLParser.cs" />
     <Compile Include="Interfaces\IPNMLWriter.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Util\Calculations.cs" />
     <Compile Include="Resources\Extensions\FreezableBinding.cs" />
     <Compile Include="Util\CommandFactory.cs" />
+    <Compile Include="Util\DependencyFactory.cs" />
     <Compile Include="Util\Exceptions\DuplicateIdException.cs" />
     <Compile Include="Util\Exceptions\InvalidPNMLException.cs" />
     <Compile Include="Util\NodeInfo.cs" />

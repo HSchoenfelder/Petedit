@@ -48,7 +48,7 @@ namespace PetriNetEditor
         private IModel _model;
         
         /// <summary> Store for the ElementProvider property. </summary>
-        private ElementProvider _elementProvider;
+        private IElementProvider _elementProvider;
 
         /// <summary> Store for the SelectionManager property. </summary>
         private SelectionManager _selectionManager;
@@ -246,7 +246,7 @@ namespace PetriNetEditor
         /// Gets the element provider that enables access to individual elements of the petrinet.
         /// operation.
         /// </summary>
-        public ElementProvider ElementProvider
+        public IElementProvider ElementProvider
         {
             get { return _elementProvider; }
         }
@@ -416,7 +416,8 @@ namespace PetriNetEditor
             _model = new ModelMain();
 
             // module initializations
-            _elementProvider = new ElementProvider();
+            DependencyFactory df = new DependencyFactory();
+            _elementProvider = df.CreateProvider();
             _selectionManager = new SelectionManager(ElementProvider, Model);
             _undoManager = new UndoManager();
             _elementManager = new ElementManager(ElementProvider, SelectionManager, UndoManager, Model, DrawSize, ArrowheadSize);

@@ -20,7 +20,7 @@ namespace PetriNetEditor
         private IModel _model;
 
         /// <summary> Store for the ElementProvider property. </summary>
-        private ElementProvider _elementProvider;
+        private IElementProvider _elementProvider;
 
         /// <summary> Store for the ElementManager property. </summary>
         private ElementManager _elementManager;
@@ -114,7 +114,7 @@ namespace PetriNetEditor
         /// Gets the element provider that enables access to individual elements of the petrinet.
         /// operation.
         /// </summary>
-        private ElementProvider ElementProvider
+        private IElementProvider ElementProvider
         {
             get { return _elementProvider; }
         }
@@ -347,7 +347,7 @@ namespace PetriNetEditor
         /// <param name="elementCreator">Reference to the element creator.</param>
         /// <param name="elementManager">Reference to the element manager.</param>
         /// <param name="model">Reference to the model of the petrinet.</param>
-        public WorkspaceManager(ElementProvider elementProvider, UndoManager undoManager, SelectionManager selectionManager,
+        public WorkspaceManager(IElementProvider elementProvider, UndoManager undoManager, SelectionManager selectionManager,
                                 ElementCreator elementCreator, ElementManager elementManager, IModel model)
         {
             _elementProvider = elementProvider;

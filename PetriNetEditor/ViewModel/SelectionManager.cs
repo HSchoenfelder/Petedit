@@ -17,7 +17,7 @@ namespace PetriNetEditor
         private IModel _model;
 
         /// <summary> Store for the ElementProvider property. </summary>
-        private ElementProvider _elementProvider;
+        private IElementProvider _elementProvider;
 
         /// <summary> Store for the SelectedItems property. </summary>
         private readonly List<String> _selectedItems;
@@ -42,7 +42,7 @@ namespace PetriNetEditor
         /// Gets the element provider that enables access to individual elements of the petrinet.
         /// operation.
         /// </summary>
-        private ElementProvider ElementProvider
+        private IElementProvider ElementProvider
         {
             get { return _elementProvider; }
         }
@@ -74,7 +74,7 @@ namespace PetriNetEditor
         /// </summary>
         /// <param name="elementProvider">Reference to the element provider.</param>
         /// <param name="model">Reference to the model of the petrinet.</param>
-        public SelectionManager(ElementProvider elementProvider, IModel model)
+        public SelectionManager(IElementProvider elementProvider, IModel model)
         {
             _model = model;
             _elementProvider = elementProvider;
