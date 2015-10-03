@@ -67,10 +67,12 @@
     <Compile Include="Interfaces\IDrawingArc.cs" />
     <Compile Include="Interfaces\IElementCreator.cs" />
     <Compile Include="Interfaces\IElementProvider.cs" />
+    <Compile Include="Interfaces\IUndoManagerEx.cs" />
     <Compile Include="Interfaces\INameField.cs" />
     <Compile Include="Interfaces\IPNMLParser.cs" />
     <Compile Include="Interfaces\IPNMLWriter.cs" />
     <Compile Include="Interfaces\ISelectionManager.cs" />
+    <Compile Include="Interfaces\IUndoManager.cs" />
     <Compile Include="Interfaces\IVisualArc.cs" />
     <Compile Include="Interfaces\IVisualNode.cs" />
     <Compile Include="QueryDialog.xaml.cs">

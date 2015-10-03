@@ -29,7 +29,7 @@ namespace PetriNetEditor
         private ISelectionManager _selectionManager;
 
         /// <summary> Store for the UndoManager property. </summary>
-        private UndoManager _undoManager;
+        private IUndoManagerEx _undoManager;
 
         /// <summary> Store for the ElementCreator property. </summary>
         private ElementCreator _elementCreator;
@@ -132,7 +132,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the UndoManager that manages undo and redo operations. </summary>
-        private UndoManager UndoManager
+        private IUndoManagerEx UndoManager
         {
             get { return _undoManager; }
         }
@@ -347,7 +347,7 @@ namespace PetriNetEditor
         /// <param name="elementCreator">Reference to the element creator.</param>
         /// <param name="elementManager">Reference to the element manager.</param>
         /// <param name="model">Reference to the model of the petrinet.</param>
-        public WorkspaceManager(IElementProvider elementProvider, UndoManager undoManager, ISelectionManager selectionManager,
+        public WorkspaceManager(IElementProvider elementProvider, IUndoManagerEx undoManager, ISelectionManager selectionManager,
                                 ElementCreator elementCreator, ElementManager elementManager, IModel model)
         {
             _elementProvider = elementProvider;

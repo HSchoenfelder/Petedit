@@ -12,6 +12,7 @@ namespace PetriNetEditor
     /// </summary>
     public interface IVisualNode
     {
+        #region properties
         /// <summary> Gets the Id that uniquely identifies this visual node. </summary>
         String Id { get; }
 
@@ -71,7 +72,9 @@ namespace PetriNetEditor
         /// Sets a value which indicates whether this visual node is currently enabled.
         /// </summary>
         bool Enabled { set; }
+        #endregion
 
+        #region methods
         /// <summary>
         /// Sets the amount of tokens on this VisualNode to the specified value and updates the model 
         /// accordingly.
@@ -99,5 +102,6 @@ namespace PetriNetEditor
         /// <returns>true if the visual presentation of the visual node is contained within the 
         /// rectangle; otherwise false.</returns>
         bool IsContained(double x, double y, double width, double height);
+        #endregion
     }
 }

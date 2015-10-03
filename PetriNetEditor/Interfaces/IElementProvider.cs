@@ -11,6 +11,7 @@ namespace PetriNetEditor
     /// </summary>
     public interface IElementProvider
     {
+        #region properties
         /// <summary> 
         /// Gets the amount of name fields currently present in the provider.
         /// </summary>
@@ -25,7 +26,9 @@ namespace PetriNetEditor
         /// Gets the amount of arcs currently present in the provider.
         /// </summary>
         int ArcsCount { get; }
+        #endregion
 
+        #region methods
         /// <summary>
         /// Returns a reference to the NameField with the given id.
         /// </summary>
@@ -151,5 +154,6 @@ namespace PetriNetEditor
         /// Clears all VisualArcs from the presentation of the petrinet.
         /// </summary>
         void ClearArcs();
+        #endregion
     }
 }

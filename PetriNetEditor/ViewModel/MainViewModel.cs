@@ -54,7 +54,7 @@ namespace PetriNetEditor
         private ISelectionManager _selectionManager;
 
         /// <summary> Store for the UndoManager property. </summary>
-        private UndoManager _undoManager;
+        private IUndoManager _undoManager;
 
         /// <summary> Store for the ElementCreator property. </summary>
         private ElementCreator _elementCreator;
@@ -252,7 +252,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the UndoManager that manages undo and redo operations. </summary>
-        public UndoManager UndoManager
+        public IUndoManager UndoManager
         {
             get { return _undoManager; }
         }
@@ -419,12 +419,11 @@ namespace PetriNetEditor
             DependencyFactory df = new DependencyFactory();
             _elementProvider = df.CreateProvider();
             _selectionManager = df.CreateSelectionManager(ElementProvider, Model);
-            _undoManager = new UndoManager();
-            _elementManager = new ElementManager(ElementProvider, SelectionManager, UndoManager, Model, DrawSize, ArrowheadSize);
-            _elementCreator = new ElementCreator(ElementProvider, SelectionManager, UndoManager, ElementManager, 
-                                                 Model, DrawSize, ArrowheadSize);
-            _workspaceManager = new WorkspaceManager(ElementProvider, UndoManager, SelectionManager, ElementCreator, ElementManager, Model);
-            _undoExecuter = new UndoExecuter(Model, ElementProvider, SelectionManager, UndoManager, ElementCreator,
+            _undoManager = df.CreateUndoManager();
+            _elementManager = new ElementManager(ElementProvider, SelectionManager, (IUndoManagerEx)UndoManager, Model, DrawSize, ArrowheadSize);
+            _elementCreator = new ElementCreator(ElementProvider, SelectionManager, ElementManager, Model, DrawSize, ArrowheadSize);
+            _workspaceManager = new WorkspaceManager(ElementProvider, (IUndoManagerEx)UndoManager, SelectionManager, ElementCreator, ElementManager, Model);
+            _undoExecuter = new UndoExecuter(Model, ElementProvider, SelectionManager, (IUndoManager)UndoManager, ElementCreator,
                                              ElementManager);
             UndoManager.UndoTarget = UndoExecuter;
 

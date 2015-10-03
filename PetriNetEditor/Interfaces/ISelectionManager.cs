@@ -7,16 +7,21 @@ using System.Threading.Tasks;
 namespace PetriNetEditor
 {
     /// <summary>
-    /// Provides methods to manage the selections made in the editor.
+    /// Provides methods for managing the selections made in the editor.
     /// </summary>
     public interface ISelectionManager
     {
+        #region events
         /// <summary> Occurs when a reevaluation of command state is required. </summary>
         event EventHandler ReevaluateCommandState;
+        #endregion
 
+        #region properties
         /// <summary> Gets the current number of selected items. </summary>
         int SelectedItemsCount { get; }
+        #endregion
 
+        #region methods
         /// <summary>
         /// Gets a copy of the list of the ids of all selected items.
         /// </summary>
@@ -86,5 +91,6 @@ namespace PetriNetEditor
         /// Removes all arcs from the current autoselection and adjusts their autoselected state.
         /// </summary>
         void ClearAutoSelectedArcs();
+        #endregion
     }
 }

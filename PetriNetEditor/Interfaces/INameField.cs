@@ -8,6 +8,7 @@ namespace PetriNetEditor
 {
     public interface INameField
     {
+        #region properties
         /// <summary> Gets the Id that uniquely identifies this name field. </summary>
         String Id { get; }
 
@@ -45,7 +46,9 @@ namespace PetriNetEditor
         /// the bounds of the visual presentation and requires a scroll operation.
         /// </summary>
         bool IsBeyondEdge { set; }
+        #endregion
 
+        #region methods
         /// <summary>
         /// Sets a new name to this NameField and writes it to the model.
         /// </summary>
@@ -57,5 +60,6 @@ namespace PetriNetEditor
         /// changed.
         /// </summary>
         void AdjustNameField();
+        #endregion
     }
 }

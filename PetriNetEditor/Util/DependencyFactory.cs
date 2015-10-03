@@ -19,6 +19,9 @@ namespace PetriNetEditor
         /// <summary> Store for the CustomSelectionManager property. </summary>
         private static ISelectionManager _customSelectionManager = null;
 
+        /// <summary> Store for the CustomUndoManager property. </summary>
+        private static IUndoManager _customUndoManager = null;
+
         /// <summary>
         /// Gets or sets a custom element provider to be created.
         /// </summary>
@@ -35,6 +38,15 @@ namespace PetriNetEditor
         {
             private get { return _customSelectionManager; }
             set { _customSelectionManager = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a custom undo manager to be created.
+        /// </summary>
+        public static IUndoManager CustomUndoManager
+        {
+            private get { return _customUndoManager; }
+            set { _customUndoManager = value; }
         }
 
         /// <summary>
@@ -57,6 +69,17 @@ namespace PetriNetEditor
             if (CustomSelectionManager != null)
                 return CustomSelectionManager;
             return new SelectionManager(elementProvider, model);
+        }
+
+        /// <summary>
+        /// Sets up a new UndoManager or returns the custom undo manager.
+        /// </summary>
+        /// <returns>A new UndoManager or a custom undo manager, if one was provided.</returns>
+        public IUndoManager CreateUndoManager()
+        {
+            if (CustomUndoManager != null)
+                return CustomUndoManager;
+            return new UndoManager();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace PetriNetEditor
     /// <summary>
     /// This class manages the undo and the redo queue.
     /// </summary>
-    public class UndoManager
+    public class UndoManager : IUndoManager, IUndoManagerEx
     {
         #region fields
 
@@ -105,10 +105,10 @@ namespace PetriNetEditor
         private bool _drawing;
 
         /// <summary> Store for the UndoCommand property. </summary>
-        private readonly DelegateCommand<String> _undoCommand;
+        private readonly IDelegateCommand _undoCommand;
 
         /// <summary> Store for the RedoCommand property. </summary>
-        private readonly DelegateCommand<String> _redoCommand;
+        private readonly IDelegateCommand _redoCommand;
 
         #endregion
 
@@ -335,8 +335,6 @@ namespace PetriNetEditor
             set { _moveUndoViewSize = value; }
         }
 
-        
-
         /// <summary> 
         /// Gets or sets the amount of right shift during the current create operation. 
         /// </summary>
@@ -394,13 +392,13 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the command that performs an undo operation. </summary>
-        public DelegateCommand<String> UndoCommand
+        public IDelegateCommand UndoCommand
         {
             get { return _undoCommand; }
         }
 
         /// <summary> Gets the command that performs an redo operation. </summary>
-        public DelegateCommand<String> RedoCommand
+        public IDelegateCommand RedoCommand
         {
             get { return _redoCommand; }
         }
@@ -450,8 +448,9 @@ namespace PetriNetEditor
             _sizeChangeRedoParams = new object[3];
 
             // connect command handler
-            _undoCommand = new DelegateCommand<String>(HandleUndo, CanUndo);
-            _redoCommand = new DelegateCommand<String>(HandleRedo, CanRedo);
+            CommandFactory commandFactory = new CommandFactory();
+            _undoCommand = commandFactory.Create<String>(HandleUndo, CanUndo);
+            _redoCommand = commandFactory.Create<String>(HandleRedo, CanRedo);
         }
         #endregion
 
@@ -731,7 +730,7 @@ namespace PetriNetEditor
             NameChangeUndoParams[4] = new Point(xPos, yPos);
         }
 
-        // <summary>
+        /// <summary>
         /// Adds the complete parameters for a name change redo operation.
         /// </summary>
         /// <param name="id">The id of the node for which the name change has been performed.</param>
