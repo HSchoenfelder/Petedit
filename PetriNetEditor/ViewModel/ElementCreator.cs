@@ -21,7 +21,7 @@ namespace PetriNetEditor
         private ISelectionManager _selectionManager;
 
         /// <summary> Store for the ElementManager property. </summary>
-        private ElementManager _elementManager;
+        private IElementManager _elementManager;
 
         /// <summary> Store for the Model property. </summary>
         private IModel _model;
@@ -52,7 +52,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the element manager that enables arc draw and move operations for nodes. </summary>
-        private ElementManager ElementManager
+        private IElementManager ElementManager
         {
             get { return _elementManager; }
         }
@@ -95,7 +95,7 @@ namespace PetriNetEditor
         /// <param name="drawSize">The initial drawsize.</param>
         /// <param name="arrowheadSize">The initial arrowhead size.</param>
         public ElementCreator(IElementProvider elementProvider, ISelectionManager selectionManager, 
-                              ElementManager elementManager, IModel model, int drawSize, int arrowheadSize)
+                              IElementManager elementManager, IModel model, int drawSize, int arrowheadSize)
         {
             _elementProvider = elementProvider;
             _selectionManager = selectionManager;
@@ -183,7 +183,7 @@ namespace PetriNetEditor
         /// <param name="selected"> This value indicates whether the arc is to be created in selected state. </param>
         public void CreateArc(String id, String sourceId, String targetId, bool selected)
         {
-            VisualArc arc = new VisualArc(DrawSize, ArrowheadSize, ElementManager, Model);
+            VisualArc arc = new VisualArc(DrawSize, ArrowheadSize, Model);
             Model.AddArc(sourceId, targetId, id);
             arc.SourceType = Model.IsPlace(sourceId) ? NodeType.Place : NodeType.Transition;
             arc.PositionArc(Model.GetCoordinates(sourceId), Model.GetCoordinates(targetId));

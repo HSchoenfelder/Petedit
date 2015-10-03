@@ -60,7 +60,7 @@ namespace PetriNetEditor
         private ElementCreator _elementCreator;
 
         /// <summary> Store for the ElementManager property. </summary>
-        private ElementManager _elementManager;
+        private IElementManager _elementManager;
 
         /// <summary> Store for the WorkspaceManager property. </summary>
         private WorkspaceManager _workspaceManager;
@@ -258,7 +258,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the element manager that enables arc draw and move operations for nodes. </summary>
-        public ElementManager ElementManager
+        public IElementManager ElementManager
         {
             get { return _elementManager; }
         }
@@ -420,9 +420,9 @@ namespace PetriNetEditor
             _elementProvider = df.CreateProvider();
             _selectionManager = df.CreateSelectionManager(ElementProvider, Model);
             _undoManager = df.CreateUndoManager();
-            _elementManager = new ElementManager(ElementProvider, SelectionManager, (IUndoManagerEx)UndoManager, Model, DrawSize, ArrowheadSize);
+            _elementManager = df.CreateElementManager(ElementProvider, SelectionManager, (IUndoManagerEx)UndoManager, Model, DrawSize, ArrowheadSize);
             _elementCreator = new ElementCreator(ElementProvider, SelectionManager, ElementManager, Model, DrawSize, ArrowheadSize);
-            _workspaceManager = new WorkspaceManager(ElementProvider, (IUndoManagerEx)UndoManager, SelectionManager, ElementCreator, ElementManager, Model);
+            _workspaceManager = new WorkspaceManager(ElementProvider, (IUndoManagerEx)UndoManager, SelectionManager, ElementCreator, Model);
             _undoExecuter = new UndoExecuter(Model, ElementProvider, SelectionManager, (IUndoManager)UndoManager, ElementCreator,
                                              ElementManager);
             UndoManager.UndoTarget = UndoExecuter;

@@ -30,7 +30,7 @@ namespace PetriNetEditor
         private ElementCreator _elementCreator;
 
         /// <summary> Store for the ElementManager property. </summary>
-        private ElementManager _elementManager;
+        private IElementManager _elementManager;
 
         /// <summary> Store for the SizeFactor property. </summary>
         private int _sizeFactor = 1;
@@ -108,7 +108,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the element manager that enables arc draw and move operations for nodes. </summary>
-        private ElementManager ElementManager
+        private IElementManager ElementManager
         {
             get { return _elementManager; }
         }
@@ -174,7 +174,7 @@ namespace PetriNetEditor
         /// <param name="elementCreator">Reference to the element creator.</param>
         /// <param name="elementManager">Reference to the element manager.</param>
         public UndoExecuter(IModel model, IElementProvider elementProvider, ISelectionManager selectionManager,
-                            IUndoManager undoManager, ElementCreator elementCreator, ElementManager elementManager)
+                            IUndoManager undoManager, ElementCreator elementCreator, IElementManager elementManager)
         {
             _model = model;
             _elementProvider = elementProvider;

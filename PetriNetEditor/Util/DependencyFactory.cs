@@ -13,6 +13,7 @@ namespace PetriNetEditor
     /// </summary>
     public class DependencyFactory
     {
+        #region fields
         /// <summary> Store for the CustomProvider property. </summary>
         private static IElementProvider _customProvider = null;
 
@@ -22,6 +23,11 @@ namespace PetriNetEditor
         /// <summary> Store for the CustomUndoManager property. </summary>
         private static IUndoManager _customUndoManager = null;
 
+        /// <summary> Store for the CustomElementManager property. </summary>
+        private static IElementManager _customElementManager = null;
+        #endregion
+
+        #region properties
         /// <summary>
         /// Gets or sets a custom element provider to be created.
         /// </summary>
@@ -49,6 +55,17 @@ namespace PetriNetEditor
             set { _customUndoManager = value; }
         }
 
+        /// <summary>
+        /// Gets or sets a custom element manager to be created.
+        /// </summary>
+        public static IElementManager CustomElementManager
+        {
+            private get { return _customElementManager; }
+            set { _customElementManager = value; }
+        }
+        #endregion
+
+        #region methods
         /// <summary>
         /// Sets up a new ElementProvider or returns the custom provider.
         /// </summary>
@@ -81,5 +98,18 @@ namespace PetriNetEditor
                 return CustomUndoManager;
             return new UndoManager();
         }
+
+        /// <summary>
+        /// Sets up a new ElementManager or returns the custom element manager.
+        /// </summary>
+        /// <returns>A new ElementManager or a custom element manager, if one was provided.</returns>
+        public IElementManager CreateElementManager(IElementProvider elementProvider, ISelectionManager selectionManager, 
+                                                    IUndoManagerEx undoManager, IModel model, int drawSize, int arrowheadSize)
+        {
+            if (CustomElementManager != null)
+                return CustomElementManager;
+            return new ElementManager(elementProvider, selectionManager, undoManager, model, drawSize, arrowheadSize);
+        }
+        #endregion
     }
 }

@@ -18,7 +18,7 @@ namespace PetriNetEditor
     {
         #region fields
         /// <summary> Store for the ElementManager property. </summary>
-        private ElementManager _elementManager;
+        private IElementManager _elementManager;
 
         /// <summary> Store for the SelectionManager property. </summary>
         private ISelectionManager _selectionManager;
@@ -101,7 +101,7 @@ namespace PetriNetEditor
         /// <summary> 
         /// Gets the element manager that enables arc draw and move operations for nodes. 
         /// </summary>
-        public ElementManager ElementManager
+        public IElementManager ElementManager
         {
             get { return _elementManager; }
         }
@@ -339,7 +339,7 @@ namespace PetriNetEditor
         /// <param name="elementManager">A reference to the ElementManager.</param>
         /// <param name="model">A reference to the Model.</param>
         public VisualNode(double xPos, double yPos, String id, int drawSize, NodeType type, ISelectionManager selectionManager, 
-                          ElementManager elementManager, IModel model)
+                          IElementManager elementManager, IModel model)
         {
             // initialize fields
             _selectionManager = selectionManager;

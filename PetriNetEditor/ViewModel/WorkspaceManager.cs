@@ -22,9 +22,6 @@ namespace PetriNetEditor
         /// <summary> Store for the ElementProvider property. </summary>
         private IElementProvider _elementProvider;
 
-        /// <summary> Store for the ElementManager property. </summary>
-        private ElementManager _elementManager;
-
         /// <summary> Store for the SelectionManager property. </summary>
         private ISelectionManager _selectionManager;
 
@@ -117,12 +114,6 @@ namespace PetriNetEditor
         private IElementProvider ElementProvider
         {
             get { return _elementProvider; }
-        }
-
-        /// <summary> Gets the element manager that enables arc draw and move operations for nodes. </summary>
-        private ElementManager ElementManager
-        {
-            get { return _elementManager; }
         }
 
         /// <summary> Gets the selection manager that provides access to select functions. </summary>
@@ -348,13 +339,12 @@ namespace PetriNetEditor
         /// <param name="elementManager">Reference to the element manager.</param>
         /// <param name="model">Reference to the model of the petrinet.</param>
         public WorkspaceManager(IElementProvider elementProvider, IUndoManagerEx undoManager, ISelectionManager selectionManager,
-                                ElementCreator elementCreator, ElementManager elementManager, IModel model)
+                                ElementCreator elementCreator, IModel model)
         {
             _elementProvider = elementProvider;
             _undoManager = undoManager;
             _selectionManager = selectionManager;
             _elementCreator = elementCreator;
-            _elementManager = elementManager;
             _model = model;
             _rectSelectedNodes = new List<String>();
 

@@ -13,7 +13,7 @@ namespace PetriNetEditor
     /// <summary>
     /// This class provides logic for the manipulation of visual elements in the petrinet.
     /// </summary>
-    public class ElementManager : INotifyPropertyChanged
+    public class ElementManager : INotifyPropertyChanged, IElementManager
     {
         #region fields
         /// <summary> Store for the Model property. </summary>
@@ -99,14 +99,6 @@ namespace PetriNetEditor
 
         /// <summary> Store for the PerformTransitionCommand property. </summary>
         private readonly IDelegateCommand _performTransitionCommand;
-        #endregion
-
-        #region delegates
-        public delegate void BlockStateChangedEventHandler(object source, StateChangedEventArgs e);
-
-        public delegate void ViewSizeChangedEventHandler(object source, ViewSizeChangedEventArgs e);
-
-        public delegate void DrawingStateChangedEventHandler(object source, StateChangedEventArgs e);
         #endregion
 
         #region events
@@ -431,7 +423,7 @@ namespace PetriNetEditor
             _model = model;
             _drawSize = drawSize;
             _arrowheadSize = arrowheadSize;
-            _drawingArc = new VisualArc(DrawSize, ArrowheadSize, this, Model);
+            _drawingArc = new VisualArc(DrawSize, ArrowheadSize, Model);
 
             CommandFactory commandFactory = new CommandFactory();
             _nodeModeChangeCommand = commandFactory.Create<NodeMode>(HandleNodeModeChange);

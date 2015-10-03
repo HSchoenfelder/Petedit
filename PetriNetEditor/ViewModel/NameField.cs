@@ -17,7 +17,7 @@ namespace PetriNetEditor
     {
         #region fields
         /// <summary> Store for the ElementManager property. </summary>
-        private ElementManager _elementManager;
+        private IElementManager _elementManager;
 
         /// <summary> Store for the Model property. </summary>
         private IModel _model;
@@ -69,7 +69,7 @@ namespace PetriNetEditor
         }
         
         /// <summary> Gets the element manager that enables arc draw and move operations for nodes. </summary>
-        public ElementManager ElementManager
+        public IElementManager ElementManager
         {
             get { return _elementManager; }
         }
@@ -231,7 +231,7 @@ namespace PetriNetEditor
         /// <param name="elementManager">A reference to the ElementManager.</param>
         /// <param name="model">A reference to the Model.</param>
         /// <param name="parentNode">A reference to the parent node of the NameField.</param>
-        public NameField(String id, ElementManager elementManager, IModel model, IVisualNode parentNode)
+        public NameField(String id, IElementManager elementManager, IModel model, IVisualNode parentNode)
         {
             _id = id;
             _elementManager = elementManager;
