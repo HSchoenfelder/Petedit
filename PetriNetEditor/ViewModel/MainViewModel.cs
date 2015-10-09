@@ -57,7 +57,7 @@ namespace PetriNetEditor
         private IUndoManager _undoManager;
 
         /// <summary> Store for the ElementCreator property. </summary>
-        private ElementCreator _elementCreator;
+        private IElementCreator _elementCreator;
 
         /// <summary> Store for the ElementManager property. </summary>
         private IElementManager _elementManager;
@@ -176,7 +176,7 @@ namespace PetriNetEditor
         /// Gets the element creator that allows for the creation of petrinet elements.
         /// operation.
         /// </summary>
-        private ElementCreator ElementCreator
+        private IElementCreator ElementCreator
         {
             get { return _elementCreator; }
         }
@@ -421,7 +421,7 @@ namespace PetriNetEditor
             _selectionManager = df.CreateSelectionManager(ElementProvider, Model);
             _undoManager = df.CreateUndoManager();
             _elementManager = df.CreateElementManager(ElementProvider, SelectionManager, (IUndoManagerEx)UndoManager, Model, DrawSize, ArrowheadSize);
-            _elementCreator = new ElementCreator(ElementProvider, SelectionManager, ElementManager, Model, DrawSize, ArrowheadSize);
+            _elementCreator = df.CreateElementCreator(ElementProvider, SelectionManager, ElementManager, Model, DrawSize, ArrowheadSize);
             _workspaceManager = new WorkspaceManager(ElementProvider, (IUndoManagerEx)UndoManager, SelectionManager, ElementCreator, Model);
             _undoExecuter = new UndoExecuter(Model, ElementProvider, SelectionManager, (IUndoManager)UndoManager, ElementCreator,
                                              ElementManager);

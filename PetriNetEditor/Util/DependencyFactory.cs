@@ -25,6 +25,9 @@ namespace PetriNetEditor
 
         /// <summary> Store for the CustomElementManager property. </summary>
         private static IElementManager _customElementManager = null;
+
+        /// <summary> Store for the CustomElementCreator property. </summary>
+        private static IElementCreator _customElementCreator = null;
         #endregion
 
         #region properties
@@ -62,6 +65,15 @@ namespace PetriNetEditor
         {
             private get { return _customElementManager; }
             set { _customElementManager = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a custom element creator to be created.
+        /// </summary>
+        public static IElementCreator CustomElementCreator
+        {
+            private get { return _customElementCreator; }
+            set { _customElementCreator = value; }
         }
         #endregion
 
@@ -109,6 +121,18 @@ namespace PetriNetEditor
             if (CustomElementManager != null)
                 return CustomElementManager;
             return new ElementManager(elementProvider, selectionManager, undoManager, model, drawSize, arrowheadSize);
+        }
+
+        /// <summary>
+        /// Sets up a new ElementCreator or returns the custom element creator.
+        /// </summary>
+        /// <returns>A new ElementCreator or a custom element creator, if one was provided.</returns>
+        public IElementCreator CreateElementCreator(IElementProvider elementProvider, ISelectionManager selectionManager,
+                                                    IElementManager elementManager, IModel model, int drawSize, int arrowheadSize)
+        {
+            if (CustomElementCreator != null)
+                return CustomElementCreator;
+            return new ElementCreator(elementProvider, selectionManager, elementManager, model, drawSize, arrowheadSize);
         }
         #endregion
     }
