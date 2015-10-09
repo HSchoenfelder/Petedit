@@ -25,6 +25,12 @@ namespace PetriNetEditor
 
         /// <summary> Store for the CustomElementManager property. </summary>
         private static IElementManager _customElementManager = null;
+
+        /// <summary> Store for the CustomElementCreator property. </summary>
+        private static IElementCreator _customElementCreator = null;
+
+        /// <summary> Store for the CustomWorkspaceManager property. </summary>
+        private static IWorkspaceManager _customWorkspaceManager = null;
         #endregion
 
         #region properties
@@ -62,6 +68,24 @@ namespace PetriNetEditor
         {
             private get { return _customElementManager; }
             set { _customElementManager = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a custom element creator to be created.
+        /// </summary>
+        public static IElementCreator CustomElementCreator
+        {
+            private get { return _customElementCreator; }
+            set { _customElementCreator = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a custom workspace manager to be created.
+        /// </summary>
+        public static IWorkspaceManager CustomWorkspaceManager
+        {
+            private get { return _customWorkspaceManager; }
+            set { _customWorkspaceManager = value; }
         }
         #endregion
 
@@ -109,6 +133,31 @@ namespace PetriNetEditor
             if (CustomElementManager != null)
                 return CustomElementManager;
             return new ElementManager(elementProvider, selectionManager, undoManager, model, drawSize, arrowheadSize);
+        }
+
+        /// <summary>
+        /// Sets up a new ElementCreator or returns the custom element creator.
+        /// </summary>
+        /// <returns>A new ElementCreator or a custom element creator, if one was provided.</returns>
+        public IElementCreator CreateElementCreator(IElementProvider elementProvider, ISelectionManager selectionManager,
+                                                    IElementManager elementManager, IModel model, int drawSize, int arrowheadSize)
+        {
+            if (CustomElementCreator != null)
+                return CustomElementCreator;
+            return new ElementCreator(elementProvider, selectionManager, elementManager, model, drawSize, arrowheadSize);
+        }
+
+        /// <summary>
+        /// Sets up a new WorkspaceManager or returns the custom workspace manager.
+        /// </summary>
+        /// <returns>A new WorkspaceManager or a custom workspace manager, if one was provided.</returns>
+        public IWorkspaceManager CreateWorkspaceManager(IElementProvider elementProvider, IUndoManagerEx undoManager, 
+                                                        ISelectionManager selectionManager, IElementCreator elementCreator,
+                                                        IModel model)
+        {
+            if (CustomWorkspaceManager != null)
+                return CustomWorkspaceManager;
+            return new WorkspaceManager(elementProvider, undoManager, selectionManager, elementCreator, model);
         }
         #endregion
     }

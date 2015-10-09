@@ -12,6 +12,15 @@ namespace PetriNetEditor
     /// </summary>
     public interface IElementCreator
     {
+        #region properties
+        /// <summary> Gets or sets the current global draw size. </summary>
+        int DrawSize { get; set; }
+
+        /// <summary> Gets or sets the current global arrowhead size. </summary>
+        int ArrowheadSize { get; set; }
+        #endregion
+
+        #region methods
         /// <summary>
         /// Creates a new visual node with the specified id, adds it to the presentation and adds it to the model 
         /// as a place. Adjusts the size of the presentation area and scrolls according to the new visual nodes 
@@ -71,5 +80,6 @@ namespace PetriNetEditor
         /// <param name="id">The id of the node for which to set the token value.</param>
         /// <param name="tokens">The new token value.</param>
         void SetPlaceTokens(String id, int tokens);
+        #endregion
     }
 }

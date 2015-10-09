@@ -57,13 +57,13 @@ namespace PetriNetEditor
         private IUndoManager _undoManager;
 
         /// <summary> Store for the ElementCreator property. </summary>
-        private ElementCreator _elementCreator;
+        private IElementCreator _elementCreator;
 
         /// <summary> Store for the ElementManager property. </summary>
         private IElementManager _elementManager;
 
         /// <summary> Store for the WorkspaceManager property. </summary>
-        private WorkspaceManager _workspaceManager;
+        private IWorkspaceManager _workspaceManager;
         
         /// <summary> Store for the UndoExecuter property. </summary>
         private UndoExecuter _undoExecuter;
@@ -176,7 +176,7 @@ namespace PetriNetEditor
         /// Gets the element creator that allows for the creation of petrinet elements.
         /// operation.
         /// </summary>
-        private ElementCreator ElementCreator
+        private IElementCreator ElementCreator
         {
             get { return _elementCreator; }
         }
@@ -264,7 +264,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the workspace manager that enables operations on the open workspace. </summary>
-        public WorkspaceManager WorkspaceManager
+        public IWorkspaceManager WorkspaceManager
         {
             get { return _workspaceManager; }
         }
@@ -421,8 +421,8 @@ namespace PetriNetEditor
             _selectionManager = df.CreateSelectionManager(ElementProvider, Model);
             _undoManager = df.CreateUndoManager();
             _elementManager = df.CreateElementManager(ElementProvider, SelectionManager, (IUndoManagerEx)UndoManager, Model, DrawSize, ArrowheadSize);
-            _elementCreator = new ElementCreator(ElementProvider, SelectionManager, ElementManager, Model, DrawSize, ArrowheadSize);
-            _workspaceManager = new WorkspaceManager(ElementProvider, (IUndoManagerEx)UndoManager, SelectionManager, ElementCreator, Model);
+            _elementCreator = df.CreateElementCreator(ElementProvider, SelectionManager, ElementManager, Model, DrawSize, ArrowheadSize);
+            _workspaceManager = df.CreateWorkspaceManager(ElementProvider, (IUndoManagerEx)UndoManager, SelectionManager, ElementCreator, Model);
             _undoExecuter = new UndoExecuter(Model, ElementProvider, SelectionManager, (IUndoManager)UndoManager, ElementCreator,
                                              ElementManager);
             UndoManager.UndoTarget = UndoExecuter;

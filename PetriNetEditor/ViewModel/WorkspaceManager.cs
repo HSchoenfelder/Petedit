@@ -13,7 +13,7 @@ namespace PetriNetEditor
     /// <summary>
     /// This class provides logic for the manipulation of the workspace area of the petrinet.
     /// </summary>
-    public class WorkspaceManager : INotifyPropertyChanged
+    public class WorkspaceManager : INotifyPropertyChanged, IWorkspaceManager
     {
         #region fields
         /// <summary> Store for the Model property. </summary>
@@ -29,7 +29,7 @@ namespace PetriNetEditor
         private IUndoManagerEx _undoManager;
 
         /// <summary> Store for the ElementCreator property. </summary>
-        private ElementCreator _elementCreator;
+        private IElementCreator _elementCreator;
 
         /// <summary> Store for the DrawMode property. </summary>
         private DrawMode _drawMode = DrawMode.Drawplace;
@@ -80,10 +80,6 @@ namespace PetriNetEditor
         private readonly IDelegateCommand _mouseLeftButtonUpCommand;
         #endregion
 
-        #region delegates
-        public delegate void SelectingStateChangedEventHandler(object source, StateChangedEventArgs e);
-        #endregion
-
         #region events
         /// <summary> Occurs when a tracked property value changes. </summary>
         public event PropertyChangedEventHandler PropertyChanged;
@@ -132,7 +128,7 @@ namespace PetriNetEditor
         /// Gets the element creator that allows for the creation of petrinet elements.
         /// operation.
         /// </summary>
-        private ElementCreator ElementCreator
+        private IElementCreator ElementCreator
         {
             get { return _elementCreator; }
         }
@@ -339,7 +335,7 @@ namespace PetriNetEditor
         /// <param name="elementManager">Reference to the element manager.</param>
         /// <param name="model">Reference to the model of the petrinet.</param>
         public WorkspaceManager(IElementProvider elementProvider, IUndoManagerEx undoManager, ISelectionManager selectionManager,
-                                ElementCreator elementCreator, IModel model)
+                                IElementCreator elementCreator, IModel model)
         {
             _elementProvider = elementProvider;
             _undoManager = undoManager;

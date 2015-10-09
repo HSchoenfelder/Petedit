@@ -17,4 +17,8 @@ namespace PetriNetEditor
     /// <summary>Handles the DrawingStateChangedEvent.</summary>
     /// <param name="e">The data for the DrawingStateChangedEvent.</param>
     public delegate void DrawingStateChangedEventHandler(object source, StateChangedEventArgs e);
+
+    /// <summary>Handles the SelectingStateChangedEvent.</summary>
+    /// <param name="e">The data for the SelectingStateChangedEvent.</param>
+    public delegate void SelectingStateChangedEventHandler(object source, StateChangedEventArgs e);
 }

@@ -27,7 +27,7 @@ namespace PetriNetEditor
         private IUndoManager _undoManager;
 
         /// <summary> Store for the ElementCreator property. </summary>
-        private ElementCreator _elementCreator;
+        private IElementCreator _elementCreator;
 
         /// <summary> Store for the ElementManager property. </summary>
         private IElementManager _elementManager;
@@ -102,7 +102,7 @@ namespace PetriNetEditor
         /// Gets the element creator that allows for the creation of petrinet elements.
         /// operation.
         /// </summary>
-        private ElementCreator ElementCreator
+        private IElementCreator ElementCreator
         {
             get { return _elementCreator; }
         }
@@ -174,7 +174,7 @@ namespace PetriNetEditor
         /// <param name="elementCreator">Reference to the element creator.</param>
         /// <param name="elementManager">Reference to the element manager.</param>
         public UndoExecuter(IModel model, IElementProvider elementProvider, ISelectionManager selectionManager,
-                            IUndoManager undoManager, ElementCreator elementCreator, IElementManager elementManager)
+                            IUndoManager undoManager, IElementCreator elementCreator, IElementManager elementManager)
         {
             _model = model;
             _elementProvider = elementProvider;
