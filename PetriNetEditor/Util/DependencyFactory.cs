@@ -112,10 +112,12 @@ namespace PetriNetEditor
                 return CustomProvider;
             return new ElementProvider();
         }
-
+        
         /// <summary>
         /// Sets up a new SelectionManager or returns the custom selection manager.
         /// </summary>
+        /// <param name="elementProvider">Reference to the element provider.</param>
+        /// <param name="model">Reference to the model of the petrinet.</param>
         /// <returns>A new SelectionManager or a custom selection manager, if one was provided.</returns>
         public ISelectionManager CreateSelectionManager(IElementProvider elementProvider, IModel model)
         {
@@ -138,6 +140,12 @@ namespace PetriNetEditor
         /// <summary>
         /// Sets up a new ElementManager or returns the custom element manager.
         /// </summary>
+        /// <param name="elementProvider">Reference to the element provider.</param>
+        /// <param name="selectionManager">Reference to the selection manager.</param>
+        /// <param name="undoManager">Reference to the undo manager.</param>
+        /// <param name="model">Reference to the model of the petrinet.</param>
+        /// <param name="drawSize">The initial drawsize.</param>
+        /// <param name="arrowheadSize">The initial arrowhead size.</param>
         /// <returns>A new ElementManager or a custom element manager, if one was provided.</returns>
         public IElementManager CreateElementManager(IElementProvider elementProvider, ISelectionManager selectionManager, 
                                                     IUndoManagerEx undoManager, IModel model, int drawSize, int arrowheadSize)
@@ -150,6 +158,13 @@ namespace PetriNetEditor
         /// <summary>
         /// Sets up a new ElementCreator or returns the custom element creator.
         /// </summary>
+        /// <param name="elementProvider">Reference to the element provider.</param>
+        /// <param name="selectionManager">Reference to the selection manager.</param>
+        /// <param name="undoManager">Reference to the undo manager.</param>
+        /// <param name="elementManager">Reference to the element manager.</param>
+        /// <param name="model">Reference to the model of the petrinet.</param>
+        /// <param name="drawSize">The initial drawsize.</param>
+        /// <param name="arrowheadSize">The initial arrowhead size.</param>
         /// <returns>A new ElementCreator or a custom element creator, if one was provided.</returns>
         public IElementCreator CreateElementCreator(IElementProvider elementProvider, ISelectionManager selectionManager,
                                                     IElementManager elementManager, IModel model, int drawSize, int arrowheadSize)
@@ -162,6 +177,12 @@ namespace PetriNetEditor
         /// <summary>
         /// Sets up a new WorkspaceManager or returns the custom workspace manager.
         /// </summary>
+        /// <param name="elementProvider">Reference to the element provider.</param>
+        /// <param name="undoManager">Reference to the undo manager.</param>
+        /// <param name="selectionManager">Reference to the selection manager.</param>
+        /// <param name="elementCreator">Reference to the element creator.</param>
+        /// <param name="elementManager">Reference to the element manager.</param>
+        /// <param name="model">Reference to the model of the petrinet.</param>
         /// <returns>A new WorkspaceManager or a custom workspace manager, if one was provided.</returns>
         public IWorkspaceManager CreateWorkspaceManager(IElementProvider elementProvider, IUndoManagerEx undoManager, 
                                                         ISelectionManager selectionManager, IElementCreator elementCreator,
@@ -175,6 +196,12 @@ namespace PetriNetEditor
         /// <summary>
         /// Sets up a new UndoExecuter or returns the custom undo executer.
         /// </summary>
+        /// <param name="model">Reference to the model of the petrinet.</param>
+        /// <param name="elementProvider">Reference to the element provider.</param>
+        /// <param name="selectionManager">Reference to the selection manager.</param>
+        /// <param name="undoManager">Reference to the undo manager.</param>
+        /// <param name="elementCreator">Reference to the element creator.</param>
+        /// <param name="elementManager">Reference to the element manager.</param>
         /// <returns>A new UndoExecuter or a custom undo executer, if one was provided.</returns>
         public IUndoExecuter CreateUndoExecuter(IModel model, IElementProvider elementProvider, ISelectionManager selectionManager, 
                                                 IUndoManager undoManager, IElementCreator elementCreator, 

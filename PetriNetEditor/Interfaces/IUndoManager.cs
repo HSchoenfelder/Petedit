@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PetriNetEditor
 {
+    /// <summary>
+    /// Provides logic for managing the undo and the redo queue.
+    /// </summary>
     public interface IUndoManager
     {
         #region properties

@@ -114,6 +114,7 @@
     <Compile Include="Util\DependencyFactory.cs" />
     <Compile Include="Util\Exceptions\DuplicateIdException.cs" />
     <Compile Include="Util\Exceptions\InvalidPNMLException.cs" />
+    <Compile Include="Util\ModelFactory.cs" />
     <Compile Include="Util\NodeInfo.cs" />
     <Compile Include="Resources\Extensions\PushBinding.cs" />
     <Compile Include="Resources\Extensions\PushBindingCollection.cs" />

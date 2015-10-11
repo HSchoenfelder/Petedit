@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PetriNetEditor
 {
+    /// <summary>
+    /// Provides methods for writing to a PNML document.
+    /// </summary>
     public interface IPNMLWriter
     {
         /// <summary>

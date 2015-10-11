@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PetriNetEditor
 {
+    /// <summary>
+    /// Provides methods for parsing a PNML document.
+    /// </summary>
     public interface IPNMLParser
     {
         /// <summary>

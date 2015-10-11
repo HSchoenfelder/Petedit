@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace PetriNetEditor
 {
+    /// <summary>
+    /// Provides logic for a visual presentation of the Name of a Node 
+    /// in the petrinet.
+    /// </summary>
     public interface INameField
     {
         #region properties

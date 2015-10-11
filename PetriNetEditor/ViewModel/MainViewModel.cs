@@ -413,7 +413,8 @@ namespace PetriNetEditor
         public MainViewModel()
         {
             // initialize model
-            _model = new ModelMain();
+            ModelFactory mf = new ModelFactory();
+            _model = mf.CreateModel();
 
             // module initializations
             DependencyFactory df = new DependencyFactory();

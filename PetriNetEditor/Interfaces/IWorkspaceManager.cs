@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PetriNetEditor
 {
+    /// <summary>
+    /// Provides logic for the manipulation of the workspace area of the petrinet.
+    /// </summary>
     public interface IWorkspaceManager
     {
         #region events

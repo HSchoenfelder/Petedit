@@ -7,6 +7,9 @@ using System.Windows;
 
 namespace PetriNetEditor
 {
+    /// <summary>
+    /// Provides methods to perform undo and redo operations on the petrinet.
+    /// </summary>
     public interface IUndoExecuter
     {
         #region events
