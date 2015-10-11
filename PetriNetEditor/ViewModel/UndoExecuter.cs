@@ -11,7 +11,7 @@ namespace PetriNetEditor
     /// <summary>
     /// This class provides methods to perform undo and redo operations on the petrinet.
     /// </summary>
-    public class UndoExecuter
+    public class UndoExecuter : IUndoExecuter
     {
         #region fields
         /// <summary> Store for the Model property. </summary>
@@ -46,12 +46,6 @@ namespace PetriNetEditor
 
         /// <summary> Store for the Selecting property. </summary>
         private bool _selecting;
-        #endregion
-
-        #region delegates
-        public delegate void ViewSizeChangedEventHandler(object source, ViewSizeChangedEventArgs e);
-
-        public delegate void SizeFactorChangedEventHandler(object source, SizeFactorChangedEventArgs e);
         #endregion
 
         #region events

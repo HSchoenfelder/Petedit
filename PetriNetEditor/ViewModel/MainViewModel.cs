@@ -66,7 +66,7 @@ namespace PetriNetEditor
         private IWorkspaceManager _workspaceManager;
         
         /// <summary> Store for the UndoExecuter property. </summary>
-        private UndoExecuter _undoExecuter;
+        private IUndoExecuter _undoExecuter;
 
         /// <summary> Store for the BlockStatChange property. </summary>
         private bool _blockStateChange;
@@ -182,7 +182,7 @@ namespace PetriNetEditor
         }
 
         /// <summary> Gets the undo executer that performs the undo and redo operations. </summary>
-        private UndoExecuter UndoExecuter
+        private IUndoExecuter UndoExecuter
         {
             get { return _undoExecuter; }
         }
@@ -423,8 +423,7 @@ namespace PetriNetEditor
             _elementManager = df.CreateElementManager(ElementProvider, SelectionManager, (IUndoManagerEx)UndoManager, Model, DrawSize, ArrowheadSize);
             _elementCreator = df.CreateElementCreator(ElementProvider, SelectionManager, ElementManager, Model, DrawSize, ArrowheadSize);
             _workspaceManager = df.CreateWorkspaceManager(ElementProvider, (IUndoManagerEx)UndoManager, SelectionManager, ElementCreator, Model);
-            _undoExecuter = new UndoExecuter(Model, ElementProvider, SelectionManager, (IUndoManager)UndoManager, ElementCreator,
-                                             ElementManager);
+            _undoExecuter = df.CreateUndoExecuter(Model, ElementProvider, SelectionManager, (IUndoManager)UndoManager, ElementCreator, ElementManager);
             UndoManager.UndoTarget = UndoExecuter;
 
             // event subscriptions

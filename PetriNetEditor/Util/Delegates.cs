@@ -21,4 +21,8 @@ namespace PetriNetEditor
     /// <summary>Handles the SelectingStateChangedEvent.</summary>
     /// <param name="e">The data for the SelectingStateChangedEvent.</param>
     public delegate void SelectingStateChangedEventHandler(object source, StateChangedEventArgs e);
+
+    /// <summary>Handles the SizeFactorChangedEvent.</summary>
+    /// <param name="e">The data for the SizeFactorChangedEvent.</param>
+    public delegate void SizeFactorChangedEventHandler(object source, SizeFactorChangedEventArgs e);
 }

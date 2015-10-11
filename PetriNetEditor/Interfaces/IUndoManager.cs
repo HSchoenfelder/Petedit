@@ -12,7 +12,7 @@ namespace PetriNetEditor
         /// <summary> 
         /// Gets or sets the UndoExecuter which performs undo and redo operations.
         /// </summary>
-        UndoExecuter UndoTarget { get; set; }
+        IUndoExecuter UndoTarget { get; set; }
 
         /// <summary> 
         /// Gets or sets the amount of right shift during the current create operation. 

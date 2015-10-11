@@ -15,7 +15,7 @@ namespace PetriNetEditor
         #region fields
 
         /// <summary> Store for the UndoExecuter property. </summary>
-        private UndoExecuter _undoTarget;
+        private IUndoExecuter _undoTarget;
 
         /// <summary> Store for the Undos property. </summary>
         private Stack<object> _undos = new Stack<object>();
@@ -276,7 +276,7 @@ namespace PetriNetEditor
         /// <summary> 
         /// Gets or sets the UndoExecuter which performs undo and redo operations.
         /// </summary>
-        public UndoExecuter UndoTarget
+        public IUndoExecuter UndoTarget
         {
             get { return _undoTarget; }
             set { _undoTarget = value; }

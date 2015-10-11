@@ -31,6 +31,9 @@ namespace PetriNetEditor
 
         /// <summary> Store for the CustomWorkspaceManager property. </summary>
         private static IWorkspaceManager _customWorkspaceManager = null;
+
+        /// <summary> Store for the CustomUndoExecuter property. </summary>
+        private static IUndoExecuter _customUndoExecuter = null;
         #endregion
 
         #region properties
@@ -86,6 +89,15 @@ namespace PetriNetEditor
         {
             private get { return _customWorkspaceManager; }
             set { _customWorkspaceManager = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a custom undo executer to be created.
+        /// </summary>
+        public static IUndoExecuter CustomUndoExecuter
+        {
+            private get { return _customUndoExecuter; }
+            set { _customUndoExecuter = value; }
         }
         #endregion
 
@@ -158,6 +170,19 @@ namespace PetriNetEditor
             if (CustomWorkspaceManager != null)
                 return CustomWorkspaceManager;
             return new WorkspaceManager(elementProvider, undoManager, selectionManager, elementCreator, model);
+        }
+
+        /// <summary>
+        /// Sets up a new UndoExecuter or returns the custom undo executer.
+        /// </summary>
+        /// <returns>A new UndoExecuter or a custom undo executer, if one was provided.</returns>
+        public IUndoExecuter CreateUndoExecuter(IModel model, IElementProvider elementProvider, ISelectionManager selectionManager, 
+                                                IUndoManager undoManager, IElementCreator elementCreator, 
+                                                IElementManager elementManager)
+        {
+            if (CustomUndoExecuter != null)
+                return CustomUndoExecuter;
+            return new UndoExecuter(model, elementProvider, selectionManager, undoManager, elementCreator, elementManager);
         }
         #endregion
     }
