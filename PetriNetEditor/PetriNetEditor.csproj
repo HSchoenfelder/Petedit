@@ -140,7 +140,7 @@
     <Compile Include="Resources\Selectors\NodeItemDataTemplateSelector.cs" />
     <Compile Include="Resources\Extensions\NodeModeExtension.cs" />
     <Compile Include="Util\NPoint.cs" />
-    <Compile Include="Util\ObservableDictionaryOfTKeyTValue.cs" />
+    <Compile Include="External\ObservableDictionaryOfTKeyTValue.cs" />
     <Compile Include="Resources\Extensions\CaptureExtension.cs" />
     <Compile Include="Resources\Extensions\ScrollExtension.cs" />
     <Compile Include="Resources\Extensions\TitleItem.cs" />
