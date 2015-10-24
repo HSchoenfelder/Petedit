@@ -63,6 +63,7 @@
     <Compile Include="InfoDialog.xaml.cs">
       <DependentUpon>InfoDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ICustomCommand.cs" />
     <Compile Include="Interfaces\IDelegateCommand.cs" />
     <Compile Include="Interfaces\IDrawingArc.cs" />
     <Compile Include="Interfaces\IElementCreator.cs" />
@@ -140,7 +141,7 @@
     <Compile Include="Resources\Selectors\NodeItemDataTemplateSelector.cs" />
     <Compile Include="Resources\Extensions\NodeModeExtension.cs" />
     <Compile Include="Util\NPoint.cs" />
-    <Compile Include="External\ObservableDictionaryOfTKeyTValue.cs" />
+    <Compile Include="Util\ObservableDictionaryOfTKeyTValue.cs" />
     <Compile Include="Resources\Extensions\CaptureExtension.cs" />
     <Compile Include="Resources\Extensions\ScrollExtension.cs" />
     <Compile Include="Resources\Extensions\TitleItem.cs" />
@@ -289,7 +290,6 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Redo16.gif" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

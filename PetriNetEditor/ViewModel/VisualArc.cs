@@ -20,6 +20,9 @@ namespace PetriNetEditor
         /// <summary> Store for the Model property. </summary>
         private IModel _model;
 
+        /// <summary> Store for the ElementManager property. </summary>
+        private IElementManager _elementManager;
+
         /// <summary> Store for the Id property. </summary>
         private String _id;
 
@@ -97,6 +100,14 @@ namespace PetriNetEditor
         #endregion
 
         #region public
+        /// <summary> 
+        /// Gets the element manager that enables arc draw and move operations for nodes. 
+        /// </summary>
+        public IElementManager ElementManager
+        {
+            get { return _elementManager; }
+        }
+
         /// <summary> Gets the Id that uniquely identifies this VisualArc. </summary>
         public String Id
         {
@@ -408,9 +419,11 @@ namespace PetriNetEditor
         /// <param name="drawsize">The size at which the VisualArc is drawn.</param>
         /// <param name="arrowheadSize">The size at which the arrowhead of the VisualArc is drawn.</param>
         /// <param name="model">A reference to the model of the petrinet.</param>
-        public VisualArc(int drawsize, int arrowheadSize, IModel model)
+        /// <param name="elementManager">A reference to the ElementManager.</param>
+        public VisualArc(int drawsize, int arrowheadSize, IModel model, IElementManager elementManager)
         {
             _model = model;
+            _elementManager = elementManager;
             _drawSize = drawsize;
             _arrowheadSize = arrowheadSize;
         }

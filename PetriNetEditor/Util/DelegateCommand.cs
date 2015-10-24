@@ -11,25 +11,65 @@ namespace PetriNetEditor
     /// <summary>
     /// This class represents an ICommand that is used for ViewModel delegation.
     /// </summary>
-    /// <typeparam name="T">The type of the command parameter.</typeparam>
-    public class DelegateCommand<T> : ICommand, IDelegateCommand
+    public class DelegateCommand : ICommand, IDelegateCommand
     {
-        /// <summary> The Predicate to be checked in the CanExecute-method. </summary>
-        private readonly Predicate<T> _canExecute;
+        #region fields
+        /// <summary> Store for the CanExecutePred property. </summary>
+        private Predicate<dynamic> _canExecutePred;
 
-        /// <summary> The Action to be performed in the Execute-method. </summary>
-        private readonly Action<T> _execute;
+        /// <summary> Store for the ExecuteAction property. </summary>
+        private Action<dynamic> _executeActionOne;
 
+        /// <summary> Store for the ExecuteAction property. </summary>
+        private Action<dynamic, dynamic> _executeActionTwo;
+
+        /// <summary> Store for the ExecuteAction property. </summary>
+        private Action<dynamic, dynamic, dynamic> _executeActionThree;
+        #endregion
+
+        #region events
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command should execute.
         /// </summary>
         public event EventHandler CanExecuteChanged;
+        #endregion
 
+        #region properties
+        /// <summary> Sets the Predicate to be checked in the CanExecute-method. </summary>
+        public Predicate<dynamic> CanExecutePred
+        {
+            private get { return _canExecutePred; }
+            set { _canExecutePred = value; }
+        }
+
+        /// <summary> Sets the Action to be performed in the Execute-method. </summary>
+        public Action<dynamic> ExecuteActionOne
+        {
+            private get { return _executeActionOne; }
+            set { _executeActionOne = value; }
+        }
+
+        /// <summary> Sets the Action to be performed in the Execute-method. </summary>
+        public Action<dynamic, dynamic> ExecuteActionTwo
+        {
+            private get { return _executeActionTwo; }
+            set { _executeActionTwo = value; }
+        }
+
+        /// <summary> Sets the Action to be performed in the Execute-method. </summary>
+        public Action<dynamic, dynamic, dynamic> ExecuteActionThree
+        {
+            private get { return _executeActionThree; }
+            set { _executeActionThree = value; }
+        }
+        #endregion
+
+        #region constructors
         /// <summary>
         /// Initializes a new instance of the DelegateCommand class with the specified Action. 
         /// </summary>
         /// <param name="execute">The Action to be executed.</param>
-        public DelegateCommand(Action<T> execute)
+        public DelegateCommand(Action<dynamic> execute)
             : this(execute, null)
         {
         }
@@ -39,12 +79,54 @@ namespace PetriNetEditor
         /// </summary>
         /// <param name="execute">The Action to be executed.</param>
         /// <param name="canExecute">The Predicate to be checked.</param>
-        public DelegateCommand(Action<T> execute, Predicate<T> canExecute)
+        public DelegateCommand(Action<dynamic> execute, Predicate<dynamic> canExecute)
         {
-            _execute = execute;
-            _canExecute = canExecute;
+            _executeActionOne = execute;
+            _canExecutePred = canExecute;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the DelegateCommand class with the specified Action. 
+        /// </summary>
+        /// <param name="execute">The Action to be executed.</param>
+        public DelegateCommand(Action<dynamic, dynamic> execute)
+            : this(execute, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the DelegateCommand class with the specified Action and Predicate. 
+        /// </summary>
+        /// <param name="execute">The Action to be executed.</param>
+        /// <param name="canExecute">The Predicate to be checked.</param>
+        public DelegateCommand(Action<dynamic, dynamic> execute, Predicate<dynamic> canExecute)
+        {
+            _executeActionTwo = execute;
+            _canExecutePred = canExecute;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the DelegateCommand class with the specified Action. 
+        /// </summary>
+        /// <param name="execute">The Action to be executed.</param>
+        public DelegateCommand(Action<dynamic, dynamic, dynamic> execute)
+            : this(execute, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the DelegateCommand class with the specified Action and Predicate. 
+        /// </summary>
+        /// <param name="execute">The Action to be executed.</param>
+        /// <param name="canExecute">The Predicate to be checked.</param>
+        public DelegateCommand(Action<dynamic, dynamic, dynamic> execute, Predicate<dynamic> canExecute)
+        {
+            _executeActionThree = execute;
+            _canExecutePred = canExecute;
+        }
+        #endregion
+
+        #region methods
         /// <summary>
         /// Executes the method that determines whether the command can execute in its current state.
         /// </summary>
@@ -52,18 +134,29 @@ namespace PetriNetEditor
         /// <returns>true if this command can be executed; otherwise false.</returns>
         public bool CanExecute(object parameter)
         {
-            if (_canExecute == null)
+            if (CanExecutePred == null)
                 return true;
-            return _canExecute((parameter == null) ? default(T) : (T)Convert.ChangeType(parameter, typeof(T)));
+            return CanExecutePred(parameter);
         }
 
         /// <summary>
         /// Executes the method to be called when the command is invoked.
         /// </summary>
-        /// <param name="parameter">The command parameter.</param>
+        /// <param name="parameter">The parameters to the command.</param>
         public void Execute(object parameter)
         {
-            _execute((parameter == null) ? default(T) : (T)Convert.ChangeType(parameter, typeof(T)));
+            if (ExecuteActionOne != null)
+                ExecuteActionOne(parameter);
+            else if(ExecuteActionTwo != null)
+            {
+                object[] paramArray = (object[])parameter;
+                ExecuteActionTwo(paramArray[0], paramArray[1]);
+            }
+            else if (ExecuteActionThree != null)
+            {
+                object[] paramArray = (object[])parameter;
+                ExecuteActionThree(paramArray[0], paramArray[1], paramArray[2]);
+            }
         }
 
         /// <summary>
@@ -74,153 +167,6 @@ namespace PetriNetEditor
             if (CanExecuteChanged != null)
                 CanExecuteChanged(this, EventArgs.Empty);
         }
-    }
-
-
-    /// <summary>
-    /// This class represents an ICommand that is used for ViewModel delegation and for which two parameters
-    /// with the prescribed types can be supplied via an array as the command parameter.
-    /// </summary>
-    /// <typeparam name="T">The type of the first item supplied by the command parameter.</typeparam>
-    /// <typeparam name="U">The type of the second item supplied by the command parameter.</typeparam>
-    public class DelegateCommand<T, U> : ICommand, IDelegateCommand
-    {
-        /// <summary> The Predicate to be checked in the CanExecute-method. </summary>
-        private readonly Predicate<object> _canExecute;
-
-        /// <summary> The Action to be performed in the Execute-method. </summary>
-        private readonly Action<T, U> _execute;
-
-        /// <summary>
-        /// Occurs when changes occur that affect whether or not the command should execute.
-        /// </summary>
-        public event EventHandler CanExecuteChanged;
-
-        /// <summary>
-        /// Initializes a new instance of the DelegateCommand class with the specified Action. 
-        /// </summary>
-        /// <param name="execute">The Action to be executed.</param>
-        public DelegateCommand(Action<T, U> execute)
-            : this(execute, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the DelegateCommand class with the specified Action and Predicate. 
-        /// </summary>
-        /// <param name="execute">The Action to be executed.</param>
-        /// <param name="canExecute">The Predicate to be checked.</param>
-        public DelegateCommand(Action<T, U> execute, Predicate<object> canExecute)
-        {
-            _execute = execute;
-            _canExecute = canExecute;
-        }
-
-        /// <summary>
-        /// Executes the method that determines whether the command can execute in its current state.
-        /// </summary>
-        /// <param name="parameter">The command parameter.</param>
-        /// <returns>true if this command can be executed; otherwise false.</returns>
-        public bool CanExecute(object parameter)
-        {
-            if (_canExecute == null)
-                return true;
-
-            return _canExecute(parameter);
-        }
-
-        /// <summary>
-        /// Executes the method to be called when the command is invoked.
-        /// </summary>
-        /// <param name="parameter">The command parameter.</param>
-        public void Execute(object parameter)
-        {
-            object[] paramArray = (object[])parameter;
-            _execute((T)Convert.ChangeType(paramArray[0], typeof(T)), (U)Convert.ChangeType(paramArray[1], typeof(U))); 
-        }
-
-        /// <summary>
-        /// Raises the CanExecuteChanged event for this command.
-        /// </summary>
-        public void RaiseCanExecuteChanged()
-        {
-            if (CanExecuteChanged != null)
-                CanExecuteChanged(this, EventArgs.Empty);
-        }
-    }
-
-
-    /// <summary>
-    /// This class represents an ICommand that is used for ViewModel delegation and for which three parameters
-    /// with the prescribed types can be supplied via an array as the command parameter.
-    /// </summary>
-    /// <typeparam name="T">The type of the first item supplied by the command parameter.</typeparam>
-    /// <typeparam name="U">The type of the second item supplied by the command parameter.</typeparam>
-    /// <typeparam name="V">The type of the third item supplied by the command parameter.</typeparam>
-    public class DelegateCommand<T, U, V> : ICommand, IDelegateCommand
-    {
-        /// <summary> The Predicate to be checked in the CanExecute-method. </summary>
-        private readonly Predicate<object> _canExecute;
-
-        /// <summary> The Action to be performed in the Execute-method. </summary>
-        private readonly Action<T, U, V> _execute;
-
-        /// <summary>
-        /// Occurs when changes occur that affect whether or not the command should execute.
-        /// </summary>
-        public event EventHandler CanExecuteChanged;
-
-        /// <summary>
-        /// Initializes a new instance of the DelegateCommand class with the specified Action. 
-        /// </summary>
-        /// <param name="execute">The Action to be executed.</param>
-        public DelegateCommand(Action<T, U, V> execute)
-            : this(execute, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the DelegateCommand class with the specified Action and Predicate. 
-        /// </summary>
-        /// <param name="execute">The Action to be executed.</param>
-        /// <param name="canExecute">The Predicate to be checked.</param>
-        public DelegateCommand(Action<T, U, V> execute, Predicate<object> canExecute)
-        {
-            _execute = execute;
-            _canExecute = canExecute;
-        }
-
-        /// <summary>
-        /// Executes the method that determines whether the command can execute in its current state.
-        /// </summary>
-        /// <param name="parameter">The command parameter.</param>
-        /// <returns>true if this command can be executed; otherwise false.</returns>
-        public bool CanExecute(object parameter)
-        {
-            if (_canExecute == null)
-                return true;
-
-            return _canExecute(parameter);
-        }
-
-        /// <summary>
-        /// Executes the method to be called when the command is invoked.
-        /// </summary>
-        /// <param name="parameter">The command parameter.</param>
-        public void Execute(object parameter)
-        {
-            object[] paramArray = (object[])parameter;
-            _execute((T)Convert.ChangeType(paramArray[0], typeof(T)), (U)Convert.ChangeType(paramArray[1], typeof(U)),
-                                           (V)Convert.ChangeType(paramArray[2], typeof(V)));
-        }
-
-        /// <summary>
-        /// Raises the CanExecuteChanged event for this command.
-        /// </summary>
-        public void RaiseCanExecuteChanged()
-        {
-            if (CanExecuteChanged != null)
-                CanExecuteChanged(this, EventArgs.Empty);
-        }
+        #endregion
     }
 }

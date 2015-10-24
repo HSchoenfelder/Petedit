@@ -345,10 +345,12 @@ namespace PetriNetEditor
             _rectSelectedNodes = new List<String>();
 
             CommandFactory commandFactory = new CommandFactory();
-            _drawModeChangeCommand = commandFactory.Create<DrawMode>(HandleDrawModeChange);
-            _mouseLeftButtonDownCommand = commandFactory.Create<Point, bool>(HandleMouseLeftButtonDown);
-            _selectRectMouseMoveCommand = commandFactory.Create<Point>(HandleSelectRectMouseMove);
-            _mouseLeftButtonUpCommand = commandFactory.Create<Point>(HandleMouseLeftButtonUp);
+            _drawModeChangeCommand = commandFactory.Create<DrawMode>(CommandTypes.DrawModeChangeCommand, HandleDrawModeChange);
+            _mouseLeftButtonDownCommand = commandFactory.Create<NPoint, bool>(CommandTypes.MouseLeftButtonDownCommand, 
+                                                                              HandleMouseLeftButtonDown);
+            _selectRectMouseMoveCommand = commandFactory.Create<NPoint>(CommandTypes.SelectRectMouseMoveCommand, 
+                                                                        HandleSelectRectMouseMove);
+            _mouseLeftButtonUpCommand = commandFactory.Create<NPoint>(CommandTypes.MouseLeftButtonUpCommandWS, HandleMouseLeftButtonUp);
         }
         #endregion
 
@@ -377,7 +379,7 @@ namespace PetriNetEditor
         /// </summary>
         /// <param name="coords">The coordinates of the MouseLeftButtonDownEvent.</param>
         /// <param name="alternate">A value that indicates whether a modifier key was pressed.</param>
-        private void HandleMouseLeftButtonDown(Point coords, bool alternate)
+        private void HandleMouseLeftButtonDown(NPoint coords, bool alternate)
         {
             if (DrawMode == DrawMode.Select)
                 PrepareSelectRect(coords, alternate);
@@ -388,7 +390,7 @@ namespace PetriNetEditor
         /// rectangle according to the provided coordinates.
         /// </summary>
         /// <param name="pos">The position of the mouse pointer after the move.</param>
-        private void HandleSelectRectMouseMove(Point pos)
+        private void HandleSelectRectMouseMove(NPoint pos)
         {
             if (DrawMode == DrawMode.Select && Selecting)
                 UpdateSelectRect(pos);
@@ -400,7 +402,7 @@ namespace PetriNetEditor
         /// been in progress, it is terminated.
         /// </summary>
         /// <param name="coords">The coordinates of the MouseLeftButtonUpEvent.</param>
-        private void HandleMouseLeftButtonUp(Point coords)
+        private void HandleMouseLeftButtonUp(NPoint coords)
         {
             // if not drawing arc
             if (!Drawing)

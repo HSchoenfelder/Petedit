@@ -446,13 +446,13 @@ namespace PetriNetEditor
 
             // connect command handlers
             CommandFactory commandFactory = new CommandFactory();
-            _sizeChangeCommand = commandFactory.Create<int>(HandleSizeChange);
-            _deleteNodesCommand = commandFactory.Create<String>(HandleDeleteNodes, CanDeleteNodes);
-            _selectAllCommand = commandFactory.Create<String>(HandleSelectAll, CanSelectAll);
-            _loadedCommand = commandFactory.Create<Point>(HandleLoaded);
-            _newFileCommand = commandFactory.Create<String>(HandleFileNew);
-            _loadFileCommand = commandFactory.Create<String>(HandleFileLoad);
-            _saveFileCommand = commandFactory.Create<String>(HandleFileSave);
+            _sizeChangeCommand = commandFactory.Create<int>(CommandTypes.SizeChangeCommand, HandleSizeChange);
+            _deleteNodesCommand = commandFactory.Create<String>(CommandTypes.DeleteNodesCommand, HandleDeleteNodes, CanDeleteNodes);
+            _selectAllCommand = commandFactory.Create<String>(CommandTypes.SelectAllCommand, HandleSelectAll, CanSelectAll);
+            _loadedCommand = commandFactory.Create<NPoint>(CommandTypes.LoadedCommand, HandleLoaded);
+            _newFileCommand = commandFactory.Create<String>(CommandTypes.NewFileCommand, HandleFileNew);
+            _loadFileCommand = commandFactory.Create<String>(CommandTypes.LoadFileCommand, HandleFileLoad);
+            _saveFileCommand = commandFactory.Create<String>(CommandTypes.SaveFileCommand, HandleFileSave);
         }
         #endregion
 
@@ -588,7 +588,7 @@ namespace PetriNetEditor
         /// </summary>
         /// <param name="p">A point containing the new width and height of the presentation area.
         /// </param>
-        private void HandleLoaded(Point p)
+        private void HandleLoaded(NPoint p)
         {
             ViewWidth = p.X;
             ViewHeight = p.Y;

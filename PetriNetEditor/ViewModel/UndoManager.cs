@@ -449,8 +449,8 @@ namespace PetriNetEditor
 
             // connect command handler
             CommandFactory commandFactory = new CommandFactory();
-            _undoCommand = commandFactory.Create<String>(HandleUndo, CanUndo);
-            _redoCommand = commandFactory.Create<String>(HandleRedo, CanRedo);
+            _undoCommand = commandFactory.Create<String>(CommandTypes.UndoCommand, HandleUndo, CanUndo);
+            _redoCommand = commandFactory.Create<String>(CommandTypes.RedoCommand, HandleRedo, CanRedo);
         }
         #endregion
 

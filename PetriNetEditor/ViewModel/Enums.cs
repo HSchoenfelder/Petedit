@@ -82,4 +82,61 @@ namespace PetriNetEditor
         /// <summary> No operation. </summary>
         None
     }
+
+    /// <summary>
+    /// Contains values for all available command types.
+    /// </summary>
+    public enum CommandTypes
+    {
+        /// <summary> The size change command. </summary>
+        SizeChangeCommand,
+        /// <summary> The delete nodes command. </summary>
+        DeleteNodesCommand,
+        /// <summary> The select all command. </summary>
+        SelectAllCommand,
+        /// <summary> The loaded command. </summary>
+        LoadedCommand,
+        /// <summary> The new file command. </summary>
+        NewFileCommand,
+        /// <summary> The load file command. </summary>
+        LoadFileCommand,
+        /// <summary> The save file command. </summary>
+        SaveFileCommand,
+        /// <summary> The node mode change command. </summary>
+        NodeModeChangeCommand,
+        /// <summary> The name change click command. </summary>
+        NameChangeClickCommand,
+        /// <summary> The name field clicked command. </summary>
+        NameFieldClickedCommand,
+        /// <summary> The name confirmed command. </summary>
+        NameConfirmedCommand,
+        /// <summary> The name changed command. </summary>
+        NameChangedCommand,
+        /// <summary> The node mouse left button down command. </summary>
+        NodeMouseLeftButtonDownCommand,
+        /// <summary> The arc mouse left button down command. </summary>
+        ArcMouseLeftButtonDownCommand,
+        /// <summary> The node mouse left button down command. </summary>
+        NodeMouseMoveCommand,
+        /// <summary> The node mouse left button up command. </summary>
+        NodeMouseLeftButtonUpCommand,
+        /// <summary> The mouse left button up command for the element manager. </summary>
+        MouseLeftButtonUpCommandEM,
+        /// <summary> The tokens changed command. </summary>
+        TokensChangedCommand,
+        /// <summary> The perform transition command. </summary>
+        PerformTransitionCommand,
+        /// <summary> The draw mode change command. </summary>
+        DrawModeChangeCommand,
+        /// <summary> The mouse left button down command. </summary>
+        MouseLeftButtonDownCommand,
+        /// <summary> The select rect mouse move command. </summary>
+        SelectRectMouseMoveCommand,
+        /// <summary> The mouse left button up command for the workspace manager. </summary>
+        MouseLeftButtonUpCommandWS,
+        /// <summary> The undo command. </summary>
+        UndoCommand,
+        /// <summary> The redo command. </summary>
+        RedoCommand
+    }
 }

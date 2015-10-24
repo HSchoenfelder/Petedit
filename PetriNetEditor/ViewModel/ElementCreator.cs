@@ -183,7 +183,7 @@ namespace PetriNetEditor
         /// <param name="selected"> This value indicates whether the arc is to be created in selected state. </param>
         public void CreateArc(String id, String sourceId, String targetId, bool selected)
         {
-            VisualArc arc = new VisualArc(DrawSize, ArrowheadSize, Model);
+            VisualArc arc = new VisualArc(DrawSize, ArrowheadSize, Model, ElementManager);
             Model.AddArc(sourceId, targetId, id);
             arc.SourceType = Model.IsPlace(sourceId) ? NodeType.Place : NodeType.Transition;
             arc.PositionArc(Model.GetCoordinates(sourceId), Model.GetCoordinates(targetId));

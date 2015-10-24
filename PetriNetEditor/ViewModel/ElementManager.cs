@@ -83,7 +83,7 @@ namespace PetriNetEditor
         private readonly IDelegateCommand _nodeMouseLeftButtonDownCommand;
 
         /// <summary> Store for the ArcMouseLeftButtonDownCommand property. </summary>
-        private IDelegateCommand _arcMouseLeftButtonDownCommand;
+        private readonly IDelegateCommand _arcMouseLeftButtonDownCommand;
 
         /// <summary> Store for the NodeMouseMoveCommand property. </summary>
         private readonly IDelegateCommand _nodeMouseMoveCommand;
@@ -423,21 +423,25 @@ namespace PetriNetEditor
             _model = model;
             _drawSize = drawSize;
             _arrowheadSize = arrowheadSize;
-            _drawingArc = new VisualArc(DrawSize, ArrowheadSize, Model);
+            _drawingArc = new VisualArc(DrawSize, ArrowheadSize, Model, this);
 
             CommandFactory commandFactory = new CommandFactory();
-            _nodeModeChangeCommand = commandFactory.Create<NodeMode>(HandleNodeModeChange);
-            _nameChangeClickCommand = commandFactory.Create<String>(HandleNameChangeClick);
-            _nameFieldClickedCommand = commandFactory.Create<String>(HandleNameFieldClicked);
-            _nameConfirmedCommand = commandFactory.Create<String>(HandleNameConfirmed);
-            _nameChangedCommand = commandFactory.Create<String, String>(HandleNameChanged);
-            _nodeMouseLeftButtonDownCommand = commandFactory.Create<String, Point, bool>(HandleNodeMouseLeftButtonDown);
-            _arcMouseLeftButtonDownCommand = commandFactory.Create<String, bool>(HandleArcMouseLeftButtonDown);
-            _nodeMouseMoveCommand = commandFactory.Create<Point>(HandleNodeMouseMove);
-            _nodeMouseLeftButtonUpCommand = commandFactory.Create<String, Point, bool>(HandleNodeMouseLeftButtonUp);
-            _mouseLeftButtonUpCommand = commandFactory.Create<Point>(HandleMouseLeftButtonUp);
-            _tokensChangedCommand = commandFactory.Create<String, String>(HandleTokensChanged);
-            _performTransitionCommand = commandFactory.Create<String>(HandlePerformTransition, CanPerformTransition);
+            _nodeModeChangeCommand = commandFactory.Create<NodeMode>(CommandTypes.NodeModeChangeCommand, HandleNodeModeChange);
+            _nameChangeClickCommand = commandFactory.Create<String>(CommandTypes.NameChangeClickCommand, HandleNameChangeClick);
+            _nameFieldClickedCommand = commandFactory.Create<String>(CommandTypes.NameFieldClickedCommand, HandleNameFieldClicked);
+            _nameConfirmedCommand = commandFactory.Create<String>(CommandTypes.NameConfirmedCommand, HandleNameConfirmed);
+            _nameChangedCommand = commandFactory.Create<String, String>(CommandTypes.NameChangedCommand, HandleNameChanged);
+            _nodeMouseLeftButtonDownCommand = commandFactory.Create<String, NPoint, bool>(CommandTypes.NodeMouseLeftButtonDownCommand, 
+                                                                                          HandleNodeMouseLeftButtonDown);
+            _arcMouseLeftButtonDownCommand = commandFactory.Create<String, bool>(CommandTypes.ArcMouseLeftButtonDownCommand, 
+                                                                                 HandleArcMouseLeftButtonDown);
+            _nodeMouseMoveCommand = commandFactory.Create<NPoint>(CommandTypes.NodeMouseMoveCommand, HandleNodeMouseMove);
+            _nodeMouseLeftButtonUpCommand = commandFactory.Create<String, NPoint, bool>(CommandTypes.NodeMouseLeftButtonUpCommand, 
+                                                                                        HandleNodeMouseLeftButtonUp);
+            _mouseLeftButtonUpCommand = commandFactory.Create<NPoint>(CommandTypes.MouseLeftButtonUpCommandEM, HandleMouseLeftButtonUp);
+            _tokensChangedCommand = commandFactory.Create<String, String>(CommandTypes.TokensChangedCommand, HandleTokensChanged);
+            _performTransitionCommand = commandFactory.Create<String>(CommandTypes.PerformTransitionCommand, HandlePerformTransition, 
+                                                                      CanPerformTransition);
         }
         #endregion
 
@@ -545,7 +549,7 @@ namespace PetriNetEditor
         /// <param name="nodeId">The id of the node that triggered the command.</param>
         /// <param name="coords">The coordinates of the MouseLeftButtonDownEvent.</param>
         /// <param name="alternate">A value that indicates whether a modifier key was pressed.</param>
-        private void HandleNodeMouseLeftButtonDown(String nodeId, Point coords, bool alternate)
+        private void HandleNodeMouseLeftButtonDown(String nodeId, NPoint coords, bool alternate)
         {
             switch (NodeMode)
             {
@@ -585,7 +589,7 @@ namespace PetriNetEditor
         /// in draw mode.
         /// </summary>
         /// <param name="pos">The position of the mouse pointer after the move.</param>
-        private void HandleNodeMouseMove(Point pos)
+        private void HandleNodeMouseMove(NPoint pos)
         {
             switch (NodeMode)
             {
@@ -617,7 +621,7 @@ namespace PetriNetEditor
         /// <param name="nodeId">The id of the node that triggered the command.</param>
         /// <param name="coords">The coordinates of the MouseLeftButtonUpEvent.</param>
         /// <param name="alternate">A value that indicates whether a modifier key was pressed.</param>
-        private void HandleNodeMouseLeftButtonUp(String nodeId, Point coords, bool alternate)
+        private void HandleNodeMouseLeftButtonUp(String nodeId, NPoint coords, bool alternate)
         {
             IVisualNode node = ElementProvider.GetNode(nodeId);
             switch (NodeMode)
@@ -647,7 +651,7 @@ namespace PetriNetEditor
         /// Handles the MouseLeftButtonUpCommand. Ends drawing operation if one was in progress.
         /// </summary>
         /// <param name="coords">The coordinates of the MouseLeftButtonUpEvent.</param>
-        private void HandleMouseLeftButtonUp(Point coords)
+        private void HandleMouseLeftButtonUp(NPoint coords)
         {
             if(DrawSourceId != null)
             {
