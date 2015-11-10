@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,16 +13,32 @@ namespace PetriNetEditor
     /// </summary>
     public class CommandFactory
     {
-        /// <summary> Store for the CustomCommand property. </summary>
-        private static ICustomCommand _customCommand = null;
+        /// <summary> Store for custom commands. </summary>
+        private static IList _customCommands = new List<ICustomCommand>();
 
         /// <summary>
         /// Gets or sets a custom command to be created.
         /// </summary>
-        public static ICustomCommand CustomCommand
+        private static IList CustomCommands
         {
-            private get { return _customCommand; }
-            set { _customCommand = value; }
+            get { return _customCommands; }
+        }
+
+        /// <summary>
+        /// Adds a custom command.
+        /// </summary>
+        /// <param name="customCommand">The custom command to add.</param>
+        public static void AddCustomCommand(ICustomCommand customCommand)
+        {
+            CustomCommands.Add(customCommand);
+        }
+
+        /// <summary>
+        /// Resets the custom commands.
+        /// </summary>
+        public static void ResetCustomCommands()
+        {
+            CustomCommands.Clear();
         }
 
         /// <summary>
@@ -33,11 +50,17 @@ namespace PetriNetEditor
         /// <returns>A new DelegateCommand or a custom command, if one was provided.</returns>
         public IDelegateCommand Create<T>(CommandTypes commandType, Action<T> execute)
         {
-            if (CustomCommand != null)
+            if (CustomCommands.Count != 0)
             {
-                if(CustomCommand.CommandType.Equals(commandType))
-                    CustomCommand.ExecuteActionOne = Convert<T>(execute);
-                return CustomCommand;
+                foreach (ICustomCommand customCommand in CustomCommands)
+                {
+                    if (customCommand.CommandType.Equals(commandType))
+                    {
+                        customCommand.ExecuteActionOne = Convert<T>(execute);
+                        return customCommand;
+                    }
+                }
+                return null;
             }
             return new DelegateCommand(Convert<T>(execute));
         }
@@ -52,14 +75,18 @@ namespace PetriNetEditor
         /// <returns>A new DelegateCommand or a custom command, if one was provided.</returns>
         public IDelegateCommand Create<T>(CommandTypes commandType, Action<T> execute, Predicate<T> canExecute)
         {
-            if (CustomCommand != null)
+            if (CustomCommands.Count != 0)
             {
-                if (CustomCommand.CommandType.Equals(commandType))
+                foreach (ICustomCommand customCommand in CustomCommands)
                 {
-                    CustomCommand.CanExecutePred = Convert<T>(canExecute);
-                    CustomCommand.ExecuteActionOne = Convert<T>(execute); 
+                    if (customCommand.CommandType.Equals(commandType))
+                    {
+                        customCommand.CanExecutePred = Convert<T>(canExecute);
+                        customCommand.ExecuteActionOne = Convert<T>(execute);
+                        return customCommand;
+                    }
                 }
-                return CustomCommand;
+                return null;
             }
             return new DelegateCommand(Convert<T>(execute), Convert<T>(canExecute));
         }
@@ -73,11 +100,17 @@ namespace PetriNetEditor
         /// <returns>A new DelegateCommand or a custom command, if one was provided.</returns>
         public IDelegateCommand Create<T, U>(CommandTypes commandType, Action<T, U> execute)
         {
-            if (CustomCommand != null)
+            if (CustomCommands.Count != 0)
             {
-                if (CustomCommand.CommandType.Equals(commandType))
-                    CustomCommand.ExecuteActionTwo = Convert<T, U>(execute);
-                return CustomCommand;
+                foreach (ICustomCommand customCommand in CustomCommands)
+                {
+                    if (customCommand.CommandType.Equals(commandType))
+                    {
+                        customCommand.ExecuteActionTwo = Convert<T, U>(execute);
+                        return customCommand;
+                    }
+                }
+                return null;
             }
             return new DelegateCommand(Convert<T, U>(execute));
         }
@@ -92,14 +125,18 @@ namespace PetriNetEditor
         /// <returns>A new DelegateCommand or a custom command, if one was provided.</returns>
         public IDelegateCommand Create<T, U>(CommandTypes commandType, Action<T, U> execute, Predicate<T> canExecute)
         {
-            if (CustomCommand != null)
+            if (CustomCommands.Count != 0)
             {
-                if (CustomCommand.CommandType.Equals(commandType))
+                foreach (ICustomCommand customCommand in CustomCommands)
                 {
-                    CustomCommand.CanExecutePred = Convert<T>(canExecute);
-                    CustomCommand.ExecuteActionTwo = Convert<T, U>(execute); 
+                    if (customCommand.CommandType.Equals(commandType))
+                    {
+                        customCommand.CanExecutePred = Convert<T>(canExecute);
+                        customCommand.ExecuteActionTwo = Convert<T, U>(execute); 
+                        return customCommand;
+                    }
                 }
-                return CustomCommand;
+                return null;
             }
             return new DelegateCommand(Convert<T, U>(execute), Convert<T>(canExecute));
         }
@@ -113,11 +150,17 @@ namespace PetriNetEditor
         /// <returns>A new DelegateCommand or a custom command, if one was provided.</returns>
         public IDelegateCommand Create<T, U, V>(CommandTypes commandType, Action<T, U, V> execute)
         {
-            if (CustomCommand != null)
+            if (CustomCommands.Count != 0)
             {
-                if (CustomCommand.CommandType.Equals(commandType))
-                    CustomCommand.ExecuteActionThree = Convert<T, U, V>(execute);
-                return CustomCommand;
+                foreach (ICustomCommand customCommand in CustomCommands)
+                {
+                    if (customCommand.CommandType.Equals(commandType))
+                    {
+                        customCommand.ExecuteActionThree = Convert<T, U, V>(execute);
+                        return customCommand;
+                    }
+                }
+                return null;
             }
             return new DelegateCommand(Convert<T, U, V>(execute));
         }
@@ -132,14 +175,18 @@ namespace PetriNetEditor
         /// <returns>A new DelegateCommand or a custom command, if one was provided.</returns>
         public IDelegateCommand Create<T, U, V>(CommandTypes commandType, Action<T, U, V> execute, Predicate<T> canExecute)
         {
-            if (CustomCommand != null)
+            if (CustomCommands.Count != 0)
             {
-                if (CustomCommand.CommandType.Equals(commandType))
+                foreach (ICustomCommand customCommand in CustomCommands)
                 {
-                    CustomCommand.CanExecutePred = Convert<T>(canExecute);
-                    CustomCommand.ExecuteActionThree = Convert<T, U, V>(execute); 
+                    if (customCommand.CommandType.Equals(commandType))
+                    {
+                        customCommand.CanExecutePred = Convert<T>(canExecute);
+                        customCommand.ExecuteActionThree = Convert<T, U, V>(execute); 
+                        return customCommand;
+                    }
                 }
-                return CustomCommand;
+                return null;
             }
             return new DelegateCommand(Convert<T, U, V>(execute), Convert<T>(canExecute));
         }

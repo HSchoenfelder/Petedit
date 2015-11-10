@@ -84,6 +84,38 @@ namespace PetriNetEditor
 
         #region methods
         /// <summary>
+        /// Changes the arrowhead size of all arcs.
+        /// </summary>
+        /// <param name="newArrowheadSize">The new arrowhead size.</param>
+        public void ChangeArrowheadSize(int newArrowheadSize)
+        {
+            foreach (IVisualArc arc in VisualArcs.Values)
+            {
+                arc.ArrowheadSize = newArrowheadSize;
+            }
+        }
+
+        /// <summary>
+        /// Changes the drawsize size of all nodes, arcs and namefields.
+        /// </summary>
+        /// <param name="newDrawSize">The new drawsize.</param>
+        public void ChangeDrawSize(int newDrawSize)
+        {
+            foreach (IVisualArc arc in VisualArcs.Values)
+            {
+                arc.DrawSize = newDrawSize;
+            }
+            foreach (IVisualNode node in VisualNodes.Values)
+            {
+                node.DrawSize = newDrawSize;
+            }
+            foreach (INameField nField in NameFields.Values)
+            {
+                nField.DrawSize = newDrawSize;
+            }
+        }
+
+        /// <summary>
         /// Returns a reference to the NameField with the given id.
         /// </summary>
         /// <param name="id">The id of the NameField to return.</param>

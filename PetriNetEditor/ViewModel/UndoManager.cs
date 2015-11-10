@@ -290,6 +290,14 @@ namespace PetriNetEditor
             get { return _undos.Count == 0; }
         }
 
+        /// <summary>
+        /// Gets a value that indicates whether the redo stack is currently empty.
+        /// </summary>
+        public bool RedoStackEmpty
+        {
+            get { return _redos.Count == 0; }
+        }
+
         /// <summary> 
         /// Gets or sets the amount of right shift during the current move operation. 
         /// </summary>

@@ -30,6 +30,18 @@ namespace PetriNetEditor
 
         #region methods
         /// <summary>
+        /// Changes the arrowhead size of all arcs.
+        /// </summary>
+        /// <param name="newArrowheadSize">The new arrowhead size.</param>
+        void ChangeArrowheadSize(int newArrowheadSize);
+
+        /// <summary>
+        /// Changes the drawsize size of all nodes, arcs and namefields.
+        /// </summary>
+        /// <param name="newDrawSize">The new drawsize.</param>
+        void ChangeDrawSize(int newDrawSize);
+
+        /// <summary>
         /// Returns a reference to the NameField with the given id.
         /// </summary>
         /// <param name="id">The id of the NameField to return.</param>

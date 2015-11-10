@@ -207,6 +207,8 @@ namespace PetriNetEditor
             {
                 if (value != _sizeFactor)
                 {
+                    if (value < 1)
+                        throw new ArgumentOutOfRangeException();
                     _sizeFactor = value;
                     OnSizeFactorChanged(value);
                     NotifyPropertyChanged();
@@ -222,6 +224,8 @@ namespace PetriNetEditor
             get { return _viewWidth; }
             set
             {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException();
                 _viewWidth = value;
                 OnViewWidthChanged(value);
                 NotifyPropertyChanged();
@@ -236,6 +240,8 @@ namespace PetriNetEditor
             get { return _viewHeight; }
             set
             {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException();
                 _viewHeight = value;
                 OnViewHeightChanged(value);
                 NotifyPropertyChanged();
@@ -303,7 +309,7 @@ namespace PetriNetEditor
         /// </summary>
         public bool Modified
         {
-            get { return UndoManager.UndoStackEmpty ? false : _modified; }
+            get { return _modified; }
             set
             {
                 _modified = value;
@@ -463,7 +469,10 @@ namespace PetriNetEditor
         /// <param name="propertyName">The name of the property that changed.</param>
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName)); 
+            }
         }
 
         /// <summary>
@@ -487,22 +496,7 @@ namespace PetriNetEditor
         {
             ElementManager.DrawSize = newDrawSize;
             ElementCreator.DrawSize = newDrawSize;
-            for (int i = 0; i < ElementProvider.ArcsCount; i++)
-            {
-                IVisualArc arc = ElementProvider.GetArc(i);
-                arc.DrawSize = newDrawSize;
-            }
-            for (int i = 0; i < ElementProvider.NodesCount; i++)
-            {
-                IVisualNode node = ElementProvider.GetNode(i);
-                node.DrawSize = newDrawSize;
-                ElementManager.AdjustViewSize(node.Id, UndoRedoOps.ChangeSize);
-            }
-            for (int i = 0; i < ElementProvider.NameFieldsCount; i++)
-            {
-                INameField nField = ElementProvider.GetNameField(i);
-                nField.DrawSize = newDrawSize;
-            }
+            ElementProvider.ChangeDrawSize(newDrawSize);
         }
 
         /// <summary>
@@ -514,11 +508,7 @@ namespace PetriNetEditor
         {
             ElementManager.ArrowheadSize = newArrowheadSize;
             ElementCreator.ArrowheadSize = newArrowheadSize;
-            for (int i = 0; i < ElementProvider.ArcsCount; i++)
-            {
-                IVisualArc arc = ElementProvider.GetArc(i);
-                arc.ArrowheadSize = newArrowheadSize;
-            }
+            ElementProvider.ChangeArrowheadSize(newArrowheadSize);
         }
 
         /// <summary>
@@ -575,6 +565,8 @@ namespace PetriNetEditor
         {
             if (SizeFactor != newSize)
             {
+                if (newSize < 1)
+                    throw new ArgumentOutOfRangeException();
                 UndoManager.AddSizeChangeUndoParams(SizeFactor, ViewWidth, ViewHeight);
                 SizeFactor = newSize;
                 UndoManager.PushSizeChangeUndo();
@@ -611,7 +603,7 @@ namespace PetriNetEditor
                 String[] nodes = Model.GetNodesForArc(arcId);
                 String sourceId = Model.IsSource(arcId, nodes[0]) ? nodes[0] : nodes[1];
                 String targetId = Model.IsSource(arcId, nodes[0]) ? nodes[1] : nodes[0];
-                if (ElementProvider.GetArc(arcId).Selected)
+                if (selectedItems.Contains(arcId))
                     UndoManager.AddDeleteUndoArcInfo(arcId, sourceId, targetId, true);
                 else
                     UndoManager.AddDeleteUndoArcInfo(arcId, sourceId, targetId, false);
@@ -625,8 +617,7 @@ namespace PetriNetEditor
                 if (Model.IsNode(elementId))
                 {
                     // save node info for undo operation
-                    int? tokenCount = ElementProvider.GetNode(elementId).NodeType == NodeType.Place ?
-                                      (int?)Model.GetTokenCount(elementId) : null;
+                    int? tokenCount = Model.IsPlace(elementId) ? (int?)Model.GetTokenCount(elementId) : null;
                     UndoManager.AddDeleteUndoNodeInfo(elementId, Model.GetName(elementId), (int)Model.GetCoordinates(elementId).X,
                                             (int)Model.GetCoordinates(elementId).Y, tokenCount);
                     // remove node
@@ -720,6 +711,7 @@ namespace PetriNetEditor
             Model.Reinitialize();
             Reinitialize();
             SaveFile = null;
+            Modified = false;
         }
 
         /// <summary>
@@ -749,6 +741,7 @@ namespace PetriNetEditor
             {
                 parser.CloseParser();
             }
+            Modified = false;
         }
 
         /// <summary>

@@ -43,6 +43,11 @@ namespace PetriNetEditor
         bool UndoStackEmpty { get; }
 
         /// <summary>
+        /// Gets a value that indicates whether the redo stack is currently empty.
+        /// </summary>
+        bool RedoStackEmpty { get; }
+
+        /// <summary>
         /// Gets or sets a value which indicates whether a rectangle select operation is
         /// currently in progress.
         /// </summary>
