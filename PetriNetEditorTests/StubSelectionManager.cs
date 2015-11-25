@@ -56,7 +56,7 @@ namespace PetriNetEditorTests
 
         public bool SelectionContains(string id)
         {
-            return true;
+            return SelectedItems.Contains(id);
         }
 
         public void RemoveElement(string id)

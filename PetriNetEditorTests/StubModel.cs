@@ -75,7 +75,10 @@ namespace PetriNetEditorTests
 
         public bool IsPlace(string nodeId)
         {
-            return false;
+            if (Nodes[0].ToLower().Contains("testplace"))
+                return true;
+            else
+                return false;
         }
 
         public string GetName(string nodeId)

@@ -2,6 +2,7 @@
 using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PetriNetEditor;
+using PetriNetModel;
 using Rhino.Mocks;
 
 namespace PetriNetEditorTests
@@ -943,6 +944,784 @@ namespace PetriNetEditorTests
             Assert.IsTrue(canExecute, "The command cannot execute");
         }
 
+        [TestMethod]
+        public void SelectAllCommand_SingleNodePresent_NodeSelected()
+        {
+            // arrange
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddNodeId("testNode");
+            DependencyFactory.CustomProvider = testEp;
+            StubSelectionManager testSm = new StubSelectionManager();
+            DependencyFactory.CustomSelectionManager = testSm;
+            StubCommand selectAllCommand = new StubCommand(CommandTypes.SelectAllCommand);
+            CommandFactory.AddCustomCommand(selectAllCommand);
+            CommandFactory.AddCustomCommand(new StubCommand(CommandTypes.DeleteNodesCommand));
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            selectAllCommand.Execute(null);
+
+            // assert
+            Assert.IsTrue(testSm.SelectionContains("testNode"), "The node has not been selected");
+        }
+
+        [TestMethod]
+        public void SelectAllCommand_TwoNodesPresent_NodesSelected()
+        {
+            // arrange
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddNodeId("testNode1");
+            testEp.AddNodeId("testNode2");
+            DependencyFactory.CustomProvider = testEp;
+            StubSelectionManager testSm = new StubSelectionManager();
+            DependencyFactory.CustomSelectionManager = testSm;
+            StubCommand selectAllCommand = new StubCommand(CommandTypes.SelectAllCommand);
+            CommandFactory.AddCustomCommand(selectAllCommand);
+            CommandFactory.AddCustomCommand(new StubCommand(CommandTypes.DeleteNodesCommand));
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            selectAllCommand.Execute(null);
+
+            // assert
+            Assert.IsTrue(testSm.SelectionContains("testNode1"), "Node 1 has not been selected");
+            Assert.IsTrue(testSm.SelectionContains("testNode2"), "Node 2 has not been selected");
+        }
+
+        [TestMethod]
+        public void SelectAllCommand_SingleArcPresent_ArcSelected()
+        {
+            // arrange
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddArcId("testArc");
+            DependencyFactory.CustomProvider = testEp;
+            StubSelectionManager testSm = new StubSelectionManager();
+            DependencyFactory.CustomSelectionManager = testSm;
+            StubCommand selectAllCommand = new StubCommand(CommandTypes.SelectAllCommand);
+            CommandFactory.AddCustomCommand(selectAllCommand);
+            CommandFactory.AddCustomCommand(new StubCommand(CommandTypes.DeleteNodesCommand));
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            selectAllCommand.Execute(null);
+
+            // assert
+            Assert.IsTrue(testSm.SelectionContains("testArc"), "The arc has not been selected");
+        }
+
+        [TestMethod]
+        public void SelectAllCommand_OneNodeAndOneArcPresent_NodeAndArcSelected()
+        {
+            // arrange
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddNodeId("testNode");
+            testEp.AddArcId("testArc");
+            DependencyFactory.CustomProvider = testEp;
+            StubSelectionManager testSm = new StubSelectionManager();
+            DependencyFactory.CustomSelectionManager = testSm;
+            StubCommand selectAllCommand = new StubCommand(CommandTypes.SelectAllCommand);
+            CommandFactory.AddCustomCommand(selectAllCommand);
+            CommandFactory.AddCustomCommand(new StubCommand(CommandTypes.DeleteNodesCommand));
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            selectAllCommand.Execute(null);
+
+            // assert
+            Assert.IsTrue(testSm.SelectionContains("testNode"), "The node has not been selected");
+            Assert.IsTrue(testSm.SelectionContains("testArc"), "The arc has not been selected");
+        }
+
+        [TestMethod]
+        public void SelectAllCommand_OneNodeAndTwoArcsPresent_ArcsSelected()
+        {
+            // arrange
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddNodeId("testNode");
+            testEp.AddArcId("testArc1");
+            testEp.AddArcId("testArc2");
+            DependencyFactory.CustomProvider = testEp;
+            StubSelectionManager testSm = new StubSelectionManager();
+            DependencyFactory.CustomSelectionManager = testSm;
+            StubCommand selectAllCommand = new StubCommand(CommandTypes.SelectAllCommand);
+            CommandFactory.AddCustomCommand(selectAllCommand);
+            CommandFactory.AddCustomCommand(new StubCommand(CommandTypes.DeleteNodesCommand));
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            selectAllCommand.Execute(null);
+
+            // assert
+            Assert.IsTrue(testSm.SelectionContains("testNode"), "The node has not been selected");
+            Assert.IsTrue(testSm.SelectionContains("testArc1"), "Arc 1 has not been selected");
+            Assert.IsTrue(testSm.SelectionContains("testArc2"), "Arc 2 has not been selected");
+        }
+
+        [TestMethod]
+        public void SelectAllCommand_SingleNodePresent_PushesUndoOp()
+        {
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddNodeId("testNode");
+            DependencyFactory.CustomProvider = testEp;
+            IUndoManagerEx um = mockEngine.DynamicMock<IUndoManagerEx>();
+            DependencyFactory.CustomUndoManager = um;
+            StubCommand selectAllCommand = new StubCommand(CommandTypes.SelectAllCommand);
+            CommandFactory.AddCustomCommand(selectAllCommand);
+            CommandFactory.AddCustomCommand(new StubCommand(CommandTypes.DeleteNodesCommand));
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            selectAllCommand.Execute(null);
+
+            // assert
+            um.AssertWasCalled(s => s.PushSelectUndo());
+        }
+
+        [TestMethod]
+        public void SelectAllCommand_SingleNodePresent_ClearsRedoStack()
+        {
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddNodeId("testNode");
+            DependencyFactory.CustomProvider = testEp;
+            IUndoManagerEx um = mockEngine.DynamicMock<IUndoManagerEx>();
+            DependencyFactory.CustomUndoManager = um;
+            StubCommand selectAllCommand = new StubCommand(CommandTypes.SelectAllCommand);
+            CommandFactory.AddCustomCommand(selectAllCommand);
+            CommandFactory.AddCustomCommand(new StubCommand(CommandTypes.DeleteNodesCommand));
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            selectAllCommand.Execute(null);
+
+            // assert
+            um.AssertWasCalled(s => s.ClearRedoStack());
+        }
+
+        [TestMethod]
+        public void DeleteNodesCommand_SingleNodePresent_DeleteNodesCommandUpdated()
+        {
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddNodeId("testNode");
+            DependencyFactory.CustomProvider = testEp;
+            StubCommand selectAllCommand = new StubCommand(CommandTypes.SelectAllCommand);
+            CommandFactory.AddCustomCommand(selectAllCommand);
+            StubCommand deleteNodesCommand = new StubCommand(CommandTypes.DeleteNodesCommand);
+            CommandFactory.AddCustomCommand(deleteNodesCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            selectAllCommand.Execute(null);
+
+            // assert
+            Assert.IsTrue(deleteNodesCommand.CanExecuteChanged, "DeleteNodesCommand has not been updated");
+        }
+
+        [TestMethod]
+        public void DeleteNodesCommand_NothingPresent_CommandCannotExecute()
+        {
+            // arrange
+            StubElementProvider testEp = new StubElementProvider();
+            DependencyFactory.CustomProvider = testEp;
+            StubCommand selectAllCommand = new StubCommand(CommandTypes.SelectAllCommand);
+            CommandFactory.AddCustomCommand(selectAllCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            bool canExecute = selectAllCommand.CanExecute(null);
+
+            // assert
+            Assert.IsFalse(canExecute, "The command can execute");
+        }
+
+        [TestMethod]
+        public void SelectAllCommand_SingleNodePresent_CommandCanExecute()
+        {
+            // arrange
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddNodeId("testNode");
+            DependencyFactory.CustomProvider = testEp;
+            StubCommand selectAllCommand = new StubCommand(CommandTypes.SelectAllCommand);
+            CommandFactory.AddCustomCommand(selectAllCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            bool canExecute = selectAllCommand.CanExecute(null);
+
+            // assert
+            Assert.IsTrue(canExecute, "The command cannot execute");
+        }
+
+        [TestMethod]
+        public void NewFileCommand_NoStateCondition_ModelReinitialized()
+        {
+            // arrange
+            IModel testModel = mockEngine.DynamicMock<IModel>();
+            ModelFactory.CustomModel = testModel;
+            StubCommand newFileCommand = new StubCommand(CommandTypes.NewFileCommand);
+            CommandFactory.AddCustomCommand(newFileCommand);
+            MainViewModel mvm = new MainViewModel();
+            
+            // act
+            mockEngine.ReplayAll();
+            newFileCommand.Execute(null);
+
+            // assert
+            testModel.AssertWasCalled(s => s.Reinitialize());
+        }
+
+        [TestMethod]
+        public void NewFileCommand_NoStateCondition_SelectedItemsCleared()
+        {
+            // arrange
+            ISelectionManager sm = mockEngine.DynamicMock<ISelectionManager>();
+            DependencyFactory.CustomSelectionManager = sm;
+            StubCommand newFileCommand = new StubCommand(CommandTypes.NewFileCommand);
+            CommandFactory.AddCustomCommand(newFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            newFileCommand.Execute(null);
+
+            // assert
+            sm.AssertWasCalled(s => s.ClearSelectedItems());
+        }
+
+        [TestMethod]
+        public void NewFileCommand_NoStateCondition_AutoSelectedArcsCleared()
+        {
+            // arrange
+            ISelectionManager sm = mockEngine.DynamicMock<ISelectionManager>();
+            DependencyFactory.CustomSelectionManager = sm;
+            StubCommand newFileCommand = new StubCommand(CommandTypes.NewFileCommand);
+            CommandFactory.AddCustomCommand(newFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            newFileCommand.Execute(null);
+
+            // assert
+            sm.AssertWasCalled(s => s.ClearAutoSelectedArcs());
+        }
+
+        [TestMethod]
+        public void NewFileCommand_NoStateCondition_NameFieldsCleared()
+        {
+            // arrange
+            IElementProvider ep = mockEngine.DynamicMock<IElementProvider>();
+            DependencyFactory.CustomProvider = ep;
+            StubCommand newFileCommand = new StubCommand(CommandTypes.NewFileCommand);
+            CommandFactory.AddCustomCommand(newFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            newFileCommand.Execute(null);
+
+            // assert
+            ep.AssertWasCalled(s => s.ClearNameFields());
+        }
+
+        [TestMethod]
+        public void NewFileCommand_NoStateCondition_NodesCleared()
+        {
+            // arrange
+            IElementProvider ep = mockEngine.DynamicMock<IElementProvider>();
+            DependencyFactory.CustomProvider = ep;
+            StubCommand newFileCommand = new StubCommand(CommandTypes.NewFileCommand);
+            CommandFactory.AddCustomCommand(newFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            newFileCommand.Execute(null);
+
+            // assert
+            ep.AssertWasCalled(s => s.ClearNodes());
+        }
+
+        [TestMethod]
+        public void NewFileCommand_NoStateCondition_ArcsCleared()
+        {
+            // arrange
+            IElementProvider ep = mockEngine.DynamicMock<IElementProvider>();
+            DependencyFactory.CustomProvider = ep;
+            StubCommand newFileCommand = new StubCommand(CommandTypes.NewFileCommand);
+            CommandFactory.AddCustomCommand(newFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            newFileCommand.Execute(null);
+
+            // assert
+            ep.AssertWasCalled(s => s.ClearArcs());
+        }
+
+        [TestMethod]
+        public void NewFileCommand_NoStateCondition_UndoStackCleared()
+        {
+            // arrange
+            IUndoManagerEx um = mockEngine.DynamicMock<IUndoManagerEx>();
+            DependencyFactory.CustomUndoManager = um;
+            StubCommand newFileCommand = new StubCommand(CommandTypes.NewFileCommand);
+            CommandFactory.AddCustomCommand(newFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            newFileCommand.Execute(null);
+
+            // assert
+            um.AssertWasCalled(s => s.ClearUndoStack());
+        }
+
+        [TestMethod]
+        public void NewFileCommand_NoStateCondition_RedoStackCleared()
+        {
+            // arrange
+            IUndoManagerEx um = mockEngine.DynamicMock<IUndoManagerEx>();
+            DependencyFactory.CustomUndoManager = um;
+            StubCommand newFileCommand = new StubCommand(CommandTypes.NewFileCommand);
+            CommandFactory.AddCustomCommand(newFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            newFileCommand.Execute(null);
+
+            // assert
+            um.AssertWasCalled(s => s.ClearRedoStack());
+        }
+
+        [TestMethod]
+        public void NewFileCommand_SaveFilePresent_SaveFileReset()
+        {
+            // arrange
+            StubCommand newFileCommand = new StubCommand(CommandTypes.NewFileCommand);
+            CommandFactory.AddCustomCommand(newFileCommand);
+            MainViewModel mvm = new MainViewModel();
+            mvm.SaveFile = "testFile";
+
+            // act
+            newFileCommand.Execute(null);
+
+            // assert
+            Assert.IsNull(mvm.SaveFile, "The save file has not been reset");
+        }
+
+        [TestMethod]
+        public void NewFileCommand_ModifiedFlagSet_ModifiedFlagRemoved()
+        {
+            // arrange
+            StubCommand newFileCommand = new StubCommand(CommandTypes.NewFileCommand);
+            CommandFactory.AddCustomCommand(newFileCommand);
+            MainViewModel mvm = new MainViewModel();
+            mvm.Modified = true;
+
+            // act
+            newFileCommand.Execute(null);
+
+            // assert
+            Assert.IsFalse(mvm.Modified, "The modified flag has not been removed");
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_NoStateCondition_ModelReinitialized()
+        {
+            // arrange
+            IModel testModel = mockEngine.DynamicMock<IModel>();
+            ModelFactory.CustomModel = testModel;
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            loadFileCommand.Execute(null);
+
+            // assert
+            testModel.AssertWasCalled(s => s.Reinitialize());
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_NoStateCondition_SelectedItemsCleared()
+        {
+            // arrange
+            ISelectionManager sm = mockEngine.DynamicMock<ISelectionManager>();
+            DependencyFactory.CustomSelectionManager = sm;
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            loadFileCommand.Execute(null);
+
+            // assert
+            sm.AssertWasCalled(s => s.ClearSelectedItems());
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_NoStateCondition_AutoSelectedArcsCleared()
+        {
+            // arrange
+            ISelectionManager sm = mockEngine.DynamicMock<ISelectionManager>();
+            DependencyFactory.CustomSelectionManager = sm;
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            loadFileCommand.Execute(null);
+
+            // assert
+            sm.AssertWasCalled(s => s.ClearAutoSelectedArcs());
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_NoStateCondition_NameFieldsCleared()
+        {
+            // arrange
+            IElementProvider ep = mockEngine.DynamicMock<IElementProvider>();
+            DependencyFactory.CustomProvider = ep;
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            loadFileCommand.Execute(null);
+
+            // assert
+            ep.AssertWasCalled(s => s.ClearNameFields());
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_NoStateCondition_NodesCleared()
+        {
+            // arrange
+            IElementProvider ep = mockEngine.DynamicMock<IElementProvider>();
+            DependencyFactory.CustomProvider = ep;
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            loadFileCommand.Execute(null);
+
+            // assert
+            ep.AssertWasCalled(s => s.ClearNodes());
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_NoStateCondition_ArcsCleared()
+        {
+            // arrange
+            IElementProvider ep = mockEngine.DynamicMock<IElementProvider>();
+            DependencyFactory.CustomProvider = ep;
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            loadFileCommand.Execute(null);
+
+            // assert
+            ep.AssertWasCalled(s => s.ClearArcs());
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_NoStateCondition_UndoStackCleared()
+        {
+            // arrange
+            IUndoManagerEx um = mockEngine.DynamicMock<IUndoManagerEx>();
+            DependencyFactory.CustomUndoManager = um;
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            loadFileCommand.Execute(null);
+
+            // assert
+            um.AssertWasCalled(s => s.ClearUndoStack());
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_NoStateCondition_RedoStackCleared()
+        {
+            // arrange
+            IUndoManagerEx um = mockEngine.DynamicMock<IUndoManagerEx>();
+            DependencyFactory.CustomUndoManager = um;
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            loadFileCommand.Execute(null);
+
+            // assert
+            um.AssertWasCalled(s => s.ClearRedoStack());
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_SaveFilePresent_SaveFileReset()
+        {
+            // arrange
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+            mvm.SaveFile = "testFile";
+
+            // act
+            loadFileCommand.Execute(null);
+
+            // assert
+            Assert.IsNull(mvm.SaveFile, "The save file has not been reset");
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_ModifiedFlagSet_ModifiedFlagRemoved()
+        {
+            // arrange
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+            mvm.Modified = true;
+
+            // act
+            loadFileCommand.Execute(null);
+
+            // assert
+            Assert.IsFalse(mvm.Modified, "The modified flag has not been removed");
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_NoStateCondition_ParserCalledForParsing()
+        {
+            // arrange
+            IPNMLParser testParser = mockEngine.DynamicMock<IPNMLParser>();
+            PNMLAccessorFactory.CustomParser = testParser;
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            loadFileCommand.Execute(null);
+
+            // assert
+            testParser.AssertWasCalled(s => s.Parse());
+        }
+
+        [TestMethod]
+        public void LoadFileCommand_NoStateCondition_ParserClosed()
+        {
+            // arrange
+            IPNMLParser testParser = mockEngine.DynamicMock<IPNMLParser>();
+            PNMLAccessorFactory.CustomParser = testParser;
+            StubCommand loadFileCommand = new StubCommand(CommandTypes.LoadFileCommand);
+            CommandFactory.AddCustomCommand(loadFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            loadFileCommand.Execute(null);
+
+            // assert
+            testParser.AssertWasCalled(s => s.CloseParser());
+        }
+
+        [TestMethod]
+        public void SaveFileCommand_FilenameNull_PreviousFilenameRemains()
+        {
+            // arrange
+            IPNMLWriter testWriter = mockEngine.Stub<IPNMLWriter>();
+            PNMLAccessorFactory.CustomWriter = testWriter;
+            StubCommand saveFileCommand = new StubCommand(CommandTypes.SaveFileCommand);
+            CommandFactory.AddCustomCommand(saveFileCommand);
+            MainViewModel mvm = new MainViewModel();
+            mvm.SaveFile = "previousFilename";
+
+            // act
+            saveFileCommand.Execute(null);
+
+            // assert
+            Assert.AreEqual("previousFilename", mvm.SaveFile);
+        }
+
+        [TestMethod]
+        public void SaveFileCommand_FilenameNotNull_NewFilenameSaved()
+        {
+            // arrange
+            IPNMLWriter testWriter = mockEngine.Stub<IPNMLWriter>();
+            PNMLAccessorFactory.CustomWriter = testWriter;
+            StubCommand saveFileCommand = new StubCommand(CommandTypes.SaveFileCommand);
+            CommandFactory.AddCustomCommand(saveFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            saveFileCommand.Execute("filename");
+
+            // assert
+            Assert.AreEqual("filename", mvm.SaveFile);
+        }
+
+        [TestMethod]
+        public void SaveFileCommand_FilenameNull_ModifiedFlagSet()
+        {
+            // arrange
+            IPNMLWriter testWriter = mockEngine.Stub<IPNMLWriter>();
+            PNMLAccessorFactory.CustomWriter = testWriter;
+            StubCommand saveFileCommand = new StubCommand(CommandTypes.SaveFileCommand);
+            CommandFactory.AddCustomCommand(saveFileCommand);
+            MainViewModel mvm = new MainViewModel();
+            mvm.Modified = true;
+            mvm.SaveFile = "previousFilename";
+
+            // act
+            saveFileCommand.Execute(null);
+
+            // assert
+            Assert.IsFalse(mvm.Modified, "The modified flag has not been removed");
+        }
+
+        [TestMethod]
+        public void SaveFileCommand_FilenameNotNull_ModifiedFlagSet()
+        {
+            // arrange
+            IPNMLWriter testWriter = mockEngine.Stub<IPNMLWriter>();
+            PNMLAccessorFactory.CustomWriter = testWriter;
+            StubCommand saveFileCommand = new StubCommand(CommandTypes.SaveFileCommand);
+            CommandFactory.AddCustomCommand(saveFileCommand);
+            MainViewModel mvm = new MainViewModel();
+            mvm.Modified = true;
+
+            // act
+            saveFileCommand.Execute("filename");
+
+            // assert
+            Assert.IsFalse(mvm.Modified, "The modified flag has not been removed");
+        }
+
+        [TestMethod]
+        public void SaveFileCommand_FilenameNotNull_XMLDocumentInitialized()
+        {
+            // arrange
+            IPNMLWriter testWriter = mockEngine.DynamicMock<IPNMLWriter>();
+            PNMLAccessorFactory.CustomWriter = testWriter;
+            StubCommand saveFileCommand = new StubCommand(CommandTypes.SaveFileCommand);
+            CommandFactory.AddCustomCommand(saveFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            saveFileCommand.Execute("filename");
+
+            // assert
+            testWriter.AssertWasCalled(s => s.StartXMLDocument());
+        }
+
+        [TestMethod]
+        public void SaveFileCommand_FilenameNotNull_XMLDocumentFinished()
+        {
+            // arrange
+            IPNMLWriter testWriter = mockEngine.DynamicMock<IPNMLWriter>();
+            PNMLAccessorFactory.CustomWriter = testWriter;
+            StubCommand saveFileCommand = new StubCommand(CommandTypes.SaveFileCommand);
+            CommandFactory.AddCustomCommand(saveFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            saveFileCommand.Execute("filename");
+
+            // assert
+            testWriter.AssertWasCalled(s => s.FinishXMLDocument());
+        }
+
+        [TestMethod]
+        public void SaveFileCommand_SinglePlacePresent_PlaceSavedToXML()
+        {
+            // arrange
+            IPNMLWriter testWriter = mockEngine.DynamicMock<IPNMLWriter>();
+            PNMLAccessorFactory.CustomWriter = testWriter;
+            StubModel testModel = new StubModel();
+            testModel.AddPlace(0, 0, "testPlace");
+            ModelFactory.CustomModel = testModel;
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddNodeId("testPlace");
+            DependencyFactory.CustomProvider = testEp;
+            StubCommand saveFileCommand = new StubCommand(CommandTypes.SaveFileCommand);
+            CommandFactory.AddCustomCommand(saveFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            saveFileCommand.Execute("filename");
+
+            // assert
+            testWriter.AssertWasCalled(s => s.AddPlace(Arg<String>.Is.Anything, Arg<String>.Is.Anything, Arg<String>.Is.Anything, 
+                                                       Arg<String>.Is.Anything, Arg<String>.Is.Anything));
+        }
+
+        [TestMethod]
+        public void SaveFileCommand_SingleTransPresent_TransSavedToXML()
+        {
+            // arrange
+            IPNMLWriter testWriter = mockEngine.DynamicMock<IPNMLWriter>();
+            PNMLAccessorFactory.CustomWriter = testWriter;
+            StubModel testModel = new StubModel();
+            testModel.AddPlace(0, 0, "testTrans");
+            ModelFactory.CustomModel = testModel;
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddNodeId("testTrans");
+            DependencyFactory.CustomProvider = testEp;
+            StubCommand saveFileCommand = new StubCommand(CommandTypes.SaveFileCommand);
+            CommandFactory.AddCustomCommand(saveFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            saveFileCommand.Execute("filename");
+
+            // assert
+            testWriter.AssertWasCalled(s => s.AddTransition(Arg<String>.Is.Anything, Arg<String>.Is.Anything, 
+                                                            Arg<String>.Is.Anything, Arg<String>.Is.Anything));
+        }
+
+        [TestMethod]
+        public void SaveFileCommand_SingleArcPresent_ArcSavedToXML()
+        {
+            // arrange
+            IPNMLWriter testWriter = mockEngine.DynamicMock<IPNMLWriter>();
+            PNMLAccessorFactory.CustomWriter = testWriter;
+            StubModel testModel = new StubModel();
+            testModel.AddArc("testSource", "testTarget", "testArc");
+            ModelFactory.CustomModel = testModel;
+            StubElementProvider testEp = new StubElementProvider();
+            testEp.AddArcId("testArc");
+            DependencyFactory.CustomProvider = testEp;
+            StubCommand saveFileCommand = new StubCommand(CommandTypes.SaveFileCommand);
+            CommandFactory.AddCustomCommand(saveFileCommand);
+            MainViewModel mvm = new MainViewModel();
+
+            // act
+            mockEngine.ReplayAll();
+            saveFileCommand.Execute("filename");
+
+            // assert
+            testWriter.AssertWasCalled(s => s.AddArc(Arg<String>.Is.Anything, Arg<String>.Is.Anything, Arg<String>.Is.Anything));
+        }
 
         [TestCleanup]
         public void Cleanup()
